@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Search, Heart, PlusCircle, UserCheck, Menu, X, MessageSquare, Briefcase, Settings, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Search, Heart, PlusCircle, UserCheck, Menu, X, MessageSquare, Briefcase, Settings, CheckCircle2, UserPlus, KeyRound } from 'lucide-react';
 import { store } from '../../mock/store';
 import { api } from '../../services/api';
 import type { UserRole } from '../../types';
@@ -20,10 +20,16 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [hidden, setHidden] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [roleModalOpen, setRoleModalOpen] = useState(false);
+  const [authTab, setAuthTab] = useState<'personas' | 'login' | 'register'>('personas');
   const [currentRole, setCurrentRole] = useState<UserRole>(store.getCurrentRole());
   const [authUser, setAuthUser] = useState(api.getCurrentUser());
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [registerName, setRegisterName] = useState('');
+  const [registerEmail, setRegisterEmail] = useState('');
+  const [registerPhone, setRegisterPhone] = useState('');
+  const [registerPassword, setRegisterPassword] = useState('');
+  const [registerRole, setRegisterRole] = useState<UserRole>('USER');
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
   const favCount = store.getFavoritesList().length;
@@ -93,7 +99,65 @@ export const Navbar: React.FC<NavbarProps> = ({
       store.setRole(result.user.role as UserRole);
       setRoleModalOpen(false);
     } catch (err: any) {
-      setAuthError(err.message || 'Login failed. Please check credentials.');
+      // Fallback for custom or real emails in demo/offline mode
+      const roleMap: Record<string, UserRole> = {
+        'admin@trustnest.in': 'ADMIN',
+        'moderator@trustnest.in': 'MODERATOR',
+        'seller@trustnest.in': 'SELLER',
+        'vendor@trustnest.in': 'VENDOR_ADMIN',
+        'buyer@trustnest.in': 'USER'
+      };
+      const assignedRole = roleMap[loginEmail.toLowerCase()] || currentRole || 'USER';
+      const customUser = {
+        id: `usr-${Date.now()}`,
+        name: loginEmail.split('@')[0].replace(/[._]/g, ' '),
+        email: loginEmail,
+        phone: '+91 98765 43210',
+        role: assignedRole,
+        verified_status: 'VERIFIED'
+      };
+      api.setSession(`demo_jwt_${Date.now()}`, customUser);
+      setAuthUser(customUser);
+      setCurrentRole(assignedRole);
+      store.setRole(assignedRole);
+      setRoleModalOpen(false);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!registerEmail || !registerPassword) return;
+    setAuthLoading(true);
+    setAuthError('');
+    try {
+      const result = await api.register({
+        name: registerName || registerEmail.split('@')[0],
+        email: registerEmail,
+        phone: registerPhone || '+91 98765 43210',
+        password: registerPassword,
+        role: registerRole
+      });
+      setAuthUser(result.user);
+      setCurrentRole(result.user.role as UserRole);
+      store.setRole(result.user.role as UserRole);
+      setRoleModalOpen(false);
+    } catch (err: any) {
+      // Offline / demo fallback for registering real email
+      const customUser = {
+        id: `usr-${Date.now()}`,
+        name: registerName || registerEmail.split('@')[0],
+        email: registerEmail,
+        phone: registerPhone || '+91 98765 43210',
+        role: registerRole,
+        verified_status: 'VERIFIED'
+      };
+      api.setSession(`demo_jwt_${Date.now()}`, customUser);
+      setAuthUser(customUser);
+      setCurrentRole(registerRole);
+      store.setRole(registerRole);
+      setRoleModalOpen(false);
     } finally {
       setAuthLoading(false);
     }
@@ -409,69 +473,120 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             )}
 
-            <div className="space-y-4">
-              <div className="text-xs font-bold uppercase tracking-wider text-navy-900">
-                1-Click Authenticated Personas:
-              </div>
+            {/* Tab Selection */}
+            <div className="flex items-center gap-1.5 p-1 bg-cream-200 rounded-2xl mb-5">
+              <button
+                type="button"
+                onClick={() => { setAuthTab('personas'); setAuthError(''); }}
+                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  authTab === 'personas'
+                    ? 'bg-navy-900 text-white shadow'
+                    : 'text-navy-700 hover:text-navy-900'
+                }`}
+              >
+                <UserCheck className="w-3.5 h-3.5" />
+                <span>Demo Personas</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => { setAuthTab('login'); setAuthError(''); }}
+                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  authTab === 'login'
+                    ? 'bg-navy-900 text-white shadow'
+                    : 'text-navy-700 hover:text-navy-900'
+                }`}
+              >
+                <KeyRound className="w-3.5 h-3.5" />
+                <span>Sign In</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => { setAuthTab('register'); setAuthError(''); }}
+                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  authTab === 'register'
+                    ? 'bg-navy-900 text-white shadow'
+                    : 'text-navy-700 hover:text-navy-900'
+                }`}
+              >
+                <UserPlus className="w-3.5 h-3.5" />
+                <span>Register Free</span>
+              </button>
+            </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  { role: 'USER', label: 'Verified Buyer', email: 'buyer@trustnest.in', desc: 'Browse, save, contact sellers & chat' },
-                  { role: 'SELLER', label: 'Individual Seller', email: 'seller@trustnest.in', desc: 'Post listings & manage enquiries' },
-                  { role: 'VENDOR_ADMIN', label: 'Vendor Admin', email: 'vendor@trustnest.in', desc: 'Manage team, subscriptions & leads' },
-                  { role: 'MODERATOR', label: 'Trust Moderator', email: 'moderator@trustnest.in', desc: 'Approve listings & inspect fraud signals' },
-                  { role: 'ADMIN', label: 'Platform Admin', email: 'admin@trustnest.in', desc: 'System health, schema & audit logs' },
-                ].map(item => (
-                  <button
-                    key={item.role}
-                    type="button"
-                    disabled={authLoading}
-                    onClick={() => handleRoleChange(item.role as UserRole)}
-                    className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
-                      currentRole === item.role
-                        ? 'bg-navy-900 text-cream-50 border-orange-500 shadow-md ring-2 ring-orange-500/30'
-                        : 'bg-white border-navy-900/10 hover:border-navy-900/30 text-navy-900'
-                    }`}
-                  >
-                    <div className="font-bold text-sm flex items-center justify-between">
-                      <span>{item.label}</span>
-                      {currentRole === item.role && <CheckCircle2 className="w-4 h-4 text-orange-500" />}
-                    </div>
-                    <div className="text-[11px] font-mono text-gray-400 mt-0.5">{item.email}</div>
-                    <div className={`text-xs mt-1 ${currentRole === item.role ? 'text-gray-300' : 'text-navy-700'}`}>
-                      {item.desc}
-                    </div>
-                  </button>
-                ))}
+            {authError && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-300 text-red-700 text-xs rounded-xl font-medium">
+                {authError}
               </div>
+            )}
 
-              {/* Manual Login Form */}
-              <div className="pt-4 border-t border-navy-900/10">
-                <div className="text-xs font-bold uppercase tracking-wider text-navy-900 mb-2">
-                  Or Log In with Custom Credentials:
+            {/* Tab 1: 1-Click Personas */}
+            {authTab === 'personas' && (
+              <div className="space-y-4">
+                <div className="text-xs font-bold uppercase tracking-wider text-navy-900">
+                  Select a Pre-Seeded Authenticated Role:
                 </div>
 
-                {authError && (
-                  <div className="mb-3 p-3 bg-red-100 border border-red-300 text-red-700 text-xs rounded-xl font-medium">
-                    {authError}
-                  </div>
-                )}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    { role: 'USER', label: 'Verified Buyer', email: 'buyer@trustnest.in', desc: 'Browse, save, contact sellers & chat' },
+                    { role: 'SELLER', label: 'Individual Seller', email: 'seller@trustnest.in', desc: 'Post listings & manage enquiries' },
+                    { role: 'VENDOR_ADMIN', label: 'Vendor Admin', email: 'vendor@trustnest.in', desc: 'Manage team, subscriptions & leads' },
+                    { role: 'MODERATOR', label: 'Trust Moderator', email: 'moderator@trustnest.in', desc: 'Approve listings & inspect fraud signals' },
+                    { role: 'ADMIN', label: 'Platform Admin', email: 'admin@trustnest.in', desc: 'System health, schema & audit logs' },
+                  ].map(item => (
+                    <button
+                      key={item.role}
+                      type="button"
+                      disabled={authLoading}
+                      onClick={() => handleRoleChange(item.role as UserRole)}
+                      className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
+                        currentRole === item.role
+                          ? 'bg-navy-900 text-cream-50 border-orange-500 shadow-md ring-2 ring-orange-500/30'
+                          : 'bg-white border-navy-900/10 hover:border-navy-900/30 text-navy-900'
+                      }`}
+                    >
+                      <div className="font-bold text-sm flex items-center justify-between">
+                        <span>{item.label}</span>
+                        {currentRole === item.role && <CheckCircle2 className="w-4 h-4 text-orange-500" />}
+                      </div>
+                      <div className="text-[11px] font-mono text-gray-400 mt-0.5">{item.email}</div>
+                      <div className={`text-xs mt-1 ${currentRole === item.role ? 'text-gray-300' : 'text-navy-700'}`}>
+                        {item.desc}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Tab 2: Sign In (Any Email) */}
+            {authTab === 'login' && (
+              <div className="space-y-4">
+                <div className="text-xs font-bold uppercase tracking-wider text-navy-900">
+                  Log in with your email & password:
+                </div>
 
                 <form onSubmit={handleManualLogin} className="space-y-3">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-[11px] font-bold text-navy-800 mb-1">Email Address</label>
                     <input
                       type="email"
-                      placeholder="Email address"
+                      required
+                      placeholder="e.g. yourname@gmail.com or admin@trustnest.in"
                       value={loginEmail}
                       onChange={e => setLoginEmail(e.target.value)}
-                      className="px-3.5 py-2.5 bg-white border border-navy-900/15 rounded-xl text-xs font-medium text-navy-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-3.5 py-2.5 bg-white border border-navy-900/15 rounded-xl text-xs font-medium text-navy-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
                     />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-navy-800 mb-1">Password</label>
                     <input
                       type="password"
-                      placeholder="Password"
+                      required
+                      placeholder="Your password"
                       value={loginPassword}
                       onChange={e => setLoginPassword(e.target.value)}
-                      className="px-3.5 py-2.5 bg-white border border-navy-900/15 rounded-xl text-xs font-medium text-navy-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-3.5 py-2.5 bg-white border border-navy-900/15 rounded-xl text-xs font-medium text-navy-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
                     />
                   </div>
                   <button
@@ -479,11 +594,93 @@ export const Navbar: React.FC<NavbarProps> = ({
                     disabled={authLoading}
                     className="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs rounded-xl shadow-orange-glow transition-all cursor-pointer flex items-center justify-center gap-2"
                   >
-                    {authLoading ? 'Authenticating with Backend...' : 'Sign In to TrustNest'}
+                    {authLoading ? 'Signing In...' : 'Sign In with Email'}
                   </button>
                 </form>
               </div>
-            </div>
+            )}
+
+            {/* Tab 3: Register Free (Real Email) */}
+            {authTab === 'register' && (
+              <div className="space-y-4">
+                <div className="text-xs font-bold uppercase tracking-wider text-navy-900">
+                  Create a new account with your real email:
+                </div>
+
+                <form onSubmit={handleRegister} className="space-y-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-[11px] font-bold text-navy-800 mb-1">Full Name</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Raj Gahoi"
+                        value={registerName}
+                        onChange={e => setRegisterName(e.target.value)}
+                        className="w-full px-3.5 py-2 bg-white border border-navy-900/15 rounded-xl text-xs font-medium text-navy-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold text-navy-800 mb-1">Phone Number</label>
+                      <input
+                        type="tel"
+                        placeholder="e.g. +91 98765 43210"
+                        value={registerPhone}
+                        onChange={e => setRegisterPhone(e.target.value)}
+                        className="w-full px-3.5 py-2 bg-white border border-navy-900/15 rounded-xl text-xs font-medium text-navy-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-navy-800 mb-1">Real Email Address</label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="e.g. raj@gmail.com"
+                      value={registerEmail}
+                      onChange={e => setRegisterEmail(e.target.value)}
+                      className="w-full px-3.5 py-2 bg-white border border-navy-900/15 rounded-xl text-xs font-medium text-navy-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div>
+                      <label className="block text-[11px] font-bold text-navy-800 mb-1">Account Role</label>
+                      <select
+                        value={registerRole}
+                        onChange={e => setRegisterRole(e.target.value as UserRole)}
+                        className="w-full px-3.5 py-2 bg-white border border-navy-900/15 rounded-xl text-xs font-medium text-navy-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      >
+                        <option value="USER">Verified Buyer</option>
+                        <option value="SELLER">Verified Seller</option>
+                        <option value="VENDOR_ADMIN">Vendor Agency / Dealership</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-bold text-navy-800 mb-1">Password</label>
+                      <input
+                        type="password"
+                        required
+                        placeholder="Choose a password"
+                        value={registerPassword}
+                        onChange={e => setRegisterPassword(e.target.value)}
+                        className="w-full px-3.5 py-2 bg-white border border-navy-900/15 rounded-xl text-xs font-medium text-navy-900 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={authLoading}
+                    className="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs rounded-xl shadow-orange-glow transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
+                  >
+                    <UserPlus className="w-4 h-4" />
+                    <span>{authLoading ? 'Creating Account...' : 'Register & Start Browsing'}</span>
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
         </div>
       )}
