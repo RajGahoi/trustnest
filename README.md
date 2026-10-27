@@ -1,5 +1,12 @@
 # TrustNest — Verified Marketplace & Trust Engine
 
+[![Deploy to GitHub Pages](https://github.com/RajGahoi/trustnest/actions/workflows/deploy.yml/badge.svg)](https://github.com/RajGahoi/trustnest/actions/workflows/deploy.yml)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-rajgahoi.github.io%2Ftrustnest-orange?style=for-the-badge&logo=github)](https://rajgahoi.github.io/trustnest/)
+
+> ### 🌐 Live Deployed Application
+> **Visit the live production site:** [https://rajgahoi.github.io/trustnest/](https://rajgahoi.github.io/trustnest/)  
+> *(No local installation required — explore the verified marketplace, 1-click persona switcher, and trust engine live in your browser)*
+
 TrustNest is an evidence-backed, high-integrity marketplace application. Unlike conventional classifieds where listings are unvetted, TrustNest enforces an authoritative 5-dimension verification pipeline (Identity, Documents, Location, Media, and Fraud Risk) before listings are promoted.
 
 ---

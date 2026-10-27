@@ -2,6 +2,7 @@
   "name": "trustnest",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://rajgahoi.github.io/trustnest",
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"vite\"",
