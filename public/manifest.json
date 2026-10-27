@@ -1,0 +1,21 @@
+{
+  "name": "TrustNest Marketplace",
+  "short_name": "TrustNest",
+  "description": "Trust-First Classified Marketplace Engine — Verified before promoted.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8F1E6",
+  "theme_color": "#073F59",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/vite.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
