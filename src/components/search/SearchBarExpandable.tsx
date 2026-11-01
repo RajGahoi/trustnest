@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, MapPin, SlidersHorizontal, ArrowRight, X, TrendingUp, Sparkles, Building2, Layers } from 'lucide-react';
 import { store } from '../../mock/store';
+import { useLanguage } from '../../domain/i18n/LanguageContext';
 
 interface SearchBarExpandableProps {
   onExecuteSearch: (query: string, category?: string, city?: string) => void;
@@ -19,6 +20,7 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
   currentCategory = 'all',
   currentCity = 'All Cities'
 }) => {
+  const { t } = useLanguage();
   const [query, setQuery] = useState(currentQuery);
   const [selectedCity, setSelectedCity] = useState(currentCity);
   const [selectedCategory, setSelectedCategory] = useState(currentCategory);
@@ -114,10 +116,10 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
       {/* MagicBricks / 99acres Segmented Intent Tabs */}
       <div className="flex items-center gap-1 sm:gap-2 mb-2.5 p-1 bg-white/90 backdrop-blur-md rounded-2xl border border-navy-900/10 w-fit shadow-xs overflow-x-auto max-w-full">
         {[
-          { id: 'ALL', label: 'All Marketplace', icon: '✨' },
-          { id: 'BUY', label: 'Buy Residential', icon: '🏡' },
-          { id: 'COMMERCIAL', label: 'Commercial & Offices', icon: '🏢' },
-          { id: 'PLOTS', label: 'Plots, Agri & Industrial Land', icon: '🌾' },
+          { id: 'ALL', label: t('tabAll'), icon: '✨' },
+          { id: 'BUY', label: t('tabBuy'), icon: '🏡' },
+          { id: 'COMMERCIAL', label: t('tabCommercial'), icon: '🏢' },
+          { id: 'PLOTS', label: t('tabPlots'), icon: '🌾' },
         ].map(tab => (
           <button
             key={tab.id}
@@ -153,12 +155,12 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
             onFocus={() => setIsFocused(true)}
             placeholder={
               activeIntentTab === 'COMMERCIAL'
-                ? 'Search office space, IT park, business floor, BKC, CyberCity...'
+                ? t('searchPlaceholderCommercial')
                 : activeIntentTab === 'PLOTS'
-                ? 'Search agricultural land, industrial plot, 60+ ft wide road...'
+                ? t('searchPlaceholderPlots')
                 : activeIntentTab === 'BUY'
-                ? 'Search flats, villas, 3 BHK, Greater Noida, Gurugram...'
-                : 'Search verified properties, offices, farm lands, cars...'
+                ? t('searchPlaceholderBuy')
+                : t('searchPlaceholderAll')
             }
             className="w-full text-navy-900 font-medium placeholder:text-navy-700/50 focus:outline-none text-sm sm:text-base"
             aria-label="Search input"
@@ -179,13 +181,13 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
             className="bg-transparent text-xs font-bold text-navy-900 focus:outline-none cursor-pointer pr-4"
             aria-label="Select Property Type"
           >
-            <option value="ALL">All Property Types</option>
-            <option value="Commercial Office Space">Commercial Office</option>
-            <option value="Agricultural Land">Agricultural Land</option>
-            <option value="Industrial Land">Industrial Land / Plot</option>
-            <option value="Residential Plot">Residential Plot</option>
-            <option value="Apartment">Apartment / Flat</option>
-            <option value="Villa">Luxury Villa</option>
+            <option value="ALL">{t('allPropertyTypes')}</option>
+            <option value="Commercial Office Space">{t('typeCommercialOffice')}</option>
+            <option value="Agricultural Land">{t('typeAgriLand')}</option>
+            <option value="Industrial Land">{t('typeIndustrialLand')}</option>
+            <option value="Residential Plot">{t('typeResidentialPlot')}</option>
+            <option value="Apartment">{t('typeApartment')}</option>
+            <option value="Villa">{t('typeVilla')}</option>
           </select>
         </div>
 
@@ -198,7 +200,7 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
             className="bg-transparent text-xs font-bold text-navy-900 focus:outline-none cursor-pointer pr-4"
             aria-label="Select Location City"
           >
-            <option value="All Cities">All Cities</option>
+            <option value="All Cities">{t('allCities')}</option>
             {cityCounts.map(c => (
               <option key={c.city} value={c.city}>{c.city} ({c.count})</option>
             ))}
@@ -214,11 +216,11 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
             className="bg-transparent text-xs font-bold text-navy-900 focus:outline-none cursor-pointer pr-4"
             aria-label="Filter Road Width"
           >
-            <option value="ALL">Any Road Width</option>
-            <option value="40 ft">40+ ft Road</option>
-            <option value="60 ft">60+ ft Main Road</option>
-            <option value="80 ft">80+ ft Industrial Corridor</option>
-            <option value="100 ft">100+ ft Sector Road</option>
+            <option value="ALL">{t('anyRoadWidth')}</option>
+            <option value="40 ft">{t('road40')}</option>
+            <option value="60 ft">{t('road60')}</option>
+            <option value="80 ft">{t('road80')}</option>
+            <option value="100 ft">{t('road100')}</option>
           </select>
         </div>
 
@@ -227,7 +229,7 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
           type="submit"
           className="w-full md:w-auto px-6 py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-extrabold rounded-2xl text-sm shadow-orange-glow flex items-center justify-center gap-2 transition-all cursor-pointer shrink-0"
         >
-          <span>Search</span>
+          <span>{t('btnSearch')}</span>
           <ArrowRight className="w-4 h-4 stroke-[3]" />
         </button>
       </form>
@@ -235,12 +237,13 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
       {/* MagicBricks / 99acres Quick Filter Chips */}
       <div className="flex items-center gap-2 mt-3 overflow-x-auto pb-1 text-xs no-scrollbar">
         {[
-          { label: '🏢 Office Space', q: 'Commercial Office Space' },
-          { label: '🌾 Agricultural Land', q: 'Agricultural Land' },
-          { label: '🏭 Industrial Land & Plots', q: 'Industrial Land' },
-          { label: '🏡 Residential Plots', q: 'Residential Plot' },
-          { label: '🛣️ 60+ ft Wide Road', q: '60 ft' },
-          { label: '🔑 Ready to Move', q: 'Ready to Move' }
+          { label: t('pillOffice'), q: 'Commercial Office Space' },
+          { label: t('pillAgri'), q: 'Agricultural Land' },
+          { label: t('pillIndustrial'), q: 'Industrial Land' },
+          { label: t('pillPlots'), q: 'Residential Plot' },
+          { label: t('pillRoad60'), q: '60 ft' },
+          { label: t('pillRoad100'), q: '100 ft' },
+          { label: t('pillRera'), q: 'RERA' }
         ].map((chip, idx) => (
           <button
             key={idx}

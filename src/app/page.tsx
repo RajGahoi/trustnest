@@ -12,6 +12,7 @@ import { PropertyQuickViewModal } from '../components/listing/PropertyQuickViewM
 import { SubscriptionModal } from '../components/monetization/SubscriptionModal';
 import { store } from '../mock/store';
 import { api } from '../services/api';
+import { useLanguage } from '../domain/i18n/LanguageContext';
 import type { Listing, UserRole } from '../types';
 
 interface HomePageProps {
@@ -23,6 +24,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   onNavigate,
   onOpenListingDetail
 }) => {
+  const { t } = useLanguage();
   const [selectedTrustListing, setSelectedTrustListing] = useState<Listing | null>(null);
   const [quickViewListing, setQuickViewListing] = useState<Listing | null>(null);
   const [subscriptionModalOpen, setSubscriptionModalOpen] = useState(false);
@@ -33,7 +35,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   const listings = store.getPublishedListings();
   const cityCounts = store.getCitiesWithCounts();
   const reduce = useReducedMotion();
-  const headlineLines = ['Checked before', 'it is listed.'];
+  const headlineLines = [t('heroLine1'), t('heroLine2')];
 
   useEffect(() => {
     const handleStorage = () => {
@@ -90,8 +92,8 @@ export const HomePage: React.FC<HomePageProps> = ({
   const REAL_ESTATE_CATEGORIES = [
     {
       id: 'cat-comm',
-      title: 'Commercial Office Space',
-      subtitle: 'Corporate IT Parks & High-Street Retail',
+      title: t('catOfficeTitle'),
+      subtitle: t('catOfficeSub'),
       count: listings.filter(l => (l.attributes?.propertyType || '').toLowerCase().includes('office')).length || 4,
       image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80',
       icon: Building2,
@@ -99,8 +101,8 @@ export const HomePage: React.FC<HomePageProps> = ({
     },
     {
       id: 'cat-agri',
-      title: 'Agricultural Land & Farmland',
-      subtitle: 'Fertile Bigha & Acre Farms with Tubewells',
+      title: t('catAgriTitle'),
+      subtitle: t('catAgriSub'),
       count: listings.filter(l => (l.attributes?.propertyType || '').toLowerCase().includes('agri')).length || 4,
       image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80',
       icon: Trees,
@@ -108,8 +110,8 @@ export const HomePage: React.FC<HomePageProps> = ({
     },
     {
       id: 'cat-ind',
-      title: 'Industrial Land & Plots',
-      subtitle: 'Heavy Power Corridors & 80-100 ft Roads',
+      title: t('catIndTitle'),
+      subtitle: t('catIndSub'),
       count: listings.filter(l => (l.attributes?.propertyType || '').toLowerCase().includes('indust')).length || 4,
       image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80',
       icon: Factory,
@@ -117,8 +119,8 @@ export const HomePage: React.FC<HomePageProps> = ({
     },
     {
       id: 'cat-plot',
-      title: 'Residential Plots & Enclaves',
-      subtitle: 'Freehold Gated Plots with Clear Title Deeds',
+      title: t('catPlotTitle'),
+      subtitle: t('catPlotSub'),
       count: listings.filter(l => (l.attributes?.propertyType || '').toLowerCase().includes('plot')).length || 4,
       image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80',
       icon: Home,
@@ -126,8 +128,8 @@ export const HomePage: React.FC<HomePageProps> = ({
     },
     {
       id: 'cat-apt',
-      title: 'Gated Flats & Apartments',
-      subtitle: 'RERA Registered High-Rise Condominiums',
+      title: t('catAptTitle'),
+      subtitle: t('catAptSub'),
       count: listings.filter(l => (l.attributes?.propertyType || '').toLowerCase().includes('apartment')).length || 4,
       image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80',
       icon: Building,
@@ -135,8 +137,8 @@ export const HomePage: React.FC<HomePageProps> = ({
     },
     {
       id: 'cat-villa',
-      title: 'Luxury Villas & Penthouses',
-      subtitle: 'Golf Course Facing Duplex & Sky Mansions',
+      title: t('catVillaTitle'),
+      subtitle: t('catVillaSub'),
       count: listings.filter(l => (l.attributes?.propertyType || '').toLowerCase().includes('villa')).length || 4,
       image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80',
       icon: Sparkles,
@@ -152,7 +154,7 @@ export const HomePage: React.FC<HomePageProps> = ({
           <div className="flex flex-wrap items-center gap-3">
             <span className="font-extrabold text-orange-400 uppercase tracking-wider flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4 text-orange-500" />
-              Pre-Seeded Roles (Password: TrustNest@2026)
+              {t('demoRolesTitle')}
             </span>
 
             <div className="flex flex-wrap items-center gap-2">
@@ -163,7 +165,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 title="Log in as Administrator"
               >
                 <KeyRound className="w-3 h-3 text-orange-400" />
-                <span>Admin (admin@trustnest.in)</span>
+                <span>{t('roleAdmin')}</span>
               </button>
 
               <button
@@ -173,7 +175,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 title="Log in as Buyer"
               >
                 <UserCheck className="w-3 h-3 text-emerald-400" />
-                <span>Buyer (buyer@trustnest.in)</span>
+                <span>{t('roleBuyer')}</span>
               </button>
             </div>
           </div>
@@ -194,11 +196,11 @@ export const HomePage: React.FC<HomePageProps> = ({
               <Phone className="w-3.5 h-3.5 text-orange-400" />
               <span>
                 {revealsRemaining > 0
-                  ? `${revealsRemaining} Free Phone Reveals Left`
-                  : 'Free Phone Quota Exhausted (Subscribe)'}
+                  ? `${revealsRemaining} ${t('revealsLeftText')}`
+                  : t('revealsExhaustedText')}
               </span>
               <span className="text-[10px] bg-orange-500 text-white px-1.5 py-0.2 rounded font-sans">
-                Plans
+                {t('plansBadge')}
               </span>
             </button>
           </div>
@@ -215,12 +217,12 @@ export const HomePage: React.FC<HomePageProps> = ({
               {/* Trust Tag */}
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-600 font-bold text-xs mb-5">
                 <ShieldCheck className="w-4 h-4 text-orange-500" />
-                <span>India's Verified Real Estate Marketplace • 99acres & MagicBricks Standard</span>
+                <span>{t('heroTrustBadge')}</span>
               </div>
 
               <h1 className="display-hero text-navy-900" aria-label="Checked before it is listed.">
                 {headlineLines.map((line, i) => (
-                  <span key={line} className="block overflow-hidden pb-[0.08em]" aria-hidden>
+                  <span key={i} className="block overflow-hidden pb-[0.08em]" aria-hidden>
                     <motion.span
                       className="block"
                       initial={reduce ? false : { y: '110%' }}
@@ -239,7 +241,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                 transition={{ delay: 0.7, duration: 0.8 }}
                 className="mt-6 text-navy-800 text-lg max-w-xl leading-relaxed font-medium"
               >
-                Commercial Offices, Agricultural Lands, Industrial Plots & Luxury Homes verified with 60–100 ft Wide Road Access, Clear Title & RERA Registration across India.
+                {t('heroSubtitle')}
               </motion.p>
 
               {/* Central Search Console */}
@@ -264,10 +266,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                 className="mt-10 flex flex-wrap gap-x-10 gap-y-4"
               >
                 {[
-                  { v: '20 Verified', l: 'Commercial, Agri & Land Listings' },
-                  { v: String(cityCounts.length), l: 'Top Real Estate Cities' },
-                  { v: `${avgTrust}/100`, l: 'Average Trust & Title Score' },
-                  { v: '100 ft', l: 'Wide Sector Road Access' }
+                  { v: t('statListings'), l: t('statListingsLabel') },
+                  { v: String(cityCounts.length), l: t('statCities') },
+                  { v: `${avgTrust}/100`, l: t('statTrust') },
+                  { v: '60–100 ft', l: t('statRoad') }
                 ].map(stat => (
                   <div key={stat.l}>
                     <dt className="font-display text-2xl font-bold text-navy-900 num-mono">{stat.v}</dt>
@@ -289,11 +291,11 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="flex items-end justify-between mb-8">
           <div>
             <span className="text-xs font-extrabold uppercase tracking-widest text-orange-600 block mb-1">
-              Explore Property Types
+              {t('categoriesTag')}
             </span>
             <Reveal>
               <h2 className="display-section text-navy-900">
-                Browse by Real Estate Category
+                {t('categoriesTitle')}
               </h2>
             </Reveal>
           </div>
@@ -302,7 +304,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             onClick={() => onNavigate('search')}
             className="hidden sm:flex items-center gap-1.5 text-sm font-bold text-navy-900 hover:text-orange-500 transition-colors cursor-pointer"
           >
-            <span>See all {listings.length} properties</span>
+            <span>{t('seeAllListings')} ({listings.length})</span>
             <ArrowUpRight className="w-4 h-4" />
           </button>
         </div>
@@ -337,7 +339,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                     {cat.title}
                   </h3>
                   <p className="text-[10px] text-cream-200 line-clamp-1 mt-0.5">
-                    {cat.count} verified listings
+                    {cat.count} {t('verifiedListingsCount')}
                   </p>
                 </div>
               </div>
@@ -351,15 +353,15 @@ export const HomePage: React.FC<HomePageProps> = ({
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
           <div>
             <span className="text-xs font-extrabold uppercase tracking-widest text-orange-600 block mb-1">
-              Curated Portfolio
+              {t('portfolioTag')}
             </span>
             <Reveal>
               <h2 className="display-section text-navy-900">
-                Verified Indian Real Estate Portfolio
+                {t('portfolioTitle')}
               </h2>
             </Reveal>
             <p className="text-sm text-navy-700 mt-1">
-              Featuring wide road corridors (60–100 ft), commercial IT suites, agricultural lands, and industrial parks.
+              {t('portfolioDesc')}
             </p>
           </div>
 
@@ -369,14 +371,14 @@ export const HomePage: React.FC<HomePageProps> = ({
               onClick={() => setSubscriptionModalOpen(true)}
               className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-navy-950 font-extrabold rounded-xl text-xs shadow-xs transition-colors cursor-pointer"
             >
-              <span>Subscription Plans</span>
+              <span>{t('pricingPlans')}</span>
             </button>
             <button
               type="button"
               onClick={() => onNavigate('search')}
               className="inline-flex items-center gap-1.5 px-4 py-2 bg-navy-900 hover:bg-navy-800 text-white font-bold rounded-xl text-xs transition-colors cursor-pointer"
             >
-              <span>Explore All ({listings.length})</span>
+              <span>{t('navAll')} ({listings.length})</span>
               <ArrowRight className="w-3.5 h-3.5 text-orange-400" />
             </button>
           </div>
@@ -385,12 +387,12 @@ export const HomePage: React.FC<HomePageProps> = ({
         {/* Filter Segment Tabs */}
         <div className="flex items-center gap-2 overflow-x-auto pb-2 mb-6">
           {[
-            { id: 'ALL', label: `All Verified Properties (${listings.length})` },
-            { id: 'COMMERCIAL', label: '🏢 Commercial Offices (4)' },
-            { id: 'AGRICULTURAL', label: '🌾 Agricultural Land (4)' },
-            { id: 'INDUSTRIAL', label: '🏭 Industrial Land & Plots (4)' },
-            { id: 'PLOTS', label: '🏡 Residential Plots (4)' },
-            { id: 'RESIDENTIAL', label: '🏙️ Luxury Residential (4)' },
+            { id: 'ALL', label: `${t('tabPortfolioAll')} (${listings.length})` },
+            { id: 'COMMERCIAL', label: `${t('tabPortfolioCommercial')} (4)` },
+            { id: 'AGRICULTURAL', label: `${t('tabPortfolioAgri')} (4)` },
+            { id: 'INDUSTRIAL', label: `${t('tabPortfolioIndustrial')} (4)` },
+            { id: 'PLOTS', label: `${t('tabPortfolioPlots')} (4)` },
+            { id: 'RESIDENTIAL', label: `${t('tabPortfolioResidential')} (4)` },
           ].map(tab => (
             <button
               key={tab.id}
@@ -443,13 +445,13 @@ export const HomePage: React.FC<HomePageProps> = ({
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-xl mx-auto mb-10">
           <span className="text-xs font-extrabold uppercase tracking-widest text-orange-600 block mb-1">
-            Top Locations
+            {t('topLocationsTag')}
           </span>
           <h2 className="display-section text-navy-900">
-            Explore Properties by City
+            {t('exploreByCity')}
           </h2>
           <p className="text-sm text-navy-700 mt-2">
-            Verified inventory with verified municipal maps and road frontage
+            {t('citiesDesc')}
           </p>
         </div>
 
@@ -475,7 +477,7 @@ export const HomePage: React.FC<HomePageProps> = ({
                   {c.city}
                 </h3>
                 <span className="text-[11px] text-cream-200 block font-medium">
-                  {c.count} {c.count === 1 ? 'property' : 'properties'}
+                  {c.count} {t('verifiedListingsCount')}
                 </span>
               </div>
             </a>

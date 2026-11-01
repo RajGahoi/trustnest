@@ -4,6 +4,7 @@ import type { Listing } from '../../types';
 import { TrustBadge } from '../trust/TrustBadge';
 import { formatINR } from '../../domain/india/currency';
 import { store } from '../../mock/store';
+import { useLanguage } from '../../domain/i18n/LanguageContext';
 
 interface PropertyQuickViewModalProps {
   listing: Listing | null;
@@ -20,6 +21,7 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
   onOpenSubscriptionModal,
   onNavigateToFullListing
 }) => {
+  const { t } = useLanguage();
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
   const [phoneRevealed, setPhoneRevealed] = useState(false);
   const [revealsRemaining, setRevealsRemaining] = useState(store.getContactRevealsRemaining());
@@ -98,7 +100,7 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
                 }}
                 className="hidden sm:flex items-center gap-1 text-xs font-bold text-orange-600 hover:text-orange-700 transition-colors cursor-pointer"
               >
-                <span>Full Page View</span>
+                <span>{t('fullPageView')}</span>
                 <ExternalLink className="w-3.5 h-3.5" />
               </button>
             )}
@@ -148,7 +150,7 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
 
               {/* Image Counter Badge */}
               <div className="absolute bottom-3 right-3 bg-navy-950/80 backdrop-blur-md text-white text-xs font-bold px-2.5 py-1 rounded-lg">
-                Photo {currentImgIndex + 1} of {images.length}
+                {t('photoOf')} {currentImgIndex + 1} {t('of')} {images.length}
               </div>
 
               {/* Trust Badge Overlay */}
@@ -202,7 +204,7 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
             <div className="bg-navy-900 text-white p-3.5 rounded-2xl flex items-center gap-3 shadow-md shrink-0">
               <span className="text-2xl">🛣️</span>
               <div>
-                <p className="text-[10px] text-cream-200 uppercase tracking-widest font-extrabold">Road Access</p>
+                <p className="text-[10px] text-cream-200 uppercase tracking-widest font-extrabold">{t('roadAccessTitle')}</p>
                 <p className="text-sm font-bold text-amber-soft">{roadWidth}</p>
               </div>
             </div>
@@ -211,19 +213,19 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
           {/* 3. Specifications Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="p-3.5 bg-cream-50 rounded-2xl border border-navy-900/10">
-              <p className="text-[10px] text-navy-600 uppercase font-extrabold">Area & Extent</p>
+              <p className="text-[10px] text-navy-600 uppercase font-extrabold">{t('areaExtent')}</p>
               <p className="text-sm font-bold text-navy-900 mt-0.5">{areaVal} {areaUnit}</p>
             </div>
             <div className="p-3.5 bg-cream-50 rounded-2xl border border-navy-900/10">
-              <p className="text-[10px] text-navy-600 uppercase font-extrabold">Land Zoning</p>
+              <p className="text-[10px] text-navy-600 uppercase font-extrabold">{t('landZoning')}</p>
               <p className="text-sm font-bold text-navy-900 mt-0.5 truncate">{zoning}</p>
             </div>
             <div className="p-3.5 bg-cream-50 rounded-2xl border border-navy-900/10">
-              <p className="text-[10px] text-navy-600 uppercase font-extrabold">Road Frontage</p>
+              <p className="text-[10px] text-navy-600 uppercase font-extrabold">{t('roadFrontage')}</p>
               <p className="text-sm font-bold text-orange-600 mt-0.5">{roadWidth}</p>
             </div>
             <div className="p-3.5 bg-cream-50 rounded-2xl border border-navy-900/10">
-              <p className="text-[10px] text-navy-600 uppercase font-extrabold">Facing</p>
+              <p className="text-[10px] text-navy-600 uppercase font-extrabold">{t('facing')}</p>
               <p className="text-sm font-bold text-navy-900 mt-0.5">{facing}</p>
             </div>
           </div>
@@ -232,7 +234,7 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
           <div className="space-y-2">
             <h2 className="text-sm font-extrabold uppercase tracking-wider text-navy-900 flex items-center gap-1.5">
               <FileText className="w-4 h-4 text-orange-500" />
-              Property Description & Overview
+              {t('descTitle')}
             </h2>
             <p className="text-sm text-navy-800 leading-relaxed bg-cream-50/50 p-4 rounded-2xl border border-navy-900/5 whitespace-pre-line">
               {listing.description}
@@ -243,7 +245,7 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
           <div className="space-y-2.5">
             <h2 className="text-sm font-extrabold uppercase tracking-wider text-navy-900 flex items-center gap-1.5">
               <Layers className="w-4 h-4 text-orange-500" />
-              Verified Amenities & Infrastructure
+              {t('amenitiesTitle')}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               {amenities.map((item, idx) => (
@@ -296,12 +298,12 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
                   <Phone className="w-4 h-4" />
                   <span>
                     {revealsRemaining <= 0
-                      ? '🔒 Limit Reached — Subscribe to View'
-                      : `+91 ${listing.sellerPhone.slice(4, 7)} •••••• [Click to Reveal]`}
+                      ? t('limitReachedSubscribe')
+                      : `+91 ${listing.sellerPhone.slice(4, 7)} •••••• [${t('clickToReveal')}]`}
                   </span>
                   {revealsRemaining > 0 && (
                     <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-sans">
-                      {revealsRemaining} free left
+                      {revealsRemaining} {t('revealsLeft')}
                     </span>
                   )}
                 </button>
@@ -309,8 +311,8 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
 
               <p className="text-[10px] text-cream-400">
                 {revealsRemaining > 0
-                  ? `Free quota: ${revealsRemaining} reveals left before subscription paywall.`
-                  : 'Free reveals quota exhausted. Active subscription required to access seller phone.'}
+                  ? `${revealsRemaining} ${t('freeQuotaHint')}`
+                  : t('quotaExhaustedHint')}
               </p>
             </div>
           </div>
@@ -320,7 +322,7 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
         <div className="px-6 py-3.5 bg-cream-100/90 border-t border-navy-900/10 flex items-center justify-between text-xs text-navy-700 shrink-0">
           <span className="flex items-center gap-1.5 font-medium">
             <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            Verified by TrustNest 5-Dimension Risk Engine
+            {t('riskEngineTag')}
           </span>
 
           {onNavigateToFullListing && (
@@ -332,7 +334,7 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
               }}
               className="font-bold text-orange-600 hover:text-orange-700 flex items-center gap-1 cursor-pointer"
             >
-              <span>View Full Listing Page</span>
+              <span>{t('viewFullListingBtn')}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           )}

@@ -4,6 +4,7 @@ import type { Listing } from '../../types';
 import { TrustBadge } from '../trust/TrustBadge';
 import { store } from '../../mock/store';
 import { formatINR } from '../../domain/india/currency';
+import { useLanguage } from '../../domain/i18n/LanguageContext';
 
 interface ListingCardProps {
   listing: Listing;
@@ -24,6 +25,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
   onQuickView,
   onOpenSubscriptionModal
 }) => {
+  const { t } = useLanguage();
   const [isFav, setIsFav] = useState(store.isFavorite(listing.id));
   const [shareToast, setShareToast] = useState(false);
   const [phoneRevealed, setPhoneRevealed] = useState(false);
@@ -128,7 +130,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
       {/* Featured / Boost Badge */}
       {listing.isFeatured && (
         <div className="absolute top-3 left-3 z-10 bg-navy-900 text-amber-soft text-[11px] font-extrabold px-3 py-1 rounded-full shadow-md border border-orange-500/40">
-          Featured
+          {t('featured')}
         </div>
       )}
 
@@ -208,7 +210,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
         {/* Photo count indicator */}
         {listing.images.length > 1 && (
           <div className="absolute top-3 left-3 z-10 bg-navy-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
-            📷 {listing.images.length} Photos
+            📷 {listing.images.length} {t('photosCount')}
           </div>
         )}
       </div>
@@ -275,7 +277,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
                   </span>
                 </div>
                 <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
-                  Verified Seller
+                  {t('verifiedSeller')}
                 </span>
               </div>
             ) : (
@@ -292,12 +294,12 @@ export const ListingCard: React.FC<ListingCardProps> = ({
                   <Phone className="w-3.5 h-3.5 text-orange-400" />
                   <span>
                     {revealsRemaining <= 0
-                      ? '🔒 Contact Seller (Subscribe to View)'
-                      : `+91 ${listing.sellerPhone.slice(4, 7)} •••••• [View Phone]`}
+                      ? t('subscribeToViewPhone')
+                      : `+91 ${listing.sellerPhone.slice(4, 7)} •••••• [${t('viewPhoneBtn')}]`}
                   </span>
                 </div>
                 <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-sans">
-                  {revealsRemaining > 0 ? `${revealsRemaining} left` : 'Paywall'}
+                  {revealsRemaining > 0 ? `${revealsRemaining} ${t('revealsLeft')}` : t('paywall')}
                 </span>
               </button>
             )}
@@ -329,7 +331,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
                   className="flex items-center gap-1 text-xs font-bold text-navy-800 hover:text-orange-600 transition-colors cursor-pointer"
                 >
                   <Eye className="w-3.5 h-3.5" />
-                  <span>Photos & Specs</span>
+                  <span>{t('photosAndSpecs')}</span>
                 </button>
               )}
 
@@ -342,7 +344,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
                 }}
                 className="flex items-center gap-0.5 text-orange-600 font-bold hover:translate-x-0.5 transition-transform cursor-pointer"
               >
-                <span>Full View</span>
+                <span>{t('fullView')}</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </button>
             </div>

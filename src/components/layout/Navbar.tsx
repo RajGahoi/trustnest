@@ -39,7 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [authLoading, setAuthLoading] = useState(false);
   const favCount = store.getFavoritesList().length;
 
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const [helpOpen, setHelpOpen] = useState(false);
   const [ticketOpen, setTicketOpen] = useState(false);
   const [compareModalOpen, setCompareModalOpen] = useState(false);
@@ -191,11 +191,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const navLinks = [
-    { label: 'Commercial Offices', route: 'search?q=Commercial+Office', href: '#search?q=Commercial+Office', category: 'commercial' },
-    { label: 'Agricultural Land', route: 'search?q=Agricultural+Land', href: '#search?q=Agricultural+Land', category: 'agricultural' },
-    { label: 'Industrial Plots', route: 'search?q=Industrial+Land', href: '#search?q=Industrial+Land', category: 'industrial' },
-    { label: 'Residential Plots', route: 'search?q=Residential+Plot', href: '#search?q=Residential+Plot', category: 'plots' },
-    { label: 'All Verified', route: 'search', href: '#search', category: 'all' },
+    { label: t('navCommercial'), route: 'search?q=Commercial+Office', href: '#search?q=Commercial+Office', category: 'commercial' },
+    { label: t('navAgri'), route: 'search?q=Agricultural+Land', href: '#search?q=Agricultural+Land', category: 'agricultural' },
+    { label: t('navIndustrial'), route: 'search?q=Industrial+Land', href: '#search?q=Industrial+Land', category: 'industrial' },
+    { label: t('navPlots'), route: 'search?q=Residential+Plot', href: '#search?q=Residential+Plot', category: 'plots' },
+    { label: t('navAll'), route: 'search', href: '#search', category: 'all' },
   ];
 
   const isLinkActive = (link: typeof navLinks[0]) => {
@@ -240,11 +240,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                   TrustNest
                 </span>
                 <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 bg-orange-500 text-white rounded-md tracking-wider">
-                  Real Estate
+                  {t('portalTag')}
                 </span>
               </div>
               <span className="text-[11px] font-bold text-emerald-700 block mt-1">
-                ✓ 99acres & MagicBricks Standard
+                {t('badgeStandard')}
               </span>
             </div>
           </a>
@@ -293,11 +293,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               type="button"
               onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
-              className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-cream-200 hover:bg-cream-300 text-navy-900 text-xs font-bold transition-colors cursor-pointer border border-navy-900/10"
-              title="Toggle Language / भाषा बदलें"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cream-200 hover:bg-orange-500 hover:text-white text-navy-900 text-xs font-extrabold transition-all cursor-pointer border border-navy-900/10 shadow-xs"
+              title={language === 'en' ? 'Switch website to Hindi / हिन्दी में देखें' : 'Switch website to English'}
+              aria-label="Toggle language"
             >
-              <Globe className="w-3.5 h-3.5 text-orange-500" />
-              <span>{language === 'en' ? 'हिन्दी' : 'EN'}</span>
+              <Globe className="w-3.5 h-3.5 text-orange-500 group-hover:text-white" />
+              <span>{language === 'en' ? 'हिन्दी' : 'English'}</span>
             </button>
 
             {/* Notification Center */}
