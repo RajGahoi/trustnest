@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Award, Phone, Building, ArrowRight, MapPin } from 'lucide-react';
 import { useLanguage } from '../../domain/i18n/LanguageContext';
 import { store } from '../../mock/store';
@@ -125,7 +125,26 @@ export const PreferredAgentsCarousel: React.FC<PreferredAgentsCarouselProps> = (
   const [selectedCity, setSelectedCity] = useState('Ghaziabad');
   const [revealedPhones, setRevealedPhones] = useState<Record<string, boolean>>({});
   const [selectedAgentForModal, setSelectedAgentForModal] = useState<PreferredAgent | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll agents every 4.2s
+  useEffect(() => {
+    if (isPaused) return;
+
+    const timer = setInterval(() => {
+      if (scrollContainerRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+        if (scrollLeft + clientWidth >= scrollWidth - 15) {
+          scrollContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          scrollContainerRef.current.scrollBy({ left: 340, behavior: 'smooth' });
+        }
+      }
+    }, 4200);
+
+    return () => clearInterval(timer);
+  }, [isPaused]);
 
   const cities = ['Ghaziabad', 'Delhi NCR', 'Kolkata', 'All Cities'];
 
@@ -227,6 +246,8 @@ export const PreferredAgentsCarousel: React.FC<PreferredAgentsCarouselProps> = (
         {/* Scrollable Horizontal Rail */}
         <div
           ref={scrollContainerRef}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
           className="flex items-stretch gap-4 sm:gap-6 overflow-x-auto no-scrollbar py-2 px-1 scroll-smooth"
         >
           {filteredAgents.map(agent => {

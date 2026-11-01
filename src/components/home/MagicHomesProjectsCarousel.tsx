@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Building, ChevronRight, ChevronLeft, ShieldCheck, Phone, Download, X } from 'lucide-react';
 import { useLanguage } from '../../domain/i18n/LanguageContext';
 
@@ -136,6 +136,25 @@ export const MagicHomesProjectsCarousel: React.FC<MagicHomesProjectsCarouselProp
   const scrollRef = useRef<HTMLDivElement>(null);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [callbackRequested, setCallbackRequested] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Auto-scroll track every 4 seconds
+  useEffect(() => {
+    if (isPaused) return;
+
+    const timer = setInterval(() => {
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        if (scrollLeft + clientWidth >= scrollWidth - 15) {
+          scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          scrollRef.current.scrollBy({ left: 260, behavior: 'smooth' });
+        }
+      }
+    }, 4000);
+
+    return () => clearInterval(timer);
+  }, [isPaused]);
 
   const scrollRight = () => {
     if (scrollRef.current) {
@@ -167,7 +186,11 @@ export const MagicHomesProjectsCarousel: React.FC<MagicHomesProjectsCarouselProp
       {/* ======================================================== */}
       {/* MAGICBRICKS MAGICHOMES SIGNATURE CARD (EXACT MATCH) */}
       {/* ======================================================== */}
-      <div className="bg-white rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-md transition-shadow p-5 sm:p-7 relative group">
+      <div
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        className="bg-white rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-md transition-shadow p-5 sm:p-7 relative group"
+      >
         {/* Top Header Row */}
         <div className="flex items-start justify-between gap-4 mb-6">
           <div className="flex items-start gap-3 text-left">

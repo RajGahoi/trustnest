@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Search, MapPin, Mic, Crosshair, ArrowRight, ShieldCheck, Sparkles, Layers } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, MapPin, Mic, Crosshair, ArrowRight, ShieldCheck, Sparkles, Layers, Play, Pause } from 'lucide-react';
 import { useLanguage } from '../../domain/i18n/LanguageContext';
 import { VoiceSearchModal } from '../search/VoiceSearchModal';
 
@@ -135,18 +135,18 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
     'Search "Luxury Lakeview Villa in Whitefield Bengaluru"'
   ];
 
-  // Auto-rotate billboard slides every 5.5s
+  // Auto-scroll billboard slides every 4.5s
   useEffect(() => {
     if (isPaused) return;
 
     timerRef.current = setInterval(() => {
       setCurrentSlideIndex(prev => (prev + 1) % BILLBOARD_SLIDES.length);
-    }, 5500);
+    }, 4500);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isPaused]);
+  }, [currentSlideIndex, isPaused]);
 
   // Rotate placeholder text every 3s
   useEffect(() => {
@@ -156,7 +156,6 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
     return () => clearInterval(pTimer);
   }, []);
 
-  const slide = BILLBOARD_SLIDES[currentSlideIndex];
 
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -280,146 +279,179 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
       {/* 1. PANORAMIC BILLBOARD HERO CAROUSEL (EXACT 99ACRES HERO) */}
       {/* ======================================================== */}
       <div
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        className="relative w-full overflow-hidden bg-[#0A0F1D] text-white min-h-[360px] sm:min-h-[420px] md:min-h-[480px] lg:min-h-[520px] flex items-center shadow-2xl"
+        className="relative w-full overflow-hidden bg-[#0A0F1D] text-white min-h-[380px] sm:min-h-[440px] md:min-h-[480px] lg:min-h-[520px] shadow-2xl"
       >
-        {/* Background Panoramic Architectural Image */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src={slide.image}
-            alt={slide.projectName}
-            className="w-full h-full object-cover object-center filter brightness-[0.45] saturate-125 transition-all duration-1000 ease-out transform scale-100"
-          />
-          {/* 99acres Signature Dark Overlay Gradients */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#070B18]/95 via-[#0A0F1D]/80 to-[#070B18]/95" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1D] via-transparent to-black/60" />
+        {/* Horizontal sliding track with smooth carousel transition */}
+        <div
+          className="flex w-full h-full transition-transform duration-700 ease-in-out"
+          style={{ transform: `translateX(-${currentSlideIndex * 100}%)` }}
+        >
+          {BILLBOARD_SLIDES.map((slideItem) => (
+            <div
+              key={slideItem.id}
+              className="w-full shrink-0 relative min-h-[380px] sm:min-h-[440px] md:min-h-[480px] lg:min-h-[520px] flex items-center"
+            >
+              {/* Background Panoramic Architectural Image */}
+              <div className="absolute inset-0 z-0">
+                <img
+                  src={slideItem.image}
+                  alt={slideItem.projectName}
+                  className="w-full h-full object-cover object-center filter brightness-[0.45] saturate-125 transform scale-100"
+                />
+                {/* 99acres Signature Dark Overlay Gradients */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[#070B18]/95 via-[#0A0F1D]/80 to-[#070B18]/95" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1D] via-transparent to-black/60" />
+              </div>
+
+              {/* Content Container */}
+              <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 sm:py-12 md:py-16">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
+                  {/* Left Column: Developer Badge, Config & Starting Price */}
+                  <div className="lg:col-span-4 text-center lg:text-left">
+                    {/* Developer Logo Badge */}
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-600/90 text-white font-extrabold text-[11px] sm:text-xs tracking-wider uppercase shadow-lg backdrop-blur-md mb-3 sm:mb-4">
+                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                      <span>{slideItem.developerLogoText}</span>
+                    </div>
+
+                    {/* Unit Configuration */}
+                    <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight drop-shadow-md leading-tight">
+                      {slideItem.configuration}
+                    </h2>
+
+                    {/* Price Banner */}
+                    <div className="mt-2.5 sm:mt-3">
+                      <p className="text-[11px] sm:text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                        {language === 'hi' ? 'शुरुआती कीमत' : 'STARTING PRICE AS'}
+                      </p>
+                      <p className="text-xl sm:text-2xl md:text-3xl font-extrabold text-amber-300 drop-shadow">
+                        {slideItem.startingPrice}
+                      </p>
+                    </div>
+
+                    {/* RERA Badge Pill */}
+                    <div className="mt-4 hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-xs font-mono font-medium text-cream-100">
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <span>RERA: {slideItem.reraNumber}</span>
+                    </div>
+                  </div>
+
+                  {/* Middle Column: Project Branding, Location & Architectural Render */}
+                  <div className="lg:col-span-4 text-center flex flex-col items-center">
+                    <div className="p-3 sm:p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md w-full max-w-sm">
+                      <div className="flex items-center justify-center gap-2 mb-1">
+                        <Sparkles className="w-4 h-4 text-orange-400" />
+                        <span className="text-[10px] font-extrabold uppercase tracking-widest text-orange-400">
+                          Featured Master Launch
+                        </span>
+                      </div>
+
+                      <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-extrabold text-white">
+                        {slideItem.projectName}
+                      </h3>
+                      <p className="text-xs sm:text-sm font-semibold text-amber-soft mt-0.5">
+                        BY {slideItem.developer.toUpperCase()}
+                      </p>
+
+                      <p className="text-xs text-gray-300 mt-2 flex items-center justify-center gap-1">
+                        <MapPin className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+                        <span>{slideItem.locality}</span>
+                      </p>
+
+                      <div className="mt-3 pt-3 border-t border-white/10">
+                        <p className="text-xs font-bold text-emerald-300 uppercase tracking-wide">
+                          {slideItem.tagline}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: UP RERA Box with QR Code, Bank Account & Disclaimer */}
+                  <div className="lg:col-span-4 hidden lg:block">
+                    <div className="p-4 rounded-2xl bg-black/60 border border-white/15 backdrop-blur-md text-[11px] space-y-2 text-gray-300 shadow-xl">
+                      <div className="flex items-start gap-3">
+                        {/* Inline Sharp RERA QR Code SVG Pattern */}
+                        <div className="w-20 h-20 bg-white p-1 rounded-lg shrink-0 flex items-center justify-center shadow">
+                          <svg viewBox="0 0 100 100" className="w-full h-full" fill="#000000">
+                            <rect x="0" y="0" width="30" height="30" fill="#000" />
+                            <rect x="5" y="5" width="20" height="20" fill="#fff" />
+                            <rect x="10" y="10" width="10" height="10" fill="#000" />
+
+                            <rect x="70" y="0" width="30" height="30" fill="#000" />
+                            <rect x="75" y="5" width="20" height="20" fill="#fff" />
+                            <rect x="80" y="10" width="10" height="10" fill="#000" />
+
+                            <rect x="0" y="70" width="30" height="30" fill="#000" />
+                            <rect x="5" y="75" width="20" height="20" fill="#fff" />
+                            <rect x="10" y="80" width="10" height="10" fill="#000" />
+
+                            <rect x="35" y="10" width="10" height="10" fill="#000" />
+                            <rect x="50" y="20" width="10" height="10" fill="#000" />
+                            <rect x="35" y="35" width="30" height="10" fill="#000" />
+                            <rect x="40" y="50" width="20" height="20" fill="#000" />
+                            <rect x="70" y="45" width="10" height="15" fill="#000" />
+                            <rect x="85" y="70" width="10" height="20" fill="#000" />
+                            <rect x="45" y="75" width="15" height="15" fill="#000" />
+                          </svg>
+                        </div>
+
+                        {/* RERA Legal Details */}
+                        <div className="space-y-1 leading-tight overflow-hidden">
+                          <p className="font-bold text-white text-[11px]">
+                            RERA Reg. No.: <span className="text-orange-400 font-mono">{slideItem.reraNumber}</span>
+                          </p>
+                          <p className="text-[10px] text-gray-400">
+                            Website: <span className="text-blue-400 underline">{slideItem.reraWebsite}</span>
+                          </p>
+                          <p className="text-[10px] text-gray-300">
+                            Launch Date: <span className="font-semibold text-white">{slideItem.launchDate}</span>
+                          </p>
+                          <p className="text-[10px] text-gray-300">
+                            Collection A/c: <span className="font-mono text-white">{slideItem.collectionAccount}</span>
+                          </p>
+                          <p className="text-[10px] text-gray-300">
+                            IFSC: <span className="font-mono text-white">{slideItem.ifscCode}</span>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="pt-1.5 border-t border-white/10 text-[9px] text-gray-400 leading-snug">
+                        <p className="font-semibold text-gray-300">
+                          Bank: {slideItem.bankNameAndAddress}
+                        </p>
+                        <p className="mt-1 line-clamp-2 text-gray-400 italic">
+                          {slideItem.disclaimer}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Content Container */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 sm:py-12 md:py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-            {/* Left Column: Developer Badge, Config & Starting Price */}
-            <div className="lg:col-span-4 text-center lg:text-left">
-              {/* Developer Logo Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-600/90 text-white font-extrabold text-[11px] sm:text-xs tracking-wider uppercase shadow-lg backdrop-blur-md mb-3 sm:mb-4">
-                <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                <span>{slide.developerLogoText}</span>
-              </div>
-
-              {/* Unit Configuration */}
-              <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight drop-shadow-md leading-tight">
-                {slide.configuration}
-              </h2>
-
-              {/* Price Banner */}
-              <div className="mt-2.5 sm:mt-3">
-                <p className="text-[11px] sm:text-xs font-semibold text-gray-400 uppercase tracking-widest">
-                  {language === 'hi' ? 'शुरुआती कीमत' : 'STARTING PRICE AS'}
-                </p>
-                <p className="text-xl sm:text-2xl md:text-3xl font-extrabold text-amber-300 drop-shadow">
-                  {slide.startingPrice}
-                </p>
-              </div>
-
-              {/* RERA Badge Pill */}
-              <div className="mt-4 hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-xs font-mono font-medium text-cream-100">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span>RERA: {slide.reraNumber}</span>
-              </div>
-            </div>
-
-            {/* Middle Column: Project Branding, Location & Architectural Render */}
-            <div className="lg:col-span-4 text-center flex flex-col items-center">
-              <div className="p-3 sm:p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md w-full max-w-sm">
-                <div className="flex items-center justify-center gap-2 mb-1">
-                  <Sparkles className="w-4 h-4 text-orange-400" />
-                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-orange-400">
-                    Featured Master Launch
-                  </span>
-                </div>
-
-                <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-extrabold text-white">
-                  {slide.projectName}
-                </h3>
-                <p className="text-xs sm:text-sm font-semibold text-amber-soft mt-0.5">
-                  BY {slide.developer.toUpperCase()}
-                </p>
-
-                <p className="text-xs text-gray-300 mt-2 flex items-center justify-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-orange-400 shrink-0" />
-                  <span>{slide.locality}</span>
-                </p>
-
-                <div className="mt-3 pt-3 border-t border-white/10">
-                  <p className="text-xs font-bold text-emerald-300 uppercase tracking-wide">
-                    {slide.tagline}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: UP RERA Box with QR Code, Bank Account & Disclaimer */}
-            <div className="lg:col-span-4 hidden lg:block">
-              <div className="p-4 rounded-2xl bg-black/60 border border-white/15 backdrop-blur-md text-[11px] space-y-2 text-gray-300 shadow-xl">
-                <div className="flex items-start gap-3">
-                  {/* Inline Sharp RERA QR Code SVG Pattern */}
-                  <div className="w-20 h-20 bg-white p-1 rounded-lg shrink-0 flex items-center justify-center shadow">
-                    <svg viewBox="0 0 100 100" className="w-full h-full" fill="#000000">
-                      {/* Stylized QR Code matrix representation */}
-                      <rect x="0" y="0" width="30" height="30" fill="#000" />
-                      <rect x="5" y="5" width="20" height="20" fill="#fff" />
-                      <rect x="10" y="10" width="10" height="10" fill="#000" />
-
-                      <rect x="70" y="0" width="30" height="30" fill="#000" />
-                      <rect x="75" y="5" width="20" height="20" fill="#fff" />
-                      <rect x="80" y="10" width="10" height="10" fill="#000" />
-
-                      <rect x="0" y="70" width="30" height="30" fill="#000" />
-                      <rect x="5" y="75" width="20" height="20" fill="#fff" />
-                      <rect x="10" y="80" width="10" height="10" fill="#000" />
-
-                      <rect x="35" y="10" width="10" height="10" fill="#000" />
-                      <rect x="50" y="20" width="10" height="10" fill="#000" />
-                      <rect x="35" y="35" width="30" height="10" fill="#000" />
-                      <rect x="40" y="50" width="20" height="20" fill="#000" />
-                      <rect x="70" y="45" width="10" height="15" fill="#000" />
-                      <rect x="85" y="70" width="10" height="20" fill="#000" />
-                      <rect x="45" y="75" width="15" height="15" fill="#000" />
-                    </svg>
-                  </div>
-
-                  {/* RERA Legal Details */}
-                  <div className="space-y-1 leading-tight overflow-hidden">
-                    <p className="font-bold text-white text-[11px]">
-                      RERA Reg. No.: <span className="text-orange-400 font-mono">{slide.reraNumber}</span>
-                    </p>
-                    <p className="text-[10px] text-gray-400">
-                      Website: <span className="text-blue-400 underline">{slide.reraWebsite}</span>
-                    </p>
-                    <p className="text-[10px] text-gray-300">
-                      Launch Date: <span className="font-semibold text-white">{slide.launchDate}</span>
-                    </p>
-                    <p className="text-[10px] text-gray-300">
-                      Collection A/c: <span className="font-mono text-white">{slide.collectionAccount}</span>
-                    </p>
-                    <p className="text-[10px] text-gray-300">
-                      IFSC: <span className="font-mono text-white">{slide.ifscCode}</span>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="pt-1.5 border-t border-white/10 text-[9px] text-gray-400 leading-snug">
-                  <p className="font-semibold text-gray-300">
-                    Bank: {slide.bankNameAndAddress}
-                  </p>
-                  <p className="mt-1 line-clamp-2 text-gray-400 italic">
-                    {slide.disclaimer}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Top Control Bar: Auto-Scroll Indicator and Play/Pause */}
+        <div className="absolute top-3 right-4 z-20 flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setIsPaused(prev => !prev)}
+            aria-label={isPaused ? "Play Auto-Scroll" : "Pause Auto-Scroll"}
+            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 border border-white/20 text-[11px] font-semibold text-gray-200 backdrop-blur-md hover:bg-black/70 hover:text-white transition-all cursor-pointer shadow-md"
+          >
+            {isPaused ? (
+              <>
+                <Play className="w-3 h-3 text-emerald-400 fill-emerald-400" />
+                <span>{language === 'hi' ? 'स्क्रॉल शुरू करें' : 'Resume Scroll'}</span>
+              </>
+            ) : (
+              <>
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                <span>{language === 'hi' ? 'ऑटो-स्क्रॉल ऑन (4.5s)' : 'Auto-Scrolling (4.5s)'}</span>
+                <Pause className="w-3 h-3 text-gray-400 ml-0.5" />
+              </>
+            )}
+          </button>
         </div>
 
         {/* Circular Left Arrow (<) */}
@@ -427,7 +459,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
           type="button"
           onClick={handlePrev}
           aria-label="Previous Slide"
-          className="absolute left-2 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white text-navy-950 shadow-2xl flex items-center justify-center hover:bg-cream-100 hover:scale-110 transition-all cursor-pointer z-20"
+          className="absolute left-2 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white text-navy-950 shadow-2xl flex items-center justify-center hover:bg-cream-100 hover:scale-110 transition-all cursor-pointer z-20 active:scale-95"
         >
           <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" />
         </button>
@@ -437,13 +469,13 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
           type="button"
           onClick={handleNext}
           aria-label="Next Slide"
-          className="absolute right-2 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white text-navy-950 shadow-2xl flex items-center justify-center hover:bg-cream-100 hover:scale-110 transition-all cursor-pointer z-20"
+          className="absolute right-2 sm:right-4 md:right-6 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-white text-navy-950 shadow-2xl flex items-center justify-center hover:bg-cream-100 hover:scale-110 transition-all cursor-pointer z-20 active:scale-95"
         >
           <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" />
         </button>
 
         {/* Bottom Slide Progress Dots */}
-        <div className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5">
+        <div className="absolute bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
           {BILLBOARD_SLIDES.map((s, idx) => (
             <button
               key={s.id}
@@ -452,8 +484,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               aria-label={`Slide ${idx + 1}`}
               className={`transition-all rounded-full cursor-pointer ${
                 currentSlideIndex === idx
-                  ? 'w-8 h-2 bg-orange-500 shadow-sm'
-                  : 'w-2 h-2 bg-white/40 hover:bg-white'
+                  ? 'w-9 h-2.5 bg-orange-500 shadow-lg scale-105'
+                  : 'w-2.5 h-2.5 bg-white/40 hover:bg-white'
               }`}
             />
           ))}

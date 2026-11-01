@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Phone, ArrowRight, Sparkles, MapPin } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Phone, ArrowRight, Sparkles, MapPin, Play, Pause } from 'lucide-react';
 import { store } from '../../mock/store';
 import { useLanguage } from '../../domain/i18n/LanguageContext';
 
@@ -104,7 +104,7 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
-  // Auto-rotate every 4.5 seconds ("they are changing in some time to time")
+  // Auto-scroll every 4.5 seconds
   useEffect(() => {
     if (isPaused) return;
 
@@ -115,7 +115,7 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isPaused]);
+  }, [currentIndex, isPaused]);
 
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -160,10 +160,27 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
           </h3>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-bold text-navy-700">
-          <span className="hidden sm:inline">
-            {language === 'hi' ? 'ऑटो-रोटेटिंग प्रोजेक्ट्स' : 'Auto-Rotating Spotlight'}
-          </span>
+        <div className="flex items-center gap-3 text-xs font-bold text-navy-700">
+          <button
+            type="button"
+            onClick={() => setIsPaused(prev => !prev)}
+            aria-label={isPaused ? "Play Auto-Scroll" : "Pause Auto-Scroll"}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-navy-100 hover:bg-navy-200 text-navy-900 border border-navy-200/60 transition-all cursor-pointer text-[11px]"
+          >
+            {isPaused ? (
+              <>
+                <Play className="w-3 h-3 text-emerald-600 fill-emerald-600" />
+                <span>{language === 'hi' ? 'स्क्रॉल शुरू करें' : 'Play'}</span>
+              </>
+            ) : (
+              <>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="hidden sm:inline">{language === 'hi' ? 'ऑटो-स्क्रॉल ऑन (4.5s)' : 'Auto-Scrolling (4.5s)'}</span>
+                <span className="sm:hidden">Auto</span>
+                <Pause className="w-3 h-3 text-navy-600 ml-0.5" />
+              </>
+            )}
+          </button>
           <span className="bg-navy-900 text-white px-2 py-0.5 rounded-md font-mono text-[10px]">
             {currentIndex + 1} / {FEATURED_PROJECTS.length}
           </span>
@@ -172,57 +189,68 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
 
       {/* Main 99acres Featured Banner Card */}
       <div
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
         className="relative rounded-3xl overflow-hidden border border-navy-900/15 shadow-xl bg-navy-950 group select-none transition-all"
       >
-        {/* Cinematic Project Image */}
+        {/* Horizontal sliding track with smooth carousel transition */}
         <div className="relative aspect-[16/9] sm:aspect-[21/9] w-full overflow-hidden">
-          <img
-            src={currentProject.image}
-            alt={currentProject.name}
-            className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-          />
+          <div
+            className="flex w-full h-full transition-transform duration-700 ease-in-out"
+            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          >
+            {FEATURED_PROJECTS.map((proj) => (
+              <div
+                key={proj.id}
+                className="w-full h-full shrink-0 relative overflow-hidden"
+              >
+                {/* Cinematic Project Image */}
+                <img
+                  src={proj.image}
+                  alt={proj.name}
+                  className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                />
 
-          {/* Gradients matching 99acres card overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/20 to-navy-950/70" />
+                {/* Gradients matching 99acres card overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/20 to-navy-950/70" />
 
-          {/* Top Left Branding Overlay (Exact 99acres style) */}
-          <div className="absolute top-4 sm:top-7 left-4 sm:left-7 z-10 text-white max-w-xl">
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-[10px] sm:text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-orange-500 text-white shadow-md">
-                Featured Project
-              </span>
-              <span className="text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-600/90 text-white backdrop-blur-md">
-                RERA: {currentProject.reraId}
-              </span>
-            </div>
+                {/* Top Left Branding Overlay (Exact 99acres style) */}
+                <div className="absolute top-4 sm:top-7 left-4 sm:left-7 z-10 text-white max-w-xl">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="text-[10px] sm:text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-orange-500 text-white shadow-md">
+                      Featured Project
+                    </span>
+                    <span className="text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-600/90 text-white backdrop-blur-md">
+                      RERA: {proj.reraId}
+                    </span>
+                  </div>
 
-            <h2 className="font-display text-2xl sm:text-4xl font-extrabold text-white tracking-tight drop-shadow-md">
-              {currentProject.name}
-            </h2>
+                  <h2 className="font-display text-2xl sm:text-4xl font-extrabold text-white tracking-tight drop-shadow-md">
+                    {proj.name}
+                  </h2>
 
-            <p className="text-xs sm:text-sm font-semibold text-cream-200 mt-1 flex items-center gap-1.5 drop-shadow">
-              <MapPin className="w-3.5 h-3.5 text-orange-400 shrink-0" />
-              <span>{currentProject.locality}, {currentProject.road}</span>
-            </p>
+                  <p className="text-xs sm:text-sm font-semibold text-cream-200 mt-1 flex items-center gap-1.5 drop-shadow">
+                    <MapPin className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+                    <span>{proj.locality}, {proj.road}</span>
+                  </p>
 
-            {/* Price & Road Access highlights */}
-            <div className="mt-3 hidden sm:flex items-center gap-2 flex-wrap">
-              <span className="px-3 py-1 rounded-xl bg-white/20 backdrop-blur-md text-white font-extrabold text-xs">
-                💰 {currentProject.priceRange}
-              </span>
-              <span className="px-3 py-1 rounded-xl bg-navy-900/80 backdrop-blur-md text-amber-soft font-bold text-xs border border-orange-500/30">
-                🛣️ {currentProject.road}
-              </span>
-            </div>
+                  {/* Price & Road Access highlights */}
+                  <div className="mt-3 hidden sm:flex items-center gap-2 flex-wrap">
+                    <span className="px-3 py-1 rounded-xl bg-white/20 backdrop-blur-md text-white font-extrabold text-xs">
+                      💰 {proj.priceRange}
+                    </span>
+                    <span className="px-3 py-1 rounded-xl bg-navy-900/80 backdrop-blur-md text-amber-soft font-bold text-xs border border-orange-500/30">
+                      🛣️ {proj.road}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Left Arrow Button (Circular like 99acres) */}
           <button
             type="button"
             onClick={handlePrev}
-            className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/95 hover:bg-white text-navy-900 shadow-xl flex items-center justify-center transition-all cursor-pointer hover:scale-110 z-20"
+            className="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/95 hover:bg-white text-navy-900 shadow-xl flex items-center justify-center transition-all cursor-pointer hover:scale-110 z-20 active:scale-95"
             aria-label="Previous Project"
           >
             <ChevronLeft className="w-6 h-6 stroke-[2.5]" />
@@ -232,7 +260,7 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
           <button
             type="button"
             onClick={handleNext}
-            className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/95 hover:bg-white text-navy-900 shadow-xl flex items-center justify-center transition-all cursor-pointer hover:scale-110 z-20"
+            className="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/95 hover:bg-white text-navy-900 shadow-xl flex items-center justify-center transition-all cursor-pointer hover:scale-110 z-20 active:scale-95"
             aria-label="Next Project"
           >
             <ChevronRight className="w-6 h-6 stroke-[2.5]" />
@@ -247,7 +275,7 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
                 onClick={() => setCurrentIndex(idx)}
                 className={`transition-all rounded-full cursor-pointer ${
                   currentIndex === idx
-                    ? 'w-7 h-2 bg-orange-500 shadow-sm'
+                    ? 'w-7 h-2 bg-orange-500 shadow-sm scale-105'
                     : 'w-2 h-2 bg-white/50 hover:bg-white'
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}

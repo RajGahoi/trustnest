@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   Calculator, 
   Home, 
@@ -133,6 +133,26 @@ export const AdviceAndToolsRail: React.FC = () => {
     }
   ];
 
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Auto-scroll Advice & Tools rail every 4.8s
+  useEffect(() => {
+    if (isPaused) return;
+
+    const timer = setInterval(() => {
+      if (scrollContainerRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+        if (scrollLeft + clientWidth >= scrollWidth - 15) {
+          scrollContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          scrollContainerRef.current.scrollBy({ left: 320, behavior: 'smooth' });
+        }
+      }
+    }, 4800);
+
+    return () => clearInterval(timer);
+  }, [isPaused]);
+
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({ left: -320, behavior: 'smooth' });
@@ -181,6 +201,8 @@ export const AdviceAndToolsRail: React.FC = () => {
       {/* HORIZONTAL SCROLLABLE RAIL OF CARDS (EXACT MATCH TO MAGICBRICKS SCREENSHOT) */}
       <div
         ref={scrollContainerRef}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
         className="flex items-stretch gap-4 sm:gap-5 overflow-x-auto pb-4 pt-1 no-scrollbar scroll-smooth"
       >
         {TOOLS.map((tool) => {
