@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, MapPin, SlidersHorizontal, ArrowRight, X, TrendingUp, Sparkles, Building2, Layers } from 'lucide-react';
+import { Search, MapPin, SlidersHorizontal, ArrowRight, X, TrendingUp, Sparkles, Building2, Layers, Mic } from 'lucide-react';
 import { store } from '../../mock/store';
 import { useLanguage } from '../../domain/i18n/LanguageContext';
+import { VoiceSearchModal } from './VoiceSearchModal';
 
 interface SearchBarExpandableProps {
   onExecuteSearch: (query: string, category?: string, city?: string) => void;
@@ -28,6 +29,7 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
   const [selectedPropType, setSelectedPropType] = useState<string>('ALL');
   const [selectedRoadWidth, setSelectedRoadWidth] = useState<string>('ALL');
   const [isFocused, setIsFocused] = useState(isExpandedModal);
+  const [voiceModalOpen, setVoiceModalOpen] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -170,6 +172,17 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
               <X className="w-4 h-4" />
             </button>
           )}
+
+          {/* Voice Search Button */}
+          <button
+            type="button"
+            onClick={() => setVoiceModalOpen(true)}
+            title="Search by Voice"
+            className="w-8 h-8 rounded-full bg-[#F0F5FA] hover:bg-[#E2EDF9] text-[#0078DB] flex items-center justify-center transition-all cursor-pointer shadow-xs shrink-0"
+            aria-label="Search by Voice"
+          >
+            <Mic className="w-4 h-4 stroke-[2.2]" />
+          </button>
         </div>
 
         {/* Property Type Dropdown (MagicBricks Style) */}
@@ -320,6 +333,21 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
           </div>
         </div>
       )}
+
+      {/* Voice Search Modal */}
+      <VoiceSearchModal
+        isOpen={voiceModalOpen}
+        onClose={() => setVoiceModalOpen(false)}
+        onTranscriptComplete={(transcriptText) => {
+          setQuery(transcriptText);
+          onExecuteSearch(
+            transcriptText,
+            selectedCategory === 'all' ? undefined : selectedCategory,
+            selectedCity === 'All Cities' ? undefined : selectedCity
+          );
+          if (onCloseModal) onCloseModal();
+        }}
+      />
     </div>
   );
 

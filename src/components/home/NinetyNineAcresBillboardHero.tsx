@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Search, MapPin, Mic, Crosshair, ArrowRight, ShieldCheck, Sparkles, Layers } from 'lucide-react';
 import { useLanguage } from '../../domain/i18n/LanguageContext';
+import { VoiceSearchModal } from '../search/VoiceSearchModal';
 
 export interface BillboardSlide {
   id: string;
@@ -121,7 +122,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
   const [activeTab, setActiveTab] = useState<SearchTab>('BUY');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSubCategory, setSelectedSubCategory] = useState('ALL');
-  const [isListening, setIsListening] = useState(false);
+  const [voiceModalOpen, setVoiceModalOpen] = useState(false);
   const [geoStatusMsg, setGeoStatusMsg] = useState<string | null>(null);
 
   // Animated rotating placeholder
@@ -217,37 +218,9 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
     }
   };
 
-  // Voice search simulation / Speech recognition
-  const handleVoiceSearch = () => {
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      try {
-        const recognition = new SpeechRecognition();
-        recognition.lang = language === 'hi' ? 'hi-IN' : 'en-IN';
-        setIsListening(true);
-        recognition.onresult = (event: any) => {
-          const transcript = event.results[0][0].transcript;
-          setSearchQuery(transcript);
-          setIsListening(false);
-          onSearch(transcript);
-        };
-        recognition.onerror = () => setIsListening(false);
-        recognition.onend = () => setIsListening(false);
-        recognition.start();
-      } catch (e) {
-        simulateVoice();
-      }
-    } else {
-      simulateVoice();
-    }
-  };
-
-  const simulateVoice = () => {
-    setIsListening(true);
-    setTimeout(() => {
-      setSearchQuery('3 BHK Greater Noida');
-      setIsListening(false);
-    }, 1800);
+  // Open Voice Search modal
+  const handleOpenVoiceSearch = () => {
+    setVoiceModalOpen(true);
   };
 
   // Subcategory options based on active tab
@@ -611,35 +584,36 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
                 aria-label="Search properties input"
               />
 
-              {/* Geolocation Button (Locate Me) */}
-              <button
-                type="button"
-                onClick={handleLocateMe}
-                title={language === 'hi' ? 'मेरी वर्तमान लोकेशन उपयोग करें' : 'Use Current Location / Locate Me'}
-                className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-[#0078DB] transition-colors cursor-pointer"
-              >
-                <Crosshair className="w-5 h-5" />
-              </button>
+              {/* Action Cluster: 99acres Geolocation & Voice Search Circular Buttons (Exact 99acres match) */}
+              <div className="flex items-center gap-2 shrink-0">
+                {/* 🎯 Geolocation Button */}
+                <button
+                  type="button"
+                  onClick={handleLocateMe}
+                  title={language === 'hi' ? 'मेरी वर्तमान लोकेशन उपयोग करें (Locate Me)' : 'Locate Me / Near Me'}
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#F0F5FA] hover:bg-[#E2EDF9] text-[#0078DB] flex items-center justify-center transition-all cursor-pointer shadow-xs hover:scale-105 active:scale-95 shrink-0"
+                  aria-label="Locate Me"
+                >
+                  <Crosshair className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
+                </button>
 
-              {/* Voice Search Microphone Button */}
-              <button
-                type="button"
-                onClick={handleVoiceSearch}
-                title={language === 'hi' ? 'बोलकर खोजें' : 'Voice Search'}
-                className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                  isListening
-                    ? 'bg-red-500 text-white animate-pulse'
-                    : 'hover:bg-gray-100 text-gray-500 hover:text-red-500'
-                }`}
-              >
-                <Mic className="w-5 h-5" />
-              </button>
+                {/* 🎙️ Voice Search Microphone Button */}
+                <button
+                  type="button"
+                  onClick={handleOpenVoiceSearch}
+                  title={language === 'hi' ? 'बोलकर खोजें (Voice Search)' : 'Search by Voice'}
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#F0F5FA] hover:bg-[#E2EDF9] text-[#0078DB] flex items-center justify-center transition-all cursor-pointer shadow-xs hover:scale-105 active:scale-95 shrink-0 group"
+                  aria-label="Search by Voice"
+                >
+                  <Mic className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2] group-hover:scale-110 transition-transform" />
+                </button>
+              </div>
             </div>
 
             {/* Blue 99acres "Search" Button */}
             <button
               type="submit"
-              className="w-full md:w-auto px-8 py-3 bg-[#0078DB] hover:bg-[#0066BA] text-white font-extrabold text-sm sm:text-base rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0"
+              className="w-full md:w-auto px-7 sm:px-8 py-2.5 sm:py-3 bg-[#0078DB] hover:bg-[#0066BA] text-white font-extrabold text-sm sm:text-base rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 active:scale-98"
             >
               <span>{language === 'hi' ? 'सर्च करें' : 'Search'}</span>
               <ArrowRight className="w-4 h-4 stroke-[3]" />
@@ -680,6 +654,16 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
           </div>
         </div>
       </div>
+
+      {/* Voice Search Modal Popup */}
+      <VoiceSearchModal
+        isOpen={voiceModalOpen}
+        onClose={() => setVoiceModalOpen(false)}
+        onTranscriptComplete={(transcriptText) => {
+          setSearchQuery(transcriptText);
+          onSearch(transcriptText);
+        }}
+      />
     </div>
   );
 };
