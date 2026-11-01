@@ -14,6 +14,7 @@ interface ListingCardProps {
   isCompared?: boolean;
   onQuickView?: (listing: Listing) => void;
   onOpenSubscriptionModal?: () => void;
+  layout?: 'grid' | 'horizontal' | 'magicbricks';
 }
 
 export const ListingCard: React.FC<ListingCardProps> = ({
@@ -23,7 +24,8 @@ export const ListingCard: React.FC<ListingCardProps> = ({
   onToggleCompare,
   isCompared = false,
   onQuickView,
-  onOpenSubscriptionModal
+  onOpenSubscriptionModal,
+  layout = 'grid'
 }) => {
   const { t } = useLanguage();
   const [isFav, setIsFav] = useState(store.isFavorite(listing.id));
@@ -31,6 +33,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
   const [phoneRevealed, setPhoneRevealed] = useState(false);
   const [revealsRemaining, setRevealsRemaining] = useState(store.getContactRevealsRemaining());
   const [liveDemoOpen, setLiveDemoOpen] = useState(false);
+  const [currentImageIdx, setCurrentImageIdx] = useState(0);
 
   useEffect(() => {
     const handleStorage = () => {
@@ -109,6 +112,223 @@ export const ListingCard: React.FC<ListingCardProps> = ({
 
   const isRera = Boolean(listing.propertyDetails?.reraId || listing.propertyDetails?.reraApproved);
   const roadWidth = listing.attributes.roadWidth || listing.propertyDetails?.roadWidth;
+
+  // ========================================================
+  // MAGICBRICKS HORIZONTAL LISTING CARD (EXACT SCREENSHOT MATCH)
+  // ========================================================
+  if (layout === 'horizontal' || layout === 'magicbricks') {
+    return (
+      <div
+        className={`bg-white rounded-2xl border ${
+          isCompared ? 'border-[#D92228] ring-2 ring-red-100' : 'border-gray-200'
+        } shadow-xs hover:shadow-lg transition-all duration-300 p-4 sm:p-5 flex flex-col md:flex-row gap-5 relative group text-left`}
+      >
+        {/* Left Side: Photo with Carousel & Badges */}
+        <div className="w-full md:w-[280px] lg:w-[310px] shrink-0 relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
+          <img
+            src={listing.images[currentImageIdx] || listing.images[0]}
+            alt={listing.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 cursor-pointer"
+            onClick={() => onOpenListing(listing)}
+          />
+
+          {/* 6+ Photos Badge */}
+          <div className="absolute top-2.5 left-2.5 bg-black/75 backdrop-blur-xs text-white text-[11px] font-bold px-2 py-0.5 rounded shadow">
+            {listing.images.length > 1 ? `${listing.images.length}+ Photos` : 'Photo'}
+          </div>
+
+          {/* Verification Badge */}
+          <div className="absolute top-2.5 right-2.5">
+            <TrustBadge trustScore={listing.trustScore} size="sm" onClick={onOpenTrustModal ? () => onOpenTrustModal(listing) : undefined} />
+          </div>
+
+          {/* Overlay gradient */}
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none" />
+
+          {/* Pagination Dots */}
+          <div className="absolute bottom-6 inset-x-0 flex items-center justify-center gap-1.5 z-10">
+            {listing.images.slice(0, 6).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentImageIdx(i);
+                }}
+                className={`w-1.5 h-1.5 rounded-full transition-all cursor-pointer ${
+                  i === currentImageIdx ? 'bg-white scale-125' : 'bg-white/60'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Posted Ago */}
+          <div className="absolute bottom-2 left-2.5 text-[10px] text-gray-200 font-medium z-10">
+            Posted: {listing.attributes?.postedAgo || '4 hours ago'}
+          </div>
+
+          {/* Live Demo Trigger */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setLiveDemoOpen(true);
+            }}
+            className="absolute bottom-2 right-2.5 z-10 text-[10px] bg-red-600 hover:bg-red-700 text-white font-extrabold px-2 py-0.5 rounded flex items-center gap-1 shadow cursor-pointer"
+          >
+            <Video className="w-3 h-3" />
+            <span>360° Live</span>
+          </button>
+        </div>
+
+        {/* Right Side: Listing Details */}
+        <div className="flex-1 flex flex-col justify-between space-y-3">
+          <div>
+            {/* Header row: Title & Price & Actions */}
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <a
+                  href={`#listing/${listing.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onOpenListing(listing);
+                  }}
+                  className="font-display text-base sm:text-lg font-bold text-gray-900 hover:text-[#D92228] transition-colors line-clamp-1 cursor-pointer"
+                >
+                  {listing.title}
+                </a>
+                <p className="text-xs font-semibold text-gray-500 mt-0.5">
+                  {listing.attributes?.society || listing.location.locality}
+                </p>
+              </div>
+
+              {/* Price & Rate (Exact match: ₹ 36 Lac / ₹ 1,565 per sqft) */}
+              <div className="text-right shrink-0">
+                <p className="font-display text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+                  {listing.formattedPrice}
+                </p>
+                <p className="text-[11px] font-bold text-gray-500 mt-0.5">
+                  {listing.attributes?.pricePerSqft || `₹ ${Math.round(listing.price / (Number(listing.attributes?.area) || 1200))} per sqft`}
+                </p>
+              </div>
+
+              {/* Actions: Fav, Share */}
+              <div className="flex items-center gap-1 shrink-0">
+                <button
+                  type="button"
+                  onClick={handleFav}
+                  className="p-1.5 rounded-full hover:bg-gray-100 text-gray-600 hover:text-red-600 transition-colors cursor-pointer"
+                  title="Save favorite"
+                >
+                  <Heart className={`w-4 h-4 ${isFav ? 'fill-red-600 text-red-600' : ''}`} />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleShare}
+                  className="p-1.5 rounded-full hover:bg-gray-100 text-gray-600 hover:text-red-600 transition-colors cursor-pointer relative"
+                  title="Share property"
+                >
+                  <Share2 className="w-4 h-4" />
+                  {shareToast && (
+                    <span className="absolute -left-16 top-1 bg-navy-900 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow z-20">
+                      Copied!
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* 6-Grid Attributes Box (Exact match to MagicBricks screenshot) */}
+            <div className="mt-3 grid grid-cols-3 sm:grid-cols-6 gap-2 p-3 bg-gray-50/90 rounded-xl border border-gray-200/80 text-left">
+              <div>
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">SUPER AREA</p>
+                <p className="text-xs font-extrabold text-gray-900 mt-0.5">
+                  {listing.attributes?.area || 2300} {listing.attributes?.areaUnit || 'sqft'}
+                </p>
+              </div>
+              <div>
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">STATUS</p>
+                <p className="text-xs font-extrabold text-gray-900 mt-0.5">
+                  {listing.attributes?.status || 'Ready to Move'}
+                </p>
+              </div>
+              <div>
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">FLOOR</p>
+                <p className="text-xs font-extrabold text-gray-900 mt-0.5">
+                  {listing.attributes?.floor || '2 out of 3'}
+                </p>
+              </div>
+              <div>
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">TRANSACTION</p>
+                <p className="text-xs font-extrabold text-gray-900 mt-0.5">
+                  {listing.attributes?.transaction || 'Resale'}
+                </p>
+              </div>
+              <div>
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">FURNISHING</p>
+                <p className="text-xs font-extrabold text-gray-900 mt-0.5">
+                  {listing.attributes?.furnishing || 'Semi-Furnished'}
+                </p>
+              </div>
+              <div>
+                <p className="text-[9px] font-bold text-gray-400 uppercase tracking-wider">SOCIETY</p>
+                <p className="text-xs font-extrabold text-gray-900 mt-0.5 truncate">
+                  {listing.attributes?.society || listing.location.locality}
+                </p>
+              </div>
+            </div>
+
+            {/* Description excerpt with read more */}
+            <p className="text-xs text-gray-600 mt-2.5 line-clamp-2 leading-relaxed">
+              {listing.description}
+            </p>
+          </div>
+
+          {/* Action Buttons & Owner Footer (Exact match to screenshot) */}
+          <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-t border-gray-100">
+            <div className="text-xs text-gray-600 font-medium">
+              <span>{listing.attributes?.postedBy || `Owner: ${listing.sellerName}`}</span>
+            </div>
+
+            <div className="flex items-center gap-2.5">
+              {/* White button with red outline: Get Phone No. */}
+              <button
+                type="button"
+                onClick={handleRevealPhone}
+                className="px-4 py-2 rounded-xl border-2 border-[#D92228] text-[#D92228] hover:bg-red-50 text-xs font-bold transition-colors cursor-pointer"
+              >
+                {phoneRevealed ? (
+                  <span className="font-mono">{listing.sellerPhone}</span>
+                ) : (
+                  <span>Get Phone No.</span>
+                )}
+              </button>
+
+              {/* Red solid button: Contact Owner */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onOpenListing(listing);
+                }}
+                className="px-5 py-2 rounded-xl bg-[#D92228] hover:bg-[#B7181D] text-white text-xs font-extrabold shadow-xs transition-colors cursor-pointer"
+              >
+                Contact Owner
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Live Demo Modal */}
+        <LivePropertyDemoModal
+          listing={listing}
+          isOpen={liveDemoOpen}
+          onClose={() => setLiveDemoOpen(false)}
+        />
+      </div>
+    );
+  }
 
   return (
     <div

@@ -7,7 +7,207 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   return (
-    <footer className="bg-navy-950 text-cream-50 pt-20 pb-28 md:pb-16 border-t border-navy-800 relative overflow-hidden">
+    <div>
+      {/* ======================================================== */}
+      {/* MAGICBRICKS REAL ESTATE NETWORK & CITY DIRECTORY (EXACT MATCH) */}
+      {/* ======================================================== */}
+      <section className="bg-[#F8F9FA] text-[#333333] py-10 px-4 sm:px-6 lg:px-8 border-t border-gray-200">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          {/* Left Column: About & Apps & Social */}
+          <div className="lg:col-span-5 space-y-4">
+            <div>
+              <h3 className="font-bold text-sm text-[#1A202C] mb-1.5">About Magicbricks & TrustNest</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                TrustNest, India&apos;s leading real estate ecosystem, brings together verified buyers, individual owners, certified dealers, and legal title checks under one secure portal...{' '}
+                <button
+                  type="button"
+                  onClick={() => onNavigate('search')}
+                  className="text-gray-900 font-bold underline hover:text-[#D92228] transition-colors cursor-pointer"
+                >
+                  Read more
+                </button>
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-bold text-xs text-[#1A202C] mb-1">More from our Network</h4>
+              <div className="flex items-center gap-3 text-xs text-gray-600">
+                <span className="hover:text-[#D92228] cursor-pointer">Times Now</span>
+                <span className="text-gray-300">|</span>
+                <span className="hover:text-[#D92228] cursor-pointer">ET Now</span>
+                <span className="text-gray-300">|</span>
+                <span className="hover:text-[#D92228] cursor-pointer">Navbharat Times</span>
+              </div>
+            </div>
+
+            {/* App Store Download Badges & Social Icons (Exact match to screenshot) */}
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <div className="flex items-center gap-2">
+                {/* Google Play */}
+                <a
+                  href="#download-android"
+                  onClick={e => { e.preventDefault(); alert('TrustNest Android App - Download from Google Play Store'); }}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors shadow-xs"
+                >
+                  <svg className="w-4 h-4 fill-current text-white" viewBox="0 0 24 24">
+                    <path d="M3.609 1.814L13.792 12 3.61 22.186a1.99 1.99 0 0 1-.61-1.442V3.256c0-.57.228-1.092.609-1.442zm11.233 11.234l2.585 2.585-11.89 6.84 9.305-9.425zm0-2.096L5.537 1.527l11.89 6.84-2.585 2.585zm1.485 1.048l3.414 1.964c.732.421.732 1.107 0 1.528l-3.414 1.964-2.37-2.37 2.37-2.37z" />
+                  </svg>
+                  <div className="text-left leading-tight">
+                    <p className="text-[9px] text-gray-300 font-medium uppercase">Get it on</p>
+                    <p className="text-xs font-bold font-sans">Google Play</p>
+                  </div>
+                </a>
+
+                {/* App Store */}
+                <a
+                  href="#download-ios"
+                  onClick={e => { e.preventDefault(); alert('TrustNest iOS App - Download from Apple App Store'); }}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors shadow-xs"
+                >
+                  <svg className="w-4 h-4 fill-current text-white" viewBox="0 0 24 24">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.67-.82 1.12-1.96.99-3.1-.96.04-2.13.64-2.82 1.45-.61.71-1.15 1.87-1.01 2.98 1.07.08 2.16-.54 2.84-1.33z" />
+                  </svg>
+                  <div className="text-left leading-tight">
+                    <p className="text-[9px] text-gray-300 font-medium">Available on the</p>
+                    <p className="text-xs font-bold font-sans">App Store</p>
+                  </div>
+                </a>
+              </div>
+
+              {/* Social Icons */}
+              <div className="flex items-center gap-2.5">
+                {/* Facebook */}
+                <a href="https://facebook.com" target="_blank" rel="noreferrer" className="w-7 h-7 rounded-full bg-[#1877F2] text-white flex items-center justify-center text-xs font-black shadow-xs hover:scale-110 transition-transform">
+                  f
+                </a>
+                {/* X */}
+                <a href="https://x.com" target="_blank" rel="noreferrer" className="w-7 h-7 rounded-full bg-black text-white flex items-center justify-center text-xs font-black shadow-xs hover:scale-110 transition-transform">
+                  𝕏
+                </a>
+                {/* LinkedIn */}
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="w-7 h-7 rounded-full bg-[#0A66C2] text-white flex items-center justify-center text-xs font-black shadow-xs hover:scale-110 transition-transform">
+                  in
+                </a>
+                {/* YouTube */}
+                <a href="https://youtube.com" target="_blank" rel="noreferrer" className="w-7 h-7 rounded-full bg-[#CD201F] text-white flex items-center justify-center text-xs font-black shadow-xs hover:scale-110 transition-transform">
+                  ▶
+                </a>
+                {/* Instagram */}
+                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="w-7 h-7 rounded-full bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white flex items-center justify-center text-xs font-black shadow-xs hover:scale-110 transition-transform">
+                  📷
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Properties in India & New Projects */}
+          <div className="lg:col-span-7 space-y-5 text-xs text-gray-600">
+            <div>
+              <h4 className="font-bold text-xs text-[#1A202C] mb-1.5">Properties in India</h4>
+              <p className="leading-relaxed">
+                {[
+                  'Property in New Delhi', 'Property in Mumbai', 'Property in Chennai', 'Property in Pune',
+                  'Property in Noida', 'Property in Gurgaon', 'Property in Bangalore', 'Property in Ahmedabad',
+                  'Property in Ghaziabad', 'Property in Kolkata', 'Property in Hyderabad'
+                ].map((item, idx, arr) => (
+                  <React.Fragment key={item}>
+                    <a
+                      href={`#search?q=${encodeURIComponent(item)}`}
+                      onClick={e => {
+                        e.preventDefault();
+                        const city = item.replace('Property in ', '');
+                        onNavigate(`search?city=${encodeURIComponent(city)}`);
+                      }}
+                      className="hover:text-[#D92228] transition-colors"
+                    >
+                      {item}
+                    </a>
+                    {idx < arr.length - 1 && <span className="text-gray-300 mx-1.5">|</span>}
+                  </React.Fragment>
+                ))}
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-bold text-xs text-[#1A202C] mb-1.5">New Projects in India</h4>
+              <p className="leading-relaxed">
+                {[
+                  'New Projects in New Delhi', 'New Projects in Mumbai', 'New Projects in Chennai', 'New Projects in Pune',
+                  'New Projects in Noida', 'New Projects in Gurgaon', 'New Projects in Bangalore', 'New Projects in Ahmedabad',
+                  'New Projects in Ghaziabad'
+                ].map((item, idx, arr) => (
+                  <React.Fragment key={item}>
+                    <a
+                      href={`#search?q=${encodeURIComponent(item)}`}
+                      onClick={e => {
+                        e.preventDefault();
+                        const city = item.replace('New Projects in ', '');
+                        onNavigate(`search?city=${encodeURIComponent(city)}&category=property`);
+                      }}
+                      className="hover:text-[#D92228] transition-colors"
+                    >
+                      {item}
+                    </a>
+                    {idx < arr.length - 1 && <span className="text-gray-300 mx-1.5">|</span>}
+                  </React.Fragment>
+                ))}
+              </p>
+            </div>
+
+            <div>
+              <h4 className="font-bold text-xs text-[#1A202C] mb-1.5">Property Services</h4>
+              <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href="#home"
+                  onClick={e => {
+                    e.preventDefault();
+                    onNavigate('home');
+                  }}
+                  className="hover:text-[#D92228] transition-colors"
+                >
+                  Home Loan
+                </a>
+                <span className="text-gray-300">|</span>
+                <a
+                  href="#home"
+                  onClick={e => {
+                    e.preventDefault();
+                    onNavigate('home');
+                  }}
+                  className="hover:text-[#D92228] transition-colors"
+                >
+                  Home Interior
+                </a>
+                <span className="text-gray-300">|</span>
+                <a
+                  href="#home"
+                  onClick={e => {
+                    e.preventDefault();
+                    onNavigate('search?category=pg');
+                  }}
+                  className="hover:text-[#D92228] transition-colors"
+                >
+                  PG / Co-Living
+                </a>
+                <span className="text-gray-300">|</span>
+                <a
+                  href="#search"
+                  onClick={e => {
+                    e.preventDefault();
+                    onNavigate('search');
+                  }}
+                  className="hover:text-[#D92228] transition-colors"
+                >
+                  Property Valuation
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Dark Footer */}
+      <footer className="bg-navy-950 text-cream-50 pt-16 pb-28 md:pb-16 border-t border-navy-800 relative overflow-hidden">
       {/* Background organic curved shapes */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-amber-soft/10 rounded-full blur-3xl pointer-events-none" />
@@ -134,5 +334,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
       </div>
     </footer>
+  </div>
   );
 };

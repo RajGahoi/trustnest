@@ -9,7 +9,6 @@ import { LocationAutocomplete } from '../../components/location/LocationAutocomp
 import { PropertyComparisonModal } from '../../components/listing/PropertyComparisonModal';
 import { SavedSearchesModal } from '../../components/search/SavedSearchesModal';
 import { motion, useReducedMotion } from 'framer-motion';
-import { AnimatedNumber } from '../../components/motion/AnimatedNumber';
 import { store } from '../../mock/store';
 import type { Listing, SavedSearch } from '../../types';
 import { 
@@ -19,7 +18,6 @@ import {
   Map, 
   Columns, 
   SearchX, 
-  ShieldCheck, 
   Bookmark, 
   Layers, 
   Trash2, 
@@ -41,7 +39,7 @@ export const SearchPage: React.FC<SearchPageProps> = ({
   onOpenListingDetail
 }) => {
   const [query, setQuery] = useState(initialQuery);
-  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map' | 'split'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map' | 'split'>('list');
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selectedTrustListing, setSelectedTrustListing] = useState<Listing | null>(null);
   const [mapSelectedListing, setMapSelectedListing] = useState<Listing | null>(null);
@@ -398,58 +396,117 @@ export const SearchPage: React.FC<SearchPageProps> = ({
       ) : (
         /* 3. STANDARD LIST / GRID VIEW */
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Desktop Filter Sidebar */}
-          <div className="hidden lg:block lg:col-span-4 sticky top-28">
+          {/* Desktop Filter Sidebar & MagicBricks Post Property Promo */}
+          <div className="hidden lg:block lg:col-span-4 sticky top-28 space-y-5">
             <FilterPanel
               filters={filters}
               onChangeFilters={setFilters}
               onResetFilters={handleResetFilters}
               resultsCount={filteredListings.length}
             />
+
+            {/* MAGICBRICKS POST PROPERTY PROMO CARD (EXACT SCREENSHOT MATCH) */}
+            <div className="bg-[#FFFDF4] border border-[#FBE094] rounded-2xl p-5 shadow-xs text-left space-y-3">
+              <div>
+                <h3 className="font-display text-base font-extrabold text-navy-950 leading-tight">
+                  Sell/Rent your Property with us for Free
+                </h3>
+                <p className="text-xs text-gray-600 mt-1">
+                  Find Buyers & Tenants easily
+                </p>
+              </div>
+
+              <a
+                href="#post"
+                onClick={e => {
+                  e.preventDefault();
+                  window.location.hash = '#post';
+                }}
+                className="w-full py-2.5 px-4 rounded-xl bg-[#F7A600] hover:bg-[#E59700] text-navy-950 font-extrabold text-xs shadow-xs transition-all flex items-center justify-center cursor-pointer active:scale-98"
+              >
+                Post Property
+              </a>
+
+              <div className="pt-2 border-t border-[#F5E2A8]/70 space-y-2 text-xs">
+                <p className="font-bold text-gray-800 text-[11px] uppercase tracking-wider">
+                  Here&apos;s why Magicbricks & TrustNest:
+                </p>
+                <div className="flex items-start gap-2 text-gray-700">
+                  <span className="text-teal-600 font-bold">✓</span>
+                  <span>Get Access to 4 Lakh+ Buyers</span>
+                </div>
+                <div className="flex items-start gap-2 text-gray-700">
+                  <span className="text-teal-600 font-bold">✓</span>
+                  <span>Sell Faster with Premium Service</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Listings Result Column */}
           <div className="lg:col-span-8 space-y-6">
-            {/* Header Action Bar */}
-            <div className="flex items-center justify-between bg-white p-4 rounded-2xl border border-navy-900/10 shadow-sm text-xs font-semibold text-navy-900">
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-orange-500" />
-                <span>
-                  Found <strong className="text-orange-600 font-extrabold text-base num-mono"><AnimatedNumber value={filteredListings.length} /></strong> verified listings
-                  {filters.city !== 'All Cities' && <> in <strong className="text-navy-900">{filters.city}</strong></>}
-                  {filters.locality && <> (<strong className="text-orange-600">{filters.locality}</strong>)</>}
-                </span>
-              </div>
+            {/* Header Action Bar (Exact MagicBricks Screenshot Match) */}
+            <div className="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200/90 shadow-xs space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left">
+                <h1 className="font-display text-lg sm:text-xl font-bold text-gray-900 tracking-tight">
+                  <span className="font-mono font-black">{filteredListings.length}</span> results | Property for Sale in {filters.city !== 'All Cities' ? filters.city : 'Ghaziabad'} without brokerage
+                </h1>
 
-              <div className="flex items-center gap-3">
-                {/* Mobile Filter Toggle */}
+                {/* Red Budget Pill (Exact match: Add Budget for better results →) */}
                 <button
                   type="button"
                   onClick={() => setMobileFiltersOpen(true)}
-                  className="lg:hidden flex items-center gap-1.5 px-3 py-1.5 bg-cream-100 border border-navy-900/15 rounded-xl font-bold cursor-pointer hover:bg-cream-200 transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 hover:bg-red-100 border border-red-200 text-[#D92228] text-xs font-bold transition-all cursor-pointer self-start sm:self-auto group shrink-0"
                 >
-                  <SlidersHorizontal className="w-3.5 h-3.5 text-orange-500" />
-                  <span>Filters</span>
+                  <span className="w-4 h-4 rounded-full bg-[#D92228] text-white flex items-center justify-center text-[10px] font-bold">
+                    ₹
+                  </span>
+                  <span>Add Budget for better results →</span>
                 </button>
+              </div>
 
-                {/* Grid / List Layout Toggle */}
-                <div className="hidden sm:flex items-center bg-cream-100 p-1 rounded-xl border border-navy-900/10">
+              {/* View Mode & Filter Quick Pills */}
+              <div className="flex items-center justify-between pt-2 border-t border-gray-100 text-xs text-gray-600">
+                <div className="flex items-center gap-2">
+                  <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                    ✓ 100% Zero Brokerage Verified
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  {/* Mobile Filter Toggle */}
                   <button
                     type="button"
-                    onClick={() => setViewMode('grid')}
-                    className={`p-1.5 rounded-lg transition-colors cursor-pointer ${viewMode === 'grid' ? 'bg-navy-900 text-white' : 'text-navy-700 hover:bg-cream-200'}`}
-                    aria-label="Grid View"
+                    onClick={() => setMobileFiltersOpen(true)}
+                    className="lg:hidden flex items-center gap-1.5 px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-lg font-bold text-gray-800"
                   >
-                    <LayoutGrid className="w-4 h-4" />
+                    <SlidersHorizontal className="w-3.5 h-3.5" />
+                    <span>Filters</span>
                   </button>
-                  <button
-                    type="button"
-                    onClick={() => setViewMode('list')}
-                    className={`p-1.5 rounded-lg transition-colors cursor-pointer ${viewMode === 'list' ? 'bg-navy-900 text-white' : 'text-navy-700 hover:bg-cream-200'}`}
-                    aria-label="List View"
-                  >
-                    <List className="w-4 h-4" />
-                  </button>
+
+                  {/* Grid / List Layout Switcher */}
+                  <div className="flex items-center bg-gray-100 p-0.5 rounded-lg border border-gray-200">
+                    <button
+                      type="button"
+                      onClick={() => setViewMode('list')}
+                      className={`p-1.5 rounded-md transition-colors cursor-pointer ${
+                        viewMode === 'list' ? 'bg-white text-[#D92228] shadow-xs' : 'text-gray-600'
+                      }`}
+                      title="MagicBricks Detailed Horizontal Card View"
+                    >
+                      <List className="w-4 h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setViewMode('grid')}
+                      className={`p-1.5 rounded-md transition-colors cursor-pointer ${
+                        viewMode === 'grid' ? 'bg-white text-[#D92228] shadow-xs' : 'text-gray-600'
+                      }`}
+                      title="Grid Card View"
+                    >
+                      <LayoutGrid className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -472,6 +529,7 @@ export const SearchPage: React.FC<SearchPageProps> = ({
                   >
                     <ListingCard
                       listing={listing}
+                      layout={viewMode === 'list' ? 'magicbricks' : 'grid'}
                       onOpenListing={onOpenListingDetail}
                       onOpenTrustModal={setSelectedTrustListing}
                       onToggleCompare={handleToggleCompare}

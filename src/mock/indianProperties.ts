@@ -1531,5 +1531,88 @@ export const INDIAN_VERIFIED_PROPERTIES: Listing[] = [
     viewsCount: 4210,
     savesCount: 520,
     leadsCount: 110
+  },
+  // 20. USER EXACT LISTING: 3 BHK Builder Floor in Indirapuram, Ghaziabad (₹ 36 Lac - Exact Match)
+  {
+    id: 'prop-indirapuram-ghaziabad',
+    slug: '3-bhk-builder-floor-for-sale-indirapuram-ghaziabad',
+    title: '3 BHK Builder Floor for Sale in Indirapuram Ghaziabad',
+    description: 'A 3 BHK apartment is available for sale in Indirapuram, Ghaziabad. Being located in Shri Balaji Residency, the property is easily accessible. This ready to move builder floor features 2300 sqft super area, 2nd out of 3 floors, semi-furnished interior, 60 ft wide road, verified ownership papers, and zero brokerage.',
+    categorySlug: 'property',
+    categoryName: 'Real Estate',
+    price: 3600000,
+    formattedPrice: '₹ 36 Lac',
+    isFeatured: true,
+    location: {
+      address: 'Shri Balaji Residency, Ahinsa Khand 2, Indirapuram',
+      locality: 'Indirapuram',
+      city: 'Ghaziabad',
+      state: 'Uttar Pradesh',
+      pincode: '201014',
+      lat: 28.6415,
+      lng: 77.3712,
+      verifiedCoords: true
+    },
+    images: [
+      'https://images.unsplash.com/photo-1540518614846-7ede433c4550?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1200&q=80'
+    ],
+    attributes: {
+      bhk: '3 BHK',
+      propertyType: 'Builder Floor',
+      propertyCategory: 'RESIDENTIAL_APARTMENT',
+      society: 'Shri Balaji Residency',
+      status: 'Ready to Move',
+      floor: '2 out of 3',
+      transaction: 'Resale',
+      furnishing: 'Semi-Furnished',
+      area: 2300,
+      areaUnit: 'sqft',
+      pricePerSqft: '₹ 1,565 per sqft',
+      roadWidth: '60 ft Wide Road',
+      postedBy: 'Owner: Abhishek',
+      postedAgo: '4 hours ago',
+      parking: true,
+      ownership: 'FREEHOLD'
+    },
+    sellerId: 'usr-abhishek-ghaziabad',
+    sellerName: 'Abhishek',
+    sellerPhone: '+91 98102 33445',
+    sellerEmail: 'abhishek.ghz@trustnest.in',
+    sellerType: 'OWNER',
+    sellerAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+    sellerRating: 4.90,
+    sellerVerified: true,
+    trustScore: {
+      overallScore: 97,
+      tier: 'PLATINUM',
+      badgeLabel: 'VERIFIED OWNER 97/100',
+      verifiedAt: '2026-10-31',
+      dimensions: [
+        { id: 'td-1', name: 'Identity', score: 20, maxScore: 20, status: 'PASSED', details: 'Aadhaar + Mobile OTP Verified', verifiedAt: '2026-10-31' },
+        { id: 'td-2', name: 'Documents', score: 20, maxScore: 20, status: 'PASSED', details: 'GDA Allotment + Freehold Registry Deed Verified', verifiedAt: '2026-10-31' },
+        { id: 'td-3', name: 'Location', score: 19, maxScore: 20, status: 'PASSED', details: 'Ahinsa Khand 2, Indirapuram GPS verified', verifiedAt: '2026-10-31' },
+        { id: 'td-4', name: 'Media', score: 19, maxScore: 20, status: 'PASSED', details: 'Interior 6+ photos verified on-site', verifiedAt: '2026-10-31' },
+        { id: 'td-5', name: 'Risk', score: 19, maxScore: 20, status: 'PASSED', details: 'Zero encumbrance, direct owner resale', verifiedAt: '2026-10-31' }
+      ]
+    },
+    status: 'PUBLISHED',
+    version: 1,
+    isBoosted: true,
+    documents: [
+      { id: 'doc-ghz-1', name: 'GDA Allotment Letter', type: 'TITLE_DEED', status: 'VERIFIED', uploadedAt: '2026-10-01' },
+      { id: 'doc-ghz-2', name: 'Electricity Municipal Bill', type: 'TAX_RECEIPT', status: 'VERIFIED', uploadedAt: '2026-10-01' }
+    ],
+    fraudSignals: [],
+    createdAt: '2026-10-31T06:00:00Z',
+    publishedAt: '2026-10-31T06:00:00Z',
+    expiresAt: '2027-10-31T06:00:00Z',
+    viewsCount: 6741,
+    savesCount: 512,
+    leadsCount: 148
   }
 ];
