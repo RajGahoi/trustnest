@@ -10,6 +10,7 @@ import { Reveal } from '../components/motion/Reveal';
 import { VerificationDemo } from '../components/home/VerificationDemo';
 import { PropertyQuickViewModal } from '../components/listing/PropertyQuickViewModal';
 import { SubscriptionModal } from '../components/monetization/SubscriptionModal';
+import { ProjectSpotlightCarousel } from '../components/home/ProjectSpotlightCarousel';
 import { store } from '../mock/store';
 import { api } from '../services/api';
 import { useLanguage } from '../domain/i18n/LanguageContext';
@@ -284,6 +285,16 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
           </div>
         </div>
+      </section>
+
+      {/* 1.5 99ACRES FEATURED PROJECT SPOTLIGHT CAROUSEL (TIME-TO-TIME AUTO-ROTATING) */}
+      <section className="-mt-8 sm:-mt-12">
+        <ProjectSpotlightCarousel
+          onOpenSubscriptionModal={() => setSubscriptionModalOpen(true)}
+          onExploreProject={(query) => {
+            onNavigate(`search?q=${encodeURIComponent(query)}`);
+          }}
+        />
       </section>
 
       {/* 2. REAL ESTATE CATEGORY DISCOVERY RAILS */}
