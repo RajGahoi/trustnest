@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Search, MapPin, Mic, Crosshair, ArrowRight, ShieldCheck, Sparkles, Layers, Play, Pause } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, MapPin, Mic, Crosshair, ArrowRight, ShieldCheck, Sparkles, Layers } from 'lucide-react';
 import { useLanguage } from '../../domain/i18n/LanguageContext';
 import { VoiceSearchModal } from '../search/VoiceSearchModal';
 
@@ -60,7 +60,7 @@ const BILLBOARD_SLIDES: BillboardSlide[] = [
     ifscCode: 'ICIC0000002',
     bankNameAndAddress: 'ICICI Bank - Mahindra World City Branch, Chengalpattu Tamil Nadu 603004',
     disclaimer: 'Disclaimer: All visual impressions are artist impressions. Approved by DTCP and TN RERA. Subject to regulatory approvals.',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=85'
+    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=85'
   },
   {
     id: 'dlf-cybercity',
@@ -79,7 +79,7 @@ const BILLBOARD_SLIDES: BillboardSlide[] = [
     ifscCode: 'HDFC0000043',
     bankNameAndAddress: 'HDFC Bank - DLF CyberCity Corporate Branch, Gurugram Haryana 122002',
     disclaimer: 'Disclaimer: Leasable and saleable corporate suites. RERA Haryana registered with municipal approval letters on record.',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1800&q=85'
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=85'
   },
   {
     id: 'godrej-palm-retreat',
@@ -98,7 +98,7 @@ const BILLBOARD_SLIDES: BillboardSlide[] = [
     ifscCode: 'UTIB0000123',
     bankNameAndAddress: 'Axis Bank - Sector 150 Expressway Hub, Noida Uttar Pradesh 201310',
     disclaimer: 'Disclaimer: Images are rendered architectural representations. RERA compliant and approved by Greater Noida Industrial Development Authority.',
-    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1800&q=85'
+    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1800&q=85'
   }
 ];
 
@@ -115,7 +115,6 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
 }) => {
   const { language } = useLanguage();
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<any>(null);
 
   // Search state
@@ -135,10 +134,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
     'Search "Luxury Lakeview Villa in Whitefield Bengaluru"'
   ];
 
-  // Auto-scroll billboard slides every 4.5s
+  // Auto-scroll billboard slides smoothly every 4.5s
   useEffect(() => {
-    if (isPaused) return;
-
     timerRef.current = setInterval(() => {
       setCurrentSlideIndex(prev => (prev + 1) % BILLBOARD_SLIDES.length);
     }, 4500);
@@ -146,7 +143,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [currentSlideIndex, isPaused]);
+  }, [currentSlideIndex]);
 
   // Rotate placeholder text every 3s
   useEffect(() => {
@@ -279,7 +276,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
       {/* 1. PANORAMIC BILLBOARD HERO CAROUSEL (EXACT 99ACRES HERO) */}
       {/* ======================================================== */}
       <div
-        className="relative w-full overflow-hidden bg-zinc-950 text-white min-h-[380px] sm:min-h-[440px] md:min-h-[480px] lg:min-h-[520px] shadow-2xl"
+        className="relative w-full overflow-hidden bg-slate-900 text-white min-h-[380px] sm:min-h-[440px] md:min-h-[480px] lg:min-h-[520px] shadow-2xl"
       >
         {/* Horizontal sliding track with smooth carousel transition */}
         <div
@@ -291,16 +288,16 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               key={slideItem.id}
               className="w-full shrink-0 relative min-h-[380px] sm:min-h-[440px] md:min-h-[480px] lg:min-h-[520px] flex items-center"
             >
-              {/* Background Panoramic Architectural Image (Crisp, High-Quality Render) */}
+              {/* Background Panoramic Architectural Image (Bright, Sunlit Daylight Render) */}
               <div className="absolute inset-0 z-0">
                 <img
                   src={slideItem.image}
                   alt={slideItem.projectName}
-                  className="w-full h-full object-cover object-center filter brightness-[0.72] contrast-[1.05] saturate-110 transform scale-100"
+                  className="w-full h-full object-cover object-center filter brightness-[0.92] contrast-[1.02] saturate-110 transform scale-100"
                 />
-                {/* 99acres & MagicBricks Signature Dark Vignette Overlays (Pure Black, No Muddy Blue) */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-black/85" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/40" />
+                {/* Soft, Transparent Daylight Vignette - Maximum Light and Clear Visibility */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/55" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-black/10" />
               </div>
 
               {/* Content Container */}
@@ -308,37 +305,45 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
                   {/* Left Column: Developer Badge, Config & Starting Price */}
                   <div className="lg:col-span-4 text-center lg:text-left">
-                    {/* Developer Logo Badge (MagicBricks/99acres Red) */}
-                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#D92228] text-white font-extrabold text-[11px] sm:text-xs tracking-wider uppercase shadow-xl mb-3 sm:mb-4">
-                      <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                      <span>{slideItem.developerLogoText}</span>
-                    </div>
+                    <div className="p-4 sm:p-5 rounded-2xl bg-black/40 backdrop-blur-md border border-white/20 shadow-2xl max-w-sm mx-auto lg:mx-0">
+                      {/* Developer Logo Badge (MagicBricks/99acres Red) */}
+                      <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#D92228] text-white font-extrabold text-[11px] sm:text-xs tracking-wider uppercase shadow-xl mb-3">
+                        <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                        <span>{slideItem.developerLogoText}</span>
+                      </div>
 
-                    {/* Unit Configuration (Pure, Brilliant White) */}
-                    <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-black !text-white text-white tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)] leading-tight">
-                      {slideItem.configuration}
-                    </h2>
+                      {/* Unit Configuration (Pure Brilliant White) */}
+                      <h2
+                        style={{ color: '#ffffff' }}
+                        className="font-display text-2xl sm:text-3xl font-black tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)] leading-tight"
+                      >
+                        {slideItem.configuration}
+                      </h2>
 
-                    {/* Price Banner */}
-                    <div className="mt-2.5 sm:mt-3">
-                      <p className="text-[11px] sm:text-xs font-semibold text-gray-300 uppercase tracking-widest drop-shadow">
-                        {language === 'hi' ? 'शुरुआती कीमत' : 'STARTING PRICE AS'}
-                      </p>
-                      <p className="text-xl sm:text-2xl md:text-3xl font-black text-[#FBBF24] drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-                        {slideItem.startingPrice}
-                      </p>
-                    </div>
+                      {/* Price Banner */}
+                      <div className="mt-2.5">
+                        <p className="text-[11px] font-semibold text-gray-200 uppercase tracking-widest drop-shadow">
+                          {language === 'hi' ? 'शुरुआती कीमत' : 'STARTING PRICE AS'}
+                        </p>
+                        <p
+                          style={{ color: '#FBBF24' }}
+                          className="text-2xl sm:text-3xl font-black drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] mt-0.5"
+                        >
+                          {slideItem.startingPrice}
+                        </p>
+                      </div>
 
-                    {/* RERA Badge Pill */}
-                    <div className="mt-4 hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-black/50 border border-white/25 text-xs font-mono font-medium !text-white shadow-md backdrop-blur-xs">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                      <span>RERA: {slideItem.reraNumber}</span>
+                      {/* RERA Badge Pill */}
+                      <div className="mt-3.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-black/40 border border-white/20 text-xs font-mono font-medium text-white shadow-sm">
+                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                        <span>RERA: {slideItem.reraNumber}</span>
+                      </div>
                     </div>
                   </div>
 
                   {/* Middle Column: Project Branding, Location & Architectural Render */}
                   <div className="lg:col-span-4 text-center flex flex-col items-center">
-                    <div className="p-4 sm:p-5 rounded-2xl bg-black/65 border border-white/20 backdrop-blur-md w-full max-w-sm shadow-2xl">
+                    <div className="p-4 sm:p-5 rounded-2xl bg-black/45 border border-white/20 backdrop-blur-md w-full max-w-sm shadow-2xl">
                       <div className="flex items-center justify-center gap-2 mb-1.5">
                         <Sparkles className="w-4 h-4 text-[#F59E0B]" />
                         <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#F59E0B]">
@@ -346,20 +351,23 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
                         </span>
                       </div>
 
-                      <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-black !text-white text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+                      <h3
+                        style={{ color: '#ffffff' }}
+                        className="font-display text-xl sm:text-2xl md:text-3xl font-black drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+                      >
                         {slideItem.projectName}
                       </h3>
                       <p className="text-xs sm:text-sm font-bold text-amber-200 mt-0.5 drop-shadow">
                         BY {slideItem.developer.toUpperCase()}
                       </p>
 
-                      <p className="text-xs text-gray-200 mt-2 flex items-center justify-center gap-1">
+                      <p className="text-xs text-gray-100 mt-2 flex items-center justify-center gap-1">
                         <MapPin className="w-3.5 h-3.5 text-[#E4222D] shrink-0" />
                         <span>{slideItem.locality}</span>
                       </p>
 
                       <div className="mt-3 pt-3 border-t border-white/15">
-                        <p className="text-xs font-bold text-emerald-400 uppercase tracking-wide">
+                        <p className="text-xs font-bold text-emerald-300 uppercase tracking-wide">
                           {slideItem.tagline}
                         </p>
                       </div>
@@ -368,7 +376,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
 
                   {/* Right Column: UP RERA Box with QR Code, Bank Account & Disclaimer */}
                   <div className="lg:col-span-4 hidden lg:block">
-                    <div className="p-4 rounded-2xl bg-black/75 border border-white/20 backdrop-blur-md text-[11px] space-y-2 text-gray-200 shadow-2xl">
+                    <div className="p-4 rounded-2xl bg-black/55 border border-white/20 backdrop-blur-md text-[11px] space-y-2 text-gray-100 shadow-2xl">
                       <div className="flex items-start gap-3">
                         {/* Inline Sharp RERA QR Code SVG Pattern */}
                         <div className="w-20 h-20 bg-white p-1 rounded-lg shrink-0 flex items-center justify-center shadow">
@@ -415,11 +423,11 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
                         </div>
                       </div>
 
-                      <div className="pt-1.5 border-t border-white/10 text-[9px] text-gray-400 leading-snug">
+                      <div className="pt-1.5 border-t border-white/10 text-[9px] text-gray-300 leading-snug">
                         <p className="font-semibold text-gray-200">
                           Bank: {slideItem.bankNameAndAddress}
                         </p>
-                        <p className="mt-1 line-clamp-2 text-gray-400 italic">
+                        <p className="mt-1 line-clamp-2 text-gray-300 italic">
                           {slideItem.disclaimer}
                         </p>
                       </div>
@@ -429,29 +437,6 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Top Control Bar: Auto-Scroll Indicator and Play/Pause */}
-        <div className="absolute top-3 right-4 z-20 flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setIsPaused(prev => !prev)}
-            aria-label={isPaused ? "Play Auto-Scroll" : "Pause Auto-Scroll"}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/50 border border-white/20 text-[11px] font-semibold text-gray-200 backdrop-blur-md hover:bg-black/70 hover:text-white transition-all cursor-pointer shadow-md"
-          >
-            {isPaused ? (
-              <>
-                <Play className="w-3 h-3 text-emerald-400 fill-emerald-400" />
-                <span>{language === 'hi' ? 'स्क्रॉल शुरू करें' : 'Resume Scroll'}</span>
-              </>
-            ) : (
-              <>
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                <span>{language === 'hi' ? 'ऑटो-स्क्रॉल ऑन (4.5s)' : 'Auto-Scrolling (4.5s)'}</span>
-                <Pause className="w-3 h-3 text-gray-400 ml-0.5" />
-              </>
-            )}
-          </button>
         </div>
 
         {/* Circular Left Arrow (<) */}

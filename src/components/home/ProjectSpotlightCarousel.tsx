@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Phone, ArrowRight, Sparkles, MapPin, Play, Pause } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Phone, ArrowRight, Sparkles, MapPin } from 'lucide-react';
 import { store } from '../../mock/store';
 import { useLanguage } from '../../domain/i18n/LanguageContext';
 
@@ -37,7 +37,7 @@ const FEATURED_PROJECTS: ProjectItem[] = [
     developer: 'DLF Commercial',
     developerPhone: '+91 98101 23456',
     priceRange: '₹4.20 Cr - ₹18.5 Cr',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80',
     reraId: 'HRERA-PKL-GGM-1420-2022',
     highlights: ['Corporate IT Suites', '100% DG Power Backup', 'Direct Metro Connectivity']
   },
@@ -49,7 +49,7 @@ const FEATURED_PROJECTS: ProjectItem[] = [
     developer: 'Godrej Properties',
     developerPhone: '+91 98765 43210',
     priceRange: '₹1.75 Cr - ₹4.50 Cr',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80',
+    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1600&q=80',
     reraId: 'UPRERAPRJ12456',
     highlights: ['Low Density Green Sector', 'Olympic Sports Complex', 'Gated 5-Tier Security']
   },
@@ -61,7 +61,7 @@ const FEATURED_PROJECTS: ProjectItem[] = [
     developer: 'Prestige Group',
     developerPhone: '+91 98801 99887',
     priceRange: '₹5.50 Cr - ₹12.0 Cr',
-    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1600&q=80',
+    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=80',
     reraId: 'PRM/KA/RERA/1250/303/PR/171223',
     highlights: ['18-Hole Championship Golf', 'Private Pool & Falcon Club', 'Helipad & Ultra-Luxury']
   },
@@ -90,7 +90,6 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
 }) => {
   const { language } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const [revealedProjects, setRevealedProjects] = useState<Record<string, boolean>>({});
   const [revealsRemaining, setRevealsRemaining] = useState(store.getContactRevealsRemaining());
   const timerRef = useRef<any>(null);
@@ -104,10 +103,8 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
-  // Auto-scroll every 4.5 seconds
+  // Auto-scroll every 4.5 seconds smoothly
   useEffect(() => {
-    if (isPaused) return;
-
     timerRef.current = setInterval(() => {
       setCurrentIndex(prev => (prev + 1) % FEATURED_PROJECTS.length);
     }, 4500);
@@ -115,7 +112,7 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [currentIndex, isPaused]);
+  }, [currentIndex]);
 
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -161,27 +158,7 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
         </div>
 
         <div className="flex items-center gap-3 text-xs font-bold text-navy-700">
-          <button
-            type="button"
-            onClick={() => setIsPaused(prev => !prev)}
-            aria-label={isPaused ? "Play Auto-Scroll" : "Pause Auto-Scroll"}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-navy-100 hover:bg-navy-200 text-navy-900 border border-navy-200/60 transition-all cursor-pointer text-[11px]"
-          >
-            {isPaused ? (
-              <>
-                <Play className="w-3 h-3 text-emerald-600 fill-emerald-600" />
-                <span>{language === 'hi' ? 'स्क्रॉल शुरू करें' : 'Play'}</span>
-              </>
-            ) : (
-              <>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="hidden sm:inline">{language === 'hi' ? 'ऑटो-स्क्रॉल ऑन (4.5s)' : 'Auto-Scrolling (4.5s)'}</span>
-                <span className="sm:hidden">Auto</span>
-                <Pause className="w-3 h-3 text-navy-600 ml-0.5" />
-              </>
-            )}
-          </button>
-          <span className="bg-navy-900 text-white px-2 py-0.5 rounded-md font-mono text-[10px]">
+          <span className="bg-navy-900 text-white px-2.5 py-1 rounded-lg font-mono text-[11px] shadow-xs">
             {currentIndex + 1} / {FEATURED_PROJECTS.length}
           </span>
         </div>
@@ -189,7 +166,7 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
 
       {/* Main 99acres Featured Banner Card */}
       <div
-        className="relative rounded-3xl overflow-hidden border border-gray-800 shadow-2xl bg-zinc-950 group select-none transition-all"
+        className="relative rounded-3xl overflow-hidden border border-gray-200 shadow-xl bg-slate-900 group select-none transition-all"
       >
         {/* Horizontal sliding track with smooth carousel transition */}
         <div className="relative aspect-[16/9] sm:aspect-[21/9] w-full overflow-hidden">
@@ -202,15 +179,15 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
                 key={proj.id}
                 className="w-full h-full shrink-0 relative overflow-hidden"
               >
-                {/* Cinematic Project Image */}
+                {/* Cinematic Project Image (Bright Sunlit View) */}
                 <img
                   src={proj.image}
                   alt={proj.name}
-                  className="w-full h-full object-cover filter brightness-[0.75] contrast-[1.05] transition-transform duration-1000 ease-out group-hover:scale-105"
+                  className="w-full h-full object-cover filter brightness-[0.92] contrast-[1.02] saturate-110 transition-transform duration-1000 ease-out group-hover:scale-105"
                 />
 
-                {/* Pure Black Gradients matching 99acres card overlay (No Muddy Blue) */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/35 to-black/60" />
+                {/* Soft Transparent Scrim (More light, crystal clear architecture) */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/25" />
 
                 {/* Top Left Branding Overlay (Exact 99acres style) */}
                 <div className="absolute top-4 sm:top-7 left-4 sm:left-7 z-10 text-white max-w-xl">
@@ -223,21 +200,24 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
                     </span>
                   </div>
 
-                  <h2 className="font-display text-2xl sm:text-4xl font-black !text-white text-white tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]">
+                  <h2
+                    style={{ color: '#ffffff' }}
+                    className="font-display text-2xl sm:text-4xl font-black tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]"
+                  >
                     {proj.name}
                   </h2>
 
-                  <p className="text-xs sm:text-sm font-semibold text-gray-200 mt-1 flex items-center gap-1.5 drop-shadow">
+                  <p className="text-xs sm:text-sm font-semibold text-gray-100 mt-1 flex items-center gap-1.5 drop-shadow">
                     <MapPin className="w-3.5 h-3.5 text-[#E4222D] shrink-0" />
                     <span>{proj.locality}, {proj.road}</span>
                   </p>
 
                   {/* Price & Road Access highlights */}
                   <div className="mt-3 hidden sm:flex items-center gap-2 flex-wrap">
-                    <span className="px-3.5 py-1.5 rounded-xl bg-black/60 backdrop-blur-md text-[#FBBF24] font-black text-xs border border-white/20 shadow-md">
+                    <span className="px-3.5 py-1.5 rounded-xl bg-black/50 backdrop-blur-md text-[#FBBF24] font-black text-xs border border-white/20 shadow-md">
                       💰 {proj.priceRange}
                     </span>
-                    <span className="px-3.5 py-1.5 rounded-xl bg-black/60 backdrop-blur-md text-gray-200 font-bold text-xs border border-white/20 shadow-md">
+                    <span className="px-3.5 py-1.5 rounded-xl bg-black/50 backdrop-blur-md text-gray-100 font-bold text-xs border border-white/20 shadow-md">
                       🛣️ {proj.road}
                     </span>
                   </div>
