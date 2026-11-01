@@ -1,6 +1,85 @@
 import type { Listing } from '../types';
 
 export const INDIAN_VERIFIED_PROPERTIES: Listing[] = [
+  // 0. USER EXACT LISTING: 2 BHK APARTMENT, 2 BATHS (Bansdroni, Kolkata - ₹19 L)
+  {
+    id: 'prop-apt-chirantani',
+    slug: '2-bhk-apartment-2-baths-chirantani-park-bansdroni-kolkata',
+    title: '2 BHK Apartment, 2 Baths in Chirantani Park Bansdroni',
+    description: 'Directly posted by verified individual owner. Well-ventilated 2 BHK apartment with 2 western baths, spacious living room, tiled flooring, natural east sunlight, and peaceful residential neighborhood in Chirantani Park, Bansdroni. Clear municipal title, immediate possession, and wide municipal road access.',
+    categorySlug: 'property',
+    categoryName: 'Real Estate',
+    price: 1900000,
+    formattedPrice: '₹ 19 L',
+    isFeatured: true,
+    location: {
+      address: 'Chirantani Park, Bansdroni, Netaji Subhash Chandra Bose Road',
+      locality: 'Chirantani Park, Bansdroni',
+      city: 'Kolkata',
+      state: 'West Bengal',
+      pincode: '700070',
+      lat: 22.4716,
+      lng: 88.3512,
+      verifiedCoords: true
+    },
+    images: [
+      'chirantani-apartment.jpg',
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1540518614846-7ede433c4550?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80'
+    ],
+    attributes: {
+      bhk: '2 BHK',
+      bathrooms: '2 Baths',
+      propertyType: 'Apartment',
+      propertyCategory: 'RESIDENTIAL_APARTMENT',
+      area: 850,
+      areaUnit: 'sqft',
+      roadWidth: '40 ft Municipal Road',
+      facing: 'East Facing',
+      zoning: 'KMDA Residential Approved',
+      furnishing: 'Unfurnished',
+      parking: true,
+      postedBy: 'Owner',
+      postedAgo: '3 months ago',
+      ownership: 'FREEHOLD'
+    },
+    sellerId: 'usr-own-chirantani',
+    sellerName: 'Subir Mukherjee',
+    sellerPhone: '+91 98301 44556',
+    sellerEmail: 'owner.bansdroni@trustnest.in',
+    sellerType: 'OWNER',
+    sellerAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+    sellerRating: 4.88,
+    sellerVerified: true,
+    trustScore: {
+      overallScore: 94,
+      tier: 'GOLD',
+      badgeLabel: 'VERIFIED OWNER 94/100',
+      verifiedAt: '2026-10-15',
+      dimensions: [
+        { id: 'td-1', name: 'Identity', score: 20, maxScore: 20, status: 'PASSED', details: 'Aadhaar + Mobile OTP Verified', verifiedAt: '2026-10-15' },
+        { id: 'td-2', name: 'Documents', score: 19, maxScore: 20, status: 'PASSED', details: 'Municipal Tax Receipt + Registry Deed Verified', verifiedAt: '2026-10-15' },
+        { id: 'td-3', name: 'Location', score: 19, maxScore: 20, status: 'PASSED', details: 'KMDA Ward map verified', verifiedAt: '2026-10-15' },
+        { id: 'td-4', name: 'Media', score: 18, maxScore: 20, status: 'PASSED', details: 'Interior & room photos verified', verifiedAt: '2026-10-15' },
+        { id: 'td-5', name: 'Risk', score: 18, maxScore: 20, status: 'PASSED', details: 'Clear title, single owner', verifiedAt: '2026-10-15' }
+      ]
+    },
+    status: 'PUBLISHED',
+    version: 1,
+    isBoosted: false,
+    documents: [
+      { id: 'doc-apt-1', name: 'Municipal Tax Receipt', type: 'TAX_RECEIPT', status: 'VERIFIED', uploadedAt: '2026-08-01' },
+      { id: 'doc-apt-2', name: 'Apartment Registry Deed', type: 'TITLE_DEED', status: 'VERIFIED', uploadedAt: '2026-08-01' }
+    ],
+    fraudSignals: [],
+    createdAt: '2026-08-01T10:00:00Z',
+    publishedAt: '2026-08-01T10:00:00Z',
+    expiresAt: '2027-08-01T10:00:00Z',
+    viewsCount: 842,
+    savesCount: 67,
+    leadsCount: 15
+  },
   // 1. COMMERCIAL OFFICE SPACE (Gurugram)
   {
     id: 'prop-com-1',

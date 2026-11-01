@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, MapPin, CheckCircle, ArrowUpRight, Share2, Layers, Check, Phone, Eye } from 'lucide-react';
+import { Heart, CheckCircle, ArrowUpRight, Share2, Layers, Check, Phone, Eye, Video } from 'lucide-react';
 import type { Listing } from '../../types';
 import { TrustBadge } from '../trust/TrustBadge';
 import { store } from '../../mock/store';
-import { formatINR } from '../../domain/india/currency';
 import { useLanguage } from '../../domain/i18n/LanguageContext';
+import { LivePropertyDemoModal } from './LivePropertyDemoModal';
 
 interface ListingCardProps {
   listing: Listing;
@@ -30,6 +30,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
   const [shareToast, setShareToast] = useState(false);
   const [phoneRevealed, setPhoneRevealed] = useState(false);
   const [revealsRemaining, setRevealsRemaining] = useState(store.getContactRevealsRemaining());
+  const [liveDemoOpen, setLiveDemoOpen] = useState(false);
 
   useEffect(() => {
     const handleStorage = () => {
@@ -106,8 +107,6 @@ export const ListingCard: React.FC<ListingCardProps> = ({
     return pills.slice(0, 3);
   };
 
-  const areaSqFt = listing.propertyDetails?.areaSqFt || listing.attributes.area;
-  const pricePerSqFt = areaSqFt && areaSqFt > 0 ? Math.round(listing.price / areaSqFt) : null;
   const isRera = Boolean(listing.propertyDetails?.reraId || listing.propertyDetails?.reraApproved);
   const roadWidth = listing.attributes.roadWidth || listing.propertyDetails?.roadWidth;
 
@@ -174,7 +173,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
         </button>
       </div>
 
-      {/* Image Container */}
+      {/* Image Container (Exact 99acres card style) */}
       <div className="relative aspect-[16/10] bg-cream-200 overflow-hidden">
         <img
           src={listing.images[0]}
@@ -186,30 +185,43 @@ export const ListingCard: React.FC<ListingCardProps> = ({
         {/* Overlay gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-navy-950/70 via-transparent to-transparent opacity-80" />
 
-        {/* Trust Badge Floating */}
-        <div className="absolute bottom-3 left-3 z-10">
+        {/* 99acres Signature Price Pill on Image Bottom-Left (Exact match to screenshot) */}
+        <div className="absolute bottom-3 left-3 z-10 bg-white/95 backdrop-blur-md text-navy-950 font-black text-sm px-2.5 py-1 rounded-xl shadow-md border border-gray-200">
+          {listing.formattedPrice}
+        </div>
+
+        {/* Live Demo 360° Button on Image Bottom-Right */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setLiveDemoOpen(true);
+          }}
+          className="absolute bottom-3 right-3 z-10 px-2.5 py-1 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-[11px] flex items-center gap-1 shadow-md hover:scale-105 transition-all cursor-pointer"
+          title="Interactive Live Demo of how apartment/house is"
+        >
+          <Video className="w-3.5 h-3.5" />
+          <span>Live Demo</span>
+        </button>
+
+        {/* Trust Score & Verification Badge Top-Left */}
+        <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5">
           <TrustBadge
             trustScore={listing.trustScore}
             size="sm"
             onClick={onOpenTrustModal ? () => onOpenTrustModal(listing) : undefined}
           />
-        </div>
-
-        {/* Category & RERA Tags */}
-        <div className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5">
           {isRera && (
             <span className="text-[10px] font-extrabold text-white bg-trust-green px-2 py-0.5 rounded-md shadow">
               RERA
             </span>
           )}
-          <span className="text-[11px] font-semibold text-white/90 bg-navy-900/80 backdrop-blur-md px-2 py-0.5 rounded-md">
-            {listing.attributes?.propertyType || listing.categoryName}
-          </span>
         </div>
 
         {/* Photo count indicator */}
         {listing.images.length > 1 && (
-          <div className="absolute top-3 left-3 z-10 bg-navy-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
+          <div className="absolute top-10 left-3 z-10 bg-navy-900/80 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-md">
             📷 {listing.images.length} {t('photosCount')}
           </div>
         )}
@@ -218,28 +230,20 @@ export const ListingCard: React.FC<ListingCardProps> = ({
       {/* Content Section */}
       <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
         <div>
-          {/* Price Header */}
-          <div className="flex items-baseline justify-between gap-2 mb-1">
-            <span className="font-display text-2xl font-bold text-navy-900">
-              {listing.formattedPrice}
-            </span>
-            {pricePerSqFt && (
-              <span className="text-[11px] text-orange-600 font-bold bg-orange-50 px-2 py-0.5 rounded-md">
-                {formatINR(pricePerSqFt)}/sq ft
-              </span>
-            )}
-          </div>
-
           {/* Title */}
-          <h3 className="text-sm font-bold text-navy-900 line-clamp-2 leading-snug group-hover:text-orange-600 transition-colors mb-2">
+          <h3 className="text-base font-extrabold text-navy-950 line-clamp-1 leading-snug group-hover:text-[#0078DB] transition-colors mb-1">
             {listing.title}
           </h3>
 
-          {/* Location */}
-          <div className="flex items-center gap-1 text-xs text-navy-700 mb-3">
-            <MapPin className="w-3.5 h-3.5 text-orange-500 shrink-0" />
-            <span className="truncate">{listing.location.locality}, {listing.location.city}</span>
-          </div>
+          {/* Location: In cherantani park bansdroni, Kolkata */}
+          <p className="text-xs text-navy-700 truncate mb-1">
+            In <span className="font-extrabold text-navy-900">{listing.location.locality}</span>, {listing.location.city}
+          </p>
+
+          {/* Posted by Owner • 3 months ago */}
+          <p className="text-[11px] font-semibold text-gray-500 mb-2.5">
+            Posted by <span className="font-bold text-navy-800">{listing.attributes?.postedBy || (listing.sellerType === 'OWNER' ? 'Owner' : 'Builder')}</span> • {listing.attributes?.postedAgo || '3 months ago'}
+          </p>
 
           {/* Dynamic Attribute Pills & Road Width */}
           <div className="flex flex-wrap gap-1.5 mb-3">
@@ -320,6 +324,21 @@ export const ListingCard: React.FC<ListingCardProps> = ({
             </div>
 
             <div className="flex items-center gap-3">
+              {/* Live Demo Trigger */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setLiveDemoOpen(true);
+                }}
+                className="flex items-center gap-1 text-xs font-bold text-orange-600 hover:text-orange-700 transition-colors cursor-pointer"
+                title="Watch Live Walkthrough Demo"
+              >
+                <Video className="w-3.5 h-3.5" />
+                <span>Live Demo</span>
+              </button>
+
               {onQuickView && (
                 <button
                   type="button"
@@ -351,6 +370,14 @@ export const ListingCard: React.FC<ListingCardProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Interactive Live Apartment / House 360° Walkthrough Demo Modal */}
+      <LivePropertyDemoModal
+        listing={listing}
+        isOpen={liveDemoOpen}
+        onClose={() => setLiveDemoOpen(false)}
+        onOpenSubscriptionModal={onOpenSubscriptionModal}
+      />
     </div>
   );
 };

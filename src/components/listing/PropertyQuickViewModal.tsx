@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, MapPin, CheckCircle, ShieldCheck, Phone, Check, ArrowRight, Layers, FileText, ExternalLink } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, MapPin, CheckCircle, ShieldCheck, Phone, Check, ArrowRight, Layers, FileText, ExternalLink, Video } from 'lucide-react';
 import type { Listing } from '../../types';
 import { TrustBadge } from '../trust/TrustBadge';
 import { formatINR } from '../../domain/india/currency';
 import { store } from '../../mock/store';
 import { useLanguage } from '../../domain/i18n/LanguageContext';
+import { LivePropertyDemoModal } from './LivePropertyDemoModal';
 
 interface PropertyQuickViewModalProps {
   listing: Listing | null;
@@ -25,6 +26,7 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
   const [phoneRevealed, setPhoneRevealed] = useState(false);
   const [revealsRemaining, setRevealsRemaining] = useState(store.getContactRevealsRemaining());
+  const [liveDemoModalOpen, setLiveDemoModalOpen] = useState(false);
 
   useEffect(() => {
     setCurrentImgIndex(0);
@@ -125,6 +127,17 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
                 alt={`${listing.title} view ${currentImgIndex + 1}`}
                 className="w-full h-full object-cover transition-all duration-300"
               />
+
+              {/* 🎥 Live Walkthrough Demo Button */}
+              <button
+                type="button"
+                onClick={() => setLiveDemoModalOpen(true)}
+                className="absolute top-3 right-3 z-10 px-3 py-1.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs flex items-center gap-1.5 shadow-lg hover:scale-105 transition-all cursor-pointer"
+                title="Watch Live Room-by-Room Walkthrough Demo"
+              >
+                <Video className="w-3.5 h-3.5 animate-pulse" />
+                <span>🎥 Live Room-by-Room Demo</span>
+              </button>
 
               {/* Prev / Next buttons */}
               {images.length > 1 && (
@@ -340,6 +353,14 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
           )}
         </div>
       </div>
+
+      {/* Interactive Live Apartment / House 360° Walkthrough Demo Modal */}
+      <LivePropertyDemoModal
+        listing={listing}
+        isOpen={liveDemoModalOpen}
+        onClose={() => setLiveDemoModalOpen(false)}
+        onOpenSubscriptionModal={onOpenSubscriptionModal}
+      />
     </div>
   );
 };

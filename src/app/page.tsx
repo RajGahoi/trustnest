@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, ArrowUpRight, Building2, Trees, Factory, Home, Building, Sparkles, Phone, ShieldCheck, UserCheck, KeyRound } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Building2, Trees, Factory, Home, Building, Sparkles, Phone, ShieldCheck, UserCheck, KeyRound, Video } from 'lucide-react';
 import { ListingCard } from '../components/listing/ListingCard';
 import { TrustScoreChart } from '../components/trust/TrustScoreChart';
 import { VerificationTimeline } from '../components/trust/VerificationTimeline';
@@ -10,6 +10,7 @@ import { PropertyQuickViewModal } from '../components/listing/PropertyQuickViewM
 import { SubscriptionModal } from '../components/monetization/SubscriptionModal';
 import { ProjectSpotlightCarousel } from '../components/home/ProjectSpotlightCarousel';
 import { NinetyNineAcresBillboardHero } from '../components/home/NinetyNineAcresBillboardHero';
+import { LivePropertyDemoModal } from '../components/listing/LivePropertyDemoModal';
 import { store } from '../mock/store';
 import { api } from '../services/api';
 import { useLanguage } from '../domain/i18n/LanguageContext';
@@ -24,9 +25,10 @@ export const HomePage: React.FC<HomePageProps> = ({
   onNavigate,
   onOpenListingDetail
 }) => {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const [selectedTrustListing, setSelectedTrustListing] = useState<Listing | null>(null);
   const [quickViewListing, setQuickViewListing] = useState<Listing | null>(null);
+  const [liveDemoListing, setLiveDemoListing] = useState<Listing | null>(null);
   const [subscriptionModalOpen, setSubscriptionModalOpen] = useState(false);
   const [activePropertyTab, setActivePropertyTab] = useState<'ALL' | 'COMMERCIAL' | 'AGRICULTURAL' | 'INDUSTRIAL' | 'PLOTS' | 'RESIDENTIAL'>('ALL');
   const [revealsRemaining, setRevealsRemaining] = useState(store.getContactRevealsRemaining());
@@ -265,6 +267,179 @@ export const HomePage: React.FC<HomePageProps> = ({
         />
       </section>
 
+      {/* 1.8 LIVE APARTMENT & HOUSE 360° DEMOS SHOWCASE (AS SEEN IN USER IMAGE) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-8">
+        <div className="bg-gradient-to-r from-navy-950 via-navy-900 to-[#0B132B] rounded-3xl p-5 sm:p-8 text-white border border-white/10 shadow-2xl relative overflow-hidden">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/90 text-white font-extrabold text-[11px] uppercase tracking-wider mb-2 shadow-md">
+                <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+                <span>99acres 360° Live Inspection</span>
+              </div>
+              <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-white">
+                {language === 'hi' ? 'लाइव अपार्टमेंट व हाउस डेमो (कमरे दर कमरे)' : 'Live Apartment & House Demos (Room by Room)'}
+              </h2>
+              <p className="text-xs sm:text-sm text-gray-300 mt-1 max-w-xl">
+                {language === 'hi'
+                  ? 'असली कमरों, टाइल्स, दीवारों, प्राकृतिक धूप और 40-100 फीट सड़क का लाइव 360° वॉकथ्रू और ऑन-साइट इंस्पेक्टर से सीधा संवाद।'
+                  : 'Experience actual condition of rooms, flooring, ventilation, and road views with interactive 360° pan & on-site inspector video call.'}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => onNavigate('search?category=all')}
+              className="text-xs font-bold text-orange-400 hover:text-orange-300 flex items-center gap-1 shrink-0 self-start sm:self-auto cursor-pointer"
+            >
+              <span>{language === 'hi' ? 'सभी लाइव डेमो देखें' : 'Explore All Live Demos'}</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Cards Grid featuring User's Exact Apartment + Curated Listings */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {/* 1. Chirantani Park Bansdroni (User's Exact Uploaded Apartment!) */}
+            <div
+              onClick={() => {
+                const target = listings.find(l => l.id === 'prop-apt-chirantani') || listings[0];
+                setLiveDemoListing(target);
+              }}
+              className="group bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl overflow-hidden cursor-pointer transition-all hover:scale-[1.02] shadow-xl flex flex-col justify-between"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden bg-black">
+                <img
+                  src="chirantani-apartment.jpg"
+                  alt="2 BHK Apartment in Chirantani Park Bansdroni"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
+
+                {/* 99acres Price Tag on Image */}
+                <div className="absolute bottom-3 left-3 bg-white text-navy-950 font-black text-sm px-2.5 py-1 rounded-xl shadow-md">
+                  ₹ 19 L
+                </div>
+
+                <div className="absolute bottom-3 right-3 bg-red-600 text-white font-extrabold text-[11px] px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-md animate-pulse">
+                  <Video className="w-3.5 h-3.5" />
+                  <span>Live Demo</span>
+                </div>
+
+                <span className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-emerald-400 font-mono text-[10px] font-bold px-2 py-0.5 rounded">
+                  ✓ Verified Owner
+                </span>
+              </div>
+
+              <div className="p-4 text-left">
+                <h3 className="font-extrabold text-base text-white group-hover:text-orange-400 transition-colors">
+                  2 BHK Apartment, 2 Baths
+                </h3>
+                <p className="text-xs text-gray-300 mt-0.5">
+                  In <span className="font-bold text-white">Chirantani Park, Bansdroni</span>, Kolkata
+                </p>
+                <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-white/10 text-xs text-gray-400">
+                  <span>Posted by <strong className="text-white">Owner</strong> • 3 months ago</span>
+                  <span className="text-orange-400 font-bold group-hover:translate-x-1 transition-transform">
+                    View Demo →
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. Mahindra AquaVista 3 BHK Villa */}
+            <div
+              onClick={() => {
+                const target = listings.find(l => l.title.includes('Mahindra') || l.title.includes('Villa')) || listings[1];
+                setLiveDemoListing(target);
+              }}
+              className="group bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl overflow-hidden cursor-pointer transition-all hover:scale-[1.02] shadow-xl flex flex-col justify-between"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden bg-black">
+                <img
+                  src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80"
+                  alt="Mahindra AquaVista"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
+
+                <div className="absolute bottom-3 left-3 bg-white text-navy-950 font-black text-sm px-2.5 py-1 rounded-xl shadow-md">
+                  ₹ 85 L
+                </div>
+
+                <div className="absolute bottom-3 right-3 bg-red-600 text-white font-extrabold text-[11px] px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-md animate-pulse">
+                  <Video className="w-3.5 h-3.5" />
+                  <span>Live Demo</span>
+                </div>
+
+                <span className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-emerald-400 font-mono text-[10px] font-bold px-2 py-0.5 rounded">
+                  ✓ RERA Platinum
+                </span>
+              </div>
+
+              <div className="p-4 text-left">
+                <h3 className="font-extrabold text-base text-white group-hover:text-orange-400 transition-colors">
+                  3 BHK Lakeview Luxury Residence
+                </h3>
+                <p className="text-xs text-gray-300 mt-0.5">
+                  In <span className="font-bold text-white">Mahindra World City</span>, GST Road
+                </p>
+                <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-white/10 text-xs text-gray-400">
+                  <span>Road: <strong className="text-white">100 ft Wide Road</strong></span>
+                  <span className="text-orange-400 font-bold group-hover:translate-x-1 transition-transform">
+                    View Demo →
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. Corporate IT Suite DLF CyberCity */}
+            <div
+              onClick={() => {
+                const target = listings.find(l => l.title.includes('CyberCity') || l.title.includes('Office')) || listings[2];
+                setLiveDemoListing(target);
+              }}
+              className="group bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl overflow-hidden cursor-pointer transition-all hover:scale-[1.02] shadow-xl flex flex-col justify-between hidden lg:flex"
+            >
+              <div className="relative aspect-[16/10] overflow-hidden bg-black">
+                <img
+                  src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80"
+                  alt="DLF CyberCity Office"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
+
+                <div className="absolute bottom-3 left-3 bg-white text-navy-950 font-black text-sm px-2.5 py-1 rounded-xl shadow-md">
+                  ₹ 4.20 Cr
+                </div>
+
+                <div className="absolute bottom-3 right-3 bg-red-600 text-white font-extrabold text-[11px] px-2.5 py-1 rounded-xl flex items-center gap-1 shadow-md animate-pulse">
+                  <Video className="w-3.5 h-3.5" />
+                  <span>Live Demo</span>
+                </div>
+
+                <span className="absolute top-3 left-3 bg-black/60 backdrop-blur-md text-emerald-400 font-mono text-[10px] font-bold px-2 py-0.5 rounded">
+                  ✓ Grade A Corporate
+                </span>
+              </div>
+
+              <div className="p-4 text-left">
+                <h3 className="font-extrabold text-base text-white group-hover:text-orange-400 transition-colors">
+                  Corporate IT Office (65 Workstations)
+                </h3>
+                <p className="text-xs text-gray-300 mt-0.5">
+                  In <span className="font-bold text-white">DLF CyberCity Phase 2</span>, Gurugram
+                </p>
+                <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-white/10 text-xs text-gray-400">
+                  <span>Power: <strong className="text-white">100% DG Backup</strong></span>
+                  <span className="text-orange-400 font-bold group-hover:translate-x-1 transition-transform">
+                    View Demo →
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 2. REAL ESTATE CATEGORY DISCOVERY RAILS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between mb-8">
@@ -474,6 +649,14 @@ export const HomePage: React.FC<HomePageProps> = ({
           setQuickViewListing(null);
           onNavigate(`listing/${slug}`);
         }}
+      />
+
+      {/* LIVE APARTMENT / HOUSE 360° DEMO MODAL */}
+      <LivePropertyDemoModal
+        listing={liveDemoListing}
+        isOpen={Boolean(liveDemoListing)}
+        onClose={() => setLiveDemoListing(null)}
+        onOpenSubscriptionModal={() => setSubscriptionModalOpen(true)}
       />
 
       {/* SUBSCRIPTION & PRICING PLANS MODAL */}
