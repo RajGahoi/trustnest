@@ -279,7 +279,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
       {/* 1. PANORAMIC BILLBOARD HERO CAROUSEL (EXACT 99ACRES HERO) */}
       {/* ======================================================== */}
       <div
-        className="relative w-full overflow-hidden bg-[#0A0F1D] text-white min-h-[380px] sm:min-h-[440px] md:min-h-[480px] lg:min-h-[520px] shadow-2xl"
+        className="relative w-full overflow-hidden bg-zinc-950 text-white min-h-[380px] sm:min-h-[440px] md:min-h-[480px] lg:min-h-[520px] shadow-2xl"
       >
         {/* Horizontal sliding track with smooth carousel transition */}
         <div
@@ -291,16 +291,16 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               key={slideItem.id}
               className="w-full shrink-0 relative min-h-[380px] sm:min-h-[440px] md:min-h-[480px] lg:min-h-[520px] flex items-center"
             >
-              {/* Background Panoramic Architectural Image */}
+              {/* Background Panoramic Architectural Image (Crisp, High-Quality Render) */}
               <div className="absolute inset-0 z-0">
                 <img
                   src={slideItem.image}
                   alt={slideItem.projectName}
-                  className="w-full h-full object-cover object-center filter brightness-[0.45] saturate-125 transform scale-100"
+                  className="w-full h-full object-cover object-center filter brightness-[0.72] contrast-[1.05] saturate-110 transform scale-100"
                 />
-                {/* 99acres Signature Dark Overlay Gradients */}
-                <div className="absolute inset-0 bg-gradient-to-r from-[#070B18]/95 via-[#0A0F1D]/80 to-[#070B18]/95" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0F1D] via-transparent to-black/60" />
+                {/* 99acres & MagicBricks Signature Dark Vignette Overlays (Pure Black, No Muddy Blue) */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-black/85" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/40" />
               </div>
 
               {/* Content Container */}
@@ -308,29 +308,29 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
                   {/* Left Column: Developer Badge, Config & Starting Price */}
                   <div className="lg:col-span-4 text-center lg:text-left">
-                    {/* Developer Logo Badge */}
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-red-600/90 text-white font-extrabold text-[11px] sm:text-xs tracking-wider uppercase shadow-lg backdrop-blur-md mb-3 sm:mb-4">
+                    {/* Developer Logo Badge (MagicBricks/99acres Red) */}
+                    <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#D92228] text-white font-extrabold text-[11px] sm:text-xs tracking-wider uppercase shadow-xl mb-3 sm:mb-4">
                       <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
                       <span>{slideItem.developerLogoText}</span>
                     </div>
 
-                    {/* Unit Configuration */}
-                    <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight drop-shadow-md leading-tight">
+                    {/* Unit Configuration (Pure, Brilliant White) */}
+                    <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-black !text-white text-white tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)] leading-tight">
                       {slideItem.configuration}
                     </h2>
 
                     {/* Price Banner */}
                     <div className="mt-2.5 sm:mt-3">
-                      <p className="text-[11px] sm:text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                      <p className="text-[11px] sm:text-xs font-semibold text-gray-300 uppercase tracking-widest drop-shadow">
                         {language === 'hi' ? 'शुरुआती कीमत' : 'STARTING PRICE AS'}
                       </p>
-                      <p className="text-xl sm:text-2xl md:text-3xl font-extrabold text-amber-300 drop-shadow">
+                      <p className="text-xl sm:text-2xl md:text-3xl font-black text-[#FBBF24] drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                         {slideItem.startingPrice}
                       </p>
                     </div>
 
                     {/* RERA Badge Pill */}
-                    <div className="mt-4 hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-xs font-mono font-medium text-cream-100">
+                    <div className="mt-4 hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-black/50 border border-white/25 text-xs font-mono font-medium !text-white shadow-md backdrop-blur-xs">
                       <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
                       <span>RERA: {slideItem.reraNumber}</span>
                     </div>
@@ -338,28 +338,28 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
 
                   {/* Middle Column: Project Branding, Location & Architectural Render */}
                   <div className="lg:col-span-4 text-center flex flex-col items-center">
-                    <div className="p-3 sm:p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md w-full max-w-sm">
-                      <div className="flex items-center justify-center gap-2 mb-1">
-                        <Sparkles className="w-4 h-4 text-orange-400" />
-                        <span className="text-[10px] font-extrabold uppercase tracking-widest text-orange-400">
+                    <div className="p-4 sm:p-5 rounded-2xl bg-black/65 border border-white/20 backdrop-blur-md w-full max-w-sm shadow-2xl">
+                      <div className="flex items-center justify-center gap-2 mb-1.5">
+                        <Sparkles className="w-4 h-4 text-[#F59E0B]" />
+                        <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#F59E0B]">
                           Featured Master Launch
                         </span>
                       </div>
 
-                      <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-extrabold text-white">
+                      <h3 className="font-display text-xl sm:text-2xl md:text-3xl font-black !text-white text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
                         {slideItem.projectName}
                       </h3>
-                      <p className="text-xs sm:text-sm font-semibold text-amber-soft mt-0.5">
+                      <p className="text-xs sm:text-sm font-bold text-amber-200 mt-0.5 drop-shadow">
                         BY {slideItem.developer.toUpperCase()}
                       </p>
 
-                      <p className="text-xs text-gray-300 mt-2 flex items-center justify-center gap-1">
-                        <MapPin className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+                      <p className="text-xs text-gray-200 mt-2 flex items-center justify-center gap-1">
+                        <MapPin className="w-3.5 h-3.5 text-[#E4222D] shrink-0" />
                         <span>{slideItem.locality}</span>
                       </p>
 
-                      <div className="mt-3 pt-3 border-t border-white/10">
-                        <p className="text-xs font-bold text-emerald-300 uppercase tracking-wide">
+                      <div className="mt-3 pt-3 border-t border-white/15">
+                        <p className="text-xs font-bold text-emerald-400 uppercase tracking-wide">
                           {slideItem.tagline}
                         </p>
                       </div>
@@ -368,7 +368,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
 
                   {/* Right Column: UP RERA Box with QR Code, Bank Account & Disclaimer */}
                   <div className="lg:col-span-4 hidden lg:block">
-                    <div className="p-4 rounded-2xl bg-black/60 border border-white/15 backdrop-blur-md text-[11px] space-y-2 text-gray-300 shadow-xl">
+                    <div className="p-4 rounded-2xl bg-black/75 border border-white/20 backdrop-blur-md text-[11px] space-y-2 text-gray-200 shadow-2xl">
                       <div className="flex items-start gap-3">
                         {/* Inline Sharp RERA QR Code SVG Pattern */}
                         <div className="w-20 h-20 bg-white p-1 rounded-lg shrink-0 flex items-center justify-center shadow">
@@ -400,8 +400,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
                           <p className="font-bold text-white text-[11px]">
                             RERA Reg. No.: <span className="text-orange-400 font-mono">{slideItem.reraNumber}</span>
                           </p>
-                          <p className="text-[10px] text-gray-400">
-                            Website: <span className="text-blue-400 underline">{slideItem.reraWebsite}</span>
+                          <p className="text-[10px] text-gray-300">
+                            Website: <span className="text-sky-300 underline">{slideItem.reraWebsite}</span>
                           </p>
                           <p className="text-[10px] text-gray-300">
                             Launch Date: <span className="font-semibold text-white">{slideItem.launchDate}</span>
@@ -416,7 +416,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
                       </div>
 
                       <div className="pt-1.5 border-t border-white/10 text-[9px] text-gray-400 leading-snug">
-                        <p className="font-semibold text-gray-300">
+                        <p className="font-semibold text-gray-200">
                           Bank: {slideItem.bankNameAndAddress}
                         </p>
                         <p className="mt-1 line-clamp-2 text-gray-400 italic">
@@ -497,7 +497,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
       {/* ======================================================== */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-30 -mt-10 sm:-mt-14 md:-mt-16">
         <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-gray-200/80 p-3 sm:p-5 transition-all">
-          {/* Top Tab Bar (Exact 99acres tabs) */}
+          {/* Top Tab Bar (Exact MagicBricks & 99acres signature tabs) */}
           <div className="flex items-center gap-4 sm:gap-8 border-b border-gray-200 pb-3 overflow-x-auto no-scrollbar text-xs sm:text-sm font-bold">
             {/* Buy */}
             <button
@@ -505,8 +505,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               onClick={() => { setActiveTab('BUY'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${
                 activeTab === 'BUY'
-                  ? 'border-[#0078DB] text-navy-950 font-extrabold'
-                  : 'border-transparent text-gray-600 hover:text-navy-900'
+                  ? 'border-[#D92228] text-gray-950 font-black'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
               }`}
             >
               {language === 'hi' ? 'खरीदें (Buy)' : 'Buy'}
@@ -518,8 +518,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               onClick={() => { setActiveTab('RENT'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${
                 activeTab === 'RENT'
-                  ? 'border-[#0078DB] text-navy-950 font-extrabold'
-                  : 'border-transparent text-gray-600 hover:text-navy-900'
+                  ? 'border-[#D92228] text-gray-950 font-black'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
               }`}
             >
               {language === 'hi' ? 'किराया (Rent)' : 'Rent'}
@@ -531,8 +531,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               onClick={() => { setActiveTab('PG'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] flex items-center gap-1 ${
                 activeTab === 'PG'
-                  ? 'border-[#0078DB] text-navy-950 font-extrabold'
-                  : 'border-transparent text-gray-600 hover:text-navy-900'
+                  ? 'border-[#D92228] text-gray-950 font-black'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
               }`}
             >
               <span>{language === 'hi' ? 'पीजी व को-लिविंग' : 'PG / Co-Living'}</span>
@@ -547,12 +547,12 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               onClick={() => { setActiveTab('NEW_LAUNCH'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] flex items-center gap-1.5 ${
                 activeTab === 'NEW_LAUNCH'
-                  ? 'border-[#0078DB] text-navy-950 font-extrabold'
-                  : 'border-transparent text-gray-600 hover:text-navy-900'
+                  ? 'border-[#D92228] text-gray-950 font-black'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
               }`}
             >
               <span>{language === 'hi' ? 'नई लॉन्च' : 'New Launch'}</span>
-              <span className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#D92228] animate-pulse" />
             </button>
 
             {/* Commercial */}
@@ -561,8 +561,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               onClick={() => { setActiveTab('COMMERCIAL'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${
                 activeTab === 'COMMERCIAL'
-                  ? 'border-[#0078DB] text-navy-950 font-extrabold'
-                  : 'border-transparent text-gray-600 hover:text-navy-900'
+                  ? 'border-[#D92228] text-gray-950 font-black'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
               }`}
             >
               {language === 'hi' ? 'कमर्शियल' : 'Commercial'}
@@ -574,8 +574,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               onClick={() => { setActiveTab('PLOTS'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${
                 activeTab === 'PLOTS'
-                  ? 'border-[#0078DB] text-navy-950 font-extrabold'
-                  : 'border-transparent text-gray-600 hover:text-navy-900'
+                  ? 'border-[#D92228] text-gray-950 font-black'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
               }`}
             >
               {language === 'hi' ? 'प्लॉट व जमीन' : 'Plots/Land'}
@@ -587,8 +587,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               onClick={() => { setActiveTab('PROJECTS'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${
                 activeTab === 'PROJECTS'
-                  ? 'border-[#0078DB] text-navy-950 font-extrabold'
-                  : 'border-transparent text-gray-600 hover:text-navy-900'
+                  ? 'border-[#D92228] text-gray-950 font-black'
+                  : 'border-transparent text-gray-600 hover:text-gray-900'
               }`}
             >
               {language === 'hi' ? 'प्रोजेक्ट्स' : 'Projects'}
@@ -597,14 +597,14 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
             {/* Separator */}
             <span className="text-gray-300 hidden md:inline">|</span>
 
-            {/* Post Property FREE */}
+            {/* Post Property FREE (MagicBricks Red Highlight) */}
             <button
               type="button"
               onClick={() => onNavigate('post')}
-              className="pb-2 whitespace-nowrap cursor-pointer transition-all flex items-center gap-1.5 text-navy-900 hover:text-orange-600 ml-auto"
+              className="pb-2 whitespace-nowrap cursor-pointer transition-all flex items-center gap-1.5 text-gray-900 hover:text-[#D92228] ml-auto font-bold"
             >
               <span>{language === 'hi' ? 'प्रॉपर्टी पोस्ट करें' : 'Post Property'}</span>
-              <span className="text-[10px] font-black uppercase px-1.5 py-0.5 rounded bg-emerald-600 text-white tracking-wide">
+              <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-[#D92228] text-white tracking-wide shadow-xs">
                 FREE
               </span>
             </button>
@@ -618,11 +618,11 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
             {/* Subcategory Select (e.g. All Residential ∨) */}
             <div className="w-full md:w-auto relative shrink-0">
               <div className="flex items-center gap-2 px-3 py-2.5 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 transition-colors">
-                <Layers className="w-4 h-4 text-orange-500 shrink-0" />
+                <Layers className="w-4 h-4 text-[#D92228] shrink-0" />
                 <select
                   value={selectedSubCategory}
                   onChange={e => setSelectedSubCategory(e.target.value)}
-                  className="bg-transparent text-xs sm:text-sm font-bold text-navy-950 focus:outline-none cursor-pointer pr-4"
+                  className="bg-transparent text-xs sm:text-sm font-bold text-gray-900 focus:outline-none cursor-pointer pr-4"
                   aria-label="Select Subcategory"
                 >
                   {getSubcategoryOptions().map(opt => (
@@ -635,25 +635,25 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
             </div>
 
             {/* Search Input Field with Rotating Placeholder */}
-            <div className="flex items-center gap-2.5 px-4 py-2.5 bg-white border border-gray-300 rounded-xl focus-within:ring-2 focus-within:ring-[#0078DB] focus-within:border-[#0078DB] w-full flex-1 transition-all shadow-xs">
+            <div className="flex items-center gap-2.5 px-4 py-2.5 bg-white border border-gray-300 rounded-xl focus-within:ring-2 focus-within:ring-[#D92228] focus-within:border-[#D92228] w-full flex-1 transition-all shadow-xs">
               <Search className="w-5 h-5 text-gray-400 shrink-0" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder={placeholderSuggestions[placeholderIndex]}
-                className="w-full text-navy-950 font-medium placeholder:text-gray-400 focus:outline-none text-sm sm:text-base"
+                className="w-full text-gray-900 font-medium placeholder:text-gray-400 focus:outline-none text-sm sm:text-base"
                 aria-label="Search properties input"
               />
 
-              {/* Action Cluster: 99acres Geolocation & Voice Search Circular Buttons (Exact 99acres match) */}
+              {/* Action Cluster: MagicBricks/99acres Geolocation & Voice Search Circular Buttons */}
               <div className="flex items-center gap-2 shrink-0">
                 {/* 🎯 Geolocation Button */}
                 <button
                   type="button"
                   onClick={handleLocateMe}
                   title={language === 'hi' ? 'मेरी वर्तमान लोकेशन उपयोग करें (Locate Me)' : 'Locate Me / Near Me'}
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#F0F5FA] hover:bg-[#E2EDF9] text-[#0078DB] flex items-center justify-center transition-all cursor-pointer shadow-xs hover:scale-105 active:scale-95 shrink-0"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-red-50 hover:bg-red-100 text-[#D92228] border border-red-200/60 flex items-center justify-center transition-all cursor-pointer shadow-xs hover:scale-105 active:scale-95 shrink-0"
                   aria-label="Locate Me"
                 >
                   <Crosshair className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2]" />
@@ -664,7 +664,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
                   type="button"
                   onClick={handleOpenVoiceSearch}
                   title={language === 'hi' ? 'बोलकर खोजें (Voice Search)' : 'Search by Voice'}
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#F0F5FA] hover:bg-[#E2EDF9] text-[#0078DB] flex items-center justify-center transition-all cursor-pointer shadow-xs hover:scale-105 active:scale-95 shrink-0 group"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-red-50 hover:bg-red-100 text-[#D92228] border border-red-200/60 flex items-center justify-center transition-all cursor-pointer shadow-xs hover:scale-105 active:scale-95 shrink-0 group"
                   aria-label="Search by Voice"
                 >
                   <Mic className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2] group-hover:scale-110 transition-transform" />
@@ -672,10 +672,10 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               </div>
             </div>
 
-            {/* Blue 99acres "Search" Button */}
+            {/* Signature MagicBricks & 99acres Red "Search" Button */}
             <button
               type="submit"
-              className="w-full md:w-auto px-7 sm:px-8 py-2.5 sm:py-3 bg-[#0078DB] hover:bg-[#0066BA] text-white font-extrabold text-sm sm:text-base rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 active:scale-98"
+              className="w-full md:w-auto px-7 sm:px-9 py-2.5 sm:py-3 bg-[#D92228] hover:bg-[#BF1E23] text-white font-extrabold text-sm sm:text-base rounded-xl shadow-lg shadow-red-600/30 hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 active:scale-98"
             >
               <span>{language === 'hi' ? 'सर्च करें' : 'Search'}</span>
               <ArrowRight className="w-4 h-4 stroke-[3]" />
@@ -708,7 +708,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
                   setSearchQuery(chip.q);
                   onSearch(chip.q);
                 }}
-                className="px-3 py-1 bg-gray-100 hover:bg-[#0078DB] hover:text-white text-navy-800 rounded-full font-semibold transition-all cursor-pointer whitespace-nowrap text-xs"
+                className="px-3 py-1 bg-gray-100 hover:bg-[#D92228] hover:text-white text-gray-800 rounded-full font-semibold transition-all cursor-pointer whitespace-nowrap text-xs border border-gray-200"
               >
                 {chip.label}
               </button>

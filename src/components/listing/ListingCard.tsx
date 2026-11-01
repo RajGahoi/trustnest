@@ -451,7 +451,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
       <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
         <div>
           {/* Title */}
-          <h3 className="text-base font-extrabold text-navy-950 line-clamp-1 leading-snug group-hover:text-[#0078DB] transition-colors mb-1">
+          <h3 className="text-base font-extrabold text-navy-950 line-clamp-1 leading-snug group-hover:text-[#D92228] transition-colors mb-1">
             {listing.title}
           </h3>
 

@@ -210,7 +210,7 @@ export const LivePropertyDemoModal: React.FC<LivePropertyDemoModalProps> = ({
               }}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition-all cursor-pointer shrink-0 ${
                 activeRoomIndex === idx
-                  ? 'bg-[#0078DB] text-white shadow-md'
+                  ? 'bg-[#D92228] text-white shadow-md'
                   : 'bg-white hover:bg-gray-200 text-navy-900 border border-gray-300'
               }`}
             >
@@ -381,13 +381,13 @@ export const LivePropertyDemoModal: React.FC<LivePropertyDemoModalProps> = ({
               {/* Live Chat with Inspector */}
               <div>
                 <h5 className="text-[11px] font-extrabold uppercase tracking-wider text-gray-500 flex items-center gap-1 mb-1.5">
-                  <MessageSquare className="w-3.5 h-3.5 text-[#0078DB]" />
+                  <MessageSquare className="w-3.5 h-3.5 text-[#D92228]" />
                   <span>Live Inspection Q&A</span>
                 </h5>
 
                 <div className="bg-white rounded-2xl border border-gray-200 p-2.5 h-36 overflow-y-auto space-y-2 text-xs">
                   {chatMessages.map((msg, i) => (
-                    <div key={i} className={`p-2 rounded-xl ${msg.sender === 'You' ? 'bg-[#0078DB]/10 text-navy-950 ml-4' : 'bg-gray-100 text-gray-800 mr-4'}`}>
+                    <div key={i} className={`p-2 rounded-xl ${msg.sender === 'You' ? 'bg-[#D92228]/10 text-gray-950 ml-4' : 'bg-gray-100 text-gray-800 mr-4'}`}>
                       <p className="font-extrabold text-[10px] text-gray-500">{msg.sender}</p>
                       <p className="text-[11px] mt-0.5">{msg.text}</p>
                     </div>
@@ -401,11 +401,11 @@ export const LivePropertyDemoModal: React.FC<LivePropertyDemoModalProps> = ({
                     value={userChatInput}
                     onChange={(e) => setUserChatInput(e.target.value)}
                     placeholder={language === 'hi' ? 'इंस्पेक्टर से सवाल पूछें...' : 'Ask inspector a question...'}
-                    className="w-full text-xs px-3 py-2 bg-white border border-gray-300 rounded-xl focus:outline-none focus:border-[#0078DB]"
+                    className="w-full text-xs px-3 py-2 bg-white border border-gray-300 rounded-xl focus:outline-none focus:border-[#D92228]"
                   />
                   <button
                     type="submit"
-                    className="p-2 bg-[#0078DB] hover:bg-[#0066BA] text-white rounded-xl cursor-pointer shrink-0"
+                    className="p-2 bg-[#D92228] hover:bg-[#BF1E23] text-white rounded-xl cursor-pointer shrink-0"
                     title="Send"
                   >
                     <ChevronRight className="w-4 h-4 stroke-[2.5]" />

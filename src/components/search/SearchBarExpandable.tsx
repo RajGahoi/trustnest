@@ -178,7 +178,7 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
             type="button"
             onClick={() => setVoiceModalOpen(true)}
             title="Search by Voice"
-            className="w-8 h-8 rounded-full bg-[#F0F5FA] hover:bg-[#E2EDF9] text-[#0078DB] flex items-center justify-center transition-all cursor-pointer shadow-xs shrink-0"
+            className="w-8 h-8 rounded-full bg-red-50 hover:bg-red-100 text-[#D92228] border border-red-200/50 flex items-center justify-center transition-all cursor-pointer shadow-xs shrink-0"
             aria-label="Search by Voice"
           >
             <Mic className="w-4 h-4 stroke-[2.2]" />

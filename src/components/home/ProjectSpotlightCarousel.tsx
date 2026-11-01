@@ -189,7 +189,7 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
 
       {/* Main 99acres Featured Banner Card */}
       <div
-        className="relative rounded-3xl overflow-hidden border border-navy-900/15 shadow-xl bg-navy-950 group select-none transition-all"
+        className="relative rounded-3xl overflow-hidden border border-gray-800 shadow-2xl bg-zinc-950 group select-none transition-all"
       >
         {/* Horizontal sliding track with smooth carousel transition */}
         <div className="relative aspect-[16/9] sm:aspect-[21/9] w-full overflow-hidden">
@@ -206,16 +206,16 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
                 <img
                   src={proj.image}
                   alt={proj.name}
-                  className="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
+                  className="w-full h-full object-cover filter brightness-[0.75] contrast-[1.05] transition-transform duration-1000 ease-out group-hover:scale-105"
                 />
 
-                {/* Gradients matching 99acres card overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/20 to-navy-950/70" />
+                {/* Pure Black Gradients matching 99acres card overlay (No Muddy Blue) */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/35 to-black/60" />
 
                 {/* Top Left Branding Overlay (Exact 99acres style) */}
                 <div className="absolute top-4 sm:top-7 left-4 sm:left-7 z-10 text-white max-w-xl">
                   <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-[10px] sm:text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-orange-500 text-white shadow-md">
+                    <span className="text-[10px] sm:text-xs font-extrabold uppercase px-3 py-1 rounded-full bg-[#D92228] text-white shadow-md">
                       Featured Project
                     </span>
                     <span className="text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-600/90 text-white backdrop-blur-md">
@@ -223,21 +223,21 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
                     </span>
                   </div>
 
-                  <h2 className="font-display text-2xl sm:text-4xl font-extrabold text-white tracking-tight drop-shadow-md">
+                  <h2 className="font-display text-2xl sm:text-4xl font-black !text-white text-white tracking-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.95)]">
                     {proj.name}
                   </h2>
 
-                  <p className="text-xs sm:text-sm font-semibold text-cream-200 mt-1 flex items-center gap-1.5 drop-shadow">
-                    <MapPin className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+                  <p className="text-xs sm:text-sm font-semibold text-gray-200 mt-1 flex items-center gap-1.5 drop-shadow">
+                    <MapPin className="w-3.5 h-3.5 text-[#E4222D] shrink-0" />
                     <span>{proj.locality}, {proj.road}</span>
                   </p>
 
                   {/* Price & Road Access highlights */}
                   <div className="mt-3 hidden sm:flex items-center gap-2 flex-wrap">
-                    <span className="px-3 py-1 rounded-xl bg-white/20 backdrop-blur-md text-white font-extrabold text-xs">
+                    <span className="px-3.5 py-1.5 rounded-xl bg-black/60 backdrop-blur-md text-[#FBBF24] font-black text-xs border border-white/20 shadow-md">
                       💰 {proj.priceRange}
                     </span>
-                    <span className="px-3 py-1 rounded-xl bg-navy-900/80 backdrop-blur-md text-amber-soft font-bold text-xs border border-orange-500/30">
+                    <span className="px-3.5 py-1.5 rounded-xl bg-black/60 backdrop-blur-md text-gray-200 font-bold text-xs border border-white/20 shadow-md">
                       🛣️ {proj.road}
                     </span>
                   </div>
@@ -275,7 +275,7 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
                 onClick={() => setCurrentIndex(idx)}
                 className={`transition-all rounded-full cursor-pointer ${
                   currentIndex === idx
-                    ? 'w-7 h-2 bg-orange-500 shadow-sm scale-105'
+                    ? 'w-7 h-2 bg-[#D92228] shadow-sm scale-105'
                     : 'w-2 h-2 bg-white/50 hover:bg-white'
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}
@@ -285,20 +285,20 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
         </div>
 
         {/* Bottom Dark Action Ribbon (Identical to 99acres in user's image) */}
-        <div className="bg-[#0B132B] px-5 sm:px-8 py-3.5 sm:py-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-white">
+        <div className="bg-[#131722] px-5 sm:px-8 py-3.5 sm:py-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-white">
           {/* Left Side: Interested in this project by [Builder]? → */}
           <div
             onClick={() => onExploreProject && onExploreProject(currentProject.name)}
             className="flex items-center gap-1.5 text-xs sm:text-sm text-gray-300 hover:text-white cursor-pointer transition-colors group/builder w-full sm:w-auto text-center sm:text-left justify-center sm:justify-start"
           >
             <span>{language === 'hi' ? 'क्या आप इस प्रोजेक्ट में रुचि रखते हैं?' : 'Interested in this project by'}</span>
-            <span className="font-extrabold text-white group-hover/builder:text-orange-400 underline underline-offset-4 decoration-orange-500/50">
+            <span className="font-extrabold text-white group-hover/builder:text-[#D92228] underline underline-offset-4 decoration-red-500/50">
               {currentProject.developer}?
             </span>
-            <ArrowRight className="w-4 h-4 text-orange-400 group-hover/builder:translate-x-1 transition-transform shrink-0" />
+            <ArrowRight className="w-4 h-4 text-[#D92228] group-hover/builder:translate-x-1 transition-transform shrink-0" />
           </div>
 
-          {/* Right Side: Prominent Blue "📞 View Number" Button */}
+          {/* Right Side: Prominent Red "📞 View Number" Button (Signature MagicBricks & 99acres) */}
           <div className="w-full sm:w-auto shrink-0 flex items-center justify-center gap-2">
             {isPhoneRevealed ? (
               <div className="flex items-center gap-2 px-5 py-2.5 bg-emerald-500/20 border border-emerald-400 rounded-xl text-white font-mono font-bold text-sm tracking-wide">
@@ -312,10 +312,10 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
               <button
                 type="button"
                 onClick={handleRevealPhone}
-                className={`w-full sm:w-auto px-7 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-md ${
+                className={`w-full sm:w-auto px-7 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg ${
                   revealsRemaining <= 0
-                    ? 'bg-amber-500 hover:bg-amber-600 text-navy-950 font-extrabold'
-                    : 'bg-[#0078DB] hover:bg-[#0066BA] text-white shadow-[#0078DB]/30'
+                    ? 'bg-amber-500 hover:bg-amber-600 text-gray-950 font-extrabold'
+                    : 'bg-[#D92228] hover:bg-[#BF1E23] text-white shadow-red-600/30'
                 }`}
               >
                 <Phone className="w-4 h-4 fill-white" />
@@ -325,7 +325,7 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
                     : (language === 'hi' ? 'नंबर देखें (View Number)' : 'View Number')}
                 </span>
                 {revealsRemaining > 0 && (
-                  <span className="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-normal">
+                  <span className="text-[10px] bg-white/25 px-2 py-0.5 rounded-full font-normal">
                     {revealsRemaining} {language === 'hi' ? 'शेष' : 'left'}
                   </span>
                 )}

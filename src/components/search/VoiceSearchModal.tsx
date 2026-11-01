@@ -184,7 +184,7 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
           <button
             type="button"
             onClick={() => setSpeechLang(prev => (prev === 'en-IN' ? 'hi-IN' : 'en-IN'))}
-            className="flex items-center gap-1.5 px-3 py-1 bg-gray-100 hover:bg-[#0078DB] hover:text-white text-navy-900 rounded-full text-xs font-bold transition-all cursor-pointer border border-gray-200"
+            className="flex items-center gap-1.5 px-3 py-1 bg-gray-100 hover:bg-[#D92228] hover:text-white text-gray-900 rounded-full text-xs font-bold transition-all cursor-pointer border border-gray-200"
           >
             <Globe className="w-3.5 h-3.5" />
             <span>{speechLang === 'en-IN' ? 'English (India)' : 'हिन्दी (भारत)'}</span>
@@ -202,7 +202,7 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
         </div>
 
         {/* Title */}
-        <h3 className="font-display text-2xl font-black text-navy-950">
+        <h3 className="font-display text-2xl font-black text-gray-950">
           {isSearching
             ? (language === 'hi' ? 'सर्च हो रहा है...' : 'Searching Properties...')
             : isListening
@@ -221,8 +221,8 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
           {/* Outer Ripple Rings when Listening */}
           {isListening && (
             <>
-              <span className="absolute w-36 h-36 rounded-full bg-[#0078DB]/15 animate-ping" />
-              <span className="absolute w-28 h-28 rounded-full bg-[#0078DB]/25 animate-pulse" />
+              <span className="absolute w-36 h-36 rounded-full bg-[#D92228]/15 animate-ping" />
+              <span className="absolute w-28 h-28 rounded-full bg-[#D92228]/25 animate-pulse" />
             </>
           )}
 
@@ -237,7 +237,7 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
               isSearching
                 ? 'bg-emerald-600 text-white scale-105'
                 : isListening
-                ? 'bg-[#0078DB] text-white hover:bg-[#0066BA] scale-110 shadow-[#0078DB]/40'
+                ? 'bg-[#D92228] text-white hover:bg-[#BF1E23] scale-110 shadow-red-600/40'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
             aria-label={isListening ? 'Stop Listening' : 'Start Listening'}
@@ -257,7 +257,7 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
               {[60, 100, 40, 80, 50, 90, 70].map((h, i) => (
                 <span
                   key={i}
-                  className="w-1.5 bg-[#0078DB] rounded-full transition-all duration-150 animate-pulse"
+                  className="w-1.5 bg-[#D92228] rounded-full transition-all duration-150 animate-pulse"
                   style={{
                     height: `${Math.max(12, h * 0.32)}px`,
                     animationDelay: `${i * 120}ms`
@@ -271,12 +271,12 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
         {/* Live Speech Transcript / Interim Text */}
         <div className="min-h-[56px] px-4 py-2.5 bg-gray-50 rounded-2xl border border-gray-200 flex items-center justify-center">
           {transcript || interimText ? (
-            <p className="text-base sm:text-lg font-bold text-navy-950 flex items-center gap-2">
-              <Volume2 className="w-4 h-4 text-[#0078DB] shrink-0 animate-pulse" />
+            <p className="text-base sm:text-lg font-bold text-gray-950 flex items-center gap-2">
+              <Volume2 className="w-4 h-4 text-[#D92228] shrink-0 animate-pulse" />
               <span>"{transcript || interimText}"</span>
             </p>
           ) : isListening ? (
-            <p className="text-sm font-semibold text-[#0078DB] italic flex items-center gap-1.5 animate-pulse">
+            <p className="text-sm font-semibold text-[#D92228] italic flex items-center gap-1.5 animate-pulse">
               <Sparkles className="w-4 h-4" />
               <span>
                 {language === 'hi'
@@ -311,9 +311,9 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
                 key={idx}
                 type="button"
                 onClick={() => handleSelectQuery(q)}
-                className="px-3 py-1.5 bg-gray-100 hover:bg-[#0078DB] hover:text-white text-navy-900 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 border border-gray-200 shadow-xs"
+                className="px-3 py-1.5 bg-gray-100 hover:bg-[#D92228] hover:text-white text-gray-900 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5 border border-gray-200 shadow-xs group"
               >
-                <Mic className="w-3 h-3 text-[#0078DB] group-hover:text-white" />
+                <Mic className="w-3 h-3 text-[#D92228] group-hover:text-white" />
                 <span>{q}</span>
               </button>
             ))}
@@ -334,7 +334,7 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
             <button
               type="button"
               onClick={() => handleFinalSearch(transcript || interimText)}
-              className="flex-1 py-2.5 bg-[#0078DB] hover:bg-[#0066BA] text-white font-extrabold rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
+              className="flex-1 py-2.5 bg-[#D92228] hover:bg-[#BF1E23] text-white font-extrabold rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span>{language === 'hi' ? 'अभी खोजें' : 'Search Now'}</span>
               <ArrowRight className="w-4 h-4 stroke-[2.5]" />
