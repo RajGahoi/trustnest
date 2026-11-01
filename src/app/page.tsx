@@ -11,6 +11,7 @@ import { SubscriptionModal } from '../components/monetization/SubscriptionModal'
 import { ProjectSpotlightCarousel } from '../components/home/ProjectSpotlightCarousel';
 import { NinetyNineAcresBillboardHero } from '../components/home/NinetyNineAcresBillboardHero';
 import { LivePropertyDemoModal } from '../components/listing/LivePropertyDemoModal';
+import { RealApartmentWalkthroughViewer } from '../components/listing/RealApartmentWalkthroughViewer';
 import { PreferredAgentsCarousel } from '../components/home/PreferredAgentsCarousel';
 import { HomeLoansBanner } from '../components/loan/HomeLoansBanner';
 import { AdviceAndToolsRail } from '../components/tools/AdviceAndToolsRail';
@@ -444,6 +445,11 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
           </div>
         </div>
+      </section>
+
+      {/* 1.85 REAL APARTMENT & FLAT ROOM-BY-ROOM 360° WALKTHROUGH VIEWER */}
+      <section className="-mt-6 sm:-mt-8">
+        <RealApartmentWalkthroughViewer />
       </section>
 
       {/* 1.9 PREFERRED AGENTS & CERTIFIED DEALERS RAIL (EXACT MAGICBRICKS MATCH) */}
