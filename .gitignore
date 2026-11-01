@@ -27,6 +27,8 @@ dist-ssr
 data/*.db
 data/*.db-wal
 data/*.db-shm
+data/*.jpg
+data/*.png
 uploads/*
 !uploads/.gitkeep
 .env
