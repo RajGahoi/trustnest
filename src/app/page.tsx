@@ -11,6 +11,7 @@ import { SubscriptionModal } from '../components/monetization/SubscriptionModal'
 import { ProjectSpotlightCarousel } from '../components/home/ProjectSpotlightCarousel';
 import { NinetyNineAcresBillboardHero } from '../components/home/NinetyNineAcresBillboardHero';
 import { LivePropertyDemoModal } from '../components/listing/LivePropertyDemoModal';
+import { PreferredAgentsCarousel } from '../components/home/PreferredAgentsCarousel';
 import { store } from '../mock/store';
 import { api } from '../services/api';
 import { useLanguage } from '../domain/i18n/LanguageContext';
@@ -438,6 +439,14 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
           </div>
         </div>
+      </section>
+
+      {/* 1.9 PREFERRED AGENTS & CERTIFIED DEALERS RAIL (EXACT MAGICBRICKS MATCH) */}
+      <section className="-mt-8 sm:-mt-10">
+        <PreferredAgentsCarousel
+          onOpenSubscriptionModal={() => setSubscriptionModalOpen(true)}
+          onNavigate={onNavigate}
+        />
       </section>
 
       {/* 2. REAL ESTATE CATEGORY DISCOVERY RAILS */}
