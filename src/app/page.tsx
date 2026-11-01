@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, Building2, Trees, Factory, Home, Building, Sparkles, Phone, ShieldCheck, UserCheck, KeyRound } from 'lucide-react';
-import { SearchBarExpandable } from '../components/search/SearchBarExpandable';
 import { ListingCard } from '../components/listing/ListingCard';
 import { TrustScoreChart } from '../components/trust/TrustScoreChart';
 import { VerificationTimeline } from '../components/trust/VerificationTimeline';
@@ -11,6 +9,7 @@ import { VerificationDemo } from '../components/home/VerificationDemo';
 import { PropertyQuickViewModal } from '../components/listing/PropertyQuickViewModal';
 import { SubscriptionModal } from '../components/monetization/SubscriptionModal';
 import { ProjectSpotlightCarousel } from '../components/home/ProjectSpotlightCarousel';
+import { NinetyNineAcresBillboardHero } from '../components/home/NinetyNineAcresBillboardHero';
 import { store } from '../mock/store';
 import { api } from '../services/api';
 import { useLanguage } from '../domain/i18n/LanguageContext';
@@ -35,7 +34,6 @@ export const HomePage: React.FC<HomePageProps> = ({
 
   const listings = store.getPublishedListings();
   const cityCounts = store.getCitiesWithCounts();
-  const reduce = useReducedMotion();
   const headlineLines = [t('heroLine1'), t('heroLine2')];
 
   useEffect(() => {
@@ -208,81 +206,51 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
       </div>
 
-      {/* 1. HERO SECTION & MAGICBRICKS / 99ACRES SEARCH CONSOLE */}
-      <section className="relative min-h-[85vh] pt-24 pb-16 flex items-center overflow-hidden">
-        <div className="absolute inset-0 ledger-grid pointer-events-none" aria-hidden />
+      {/* 1. 99ACRES HERO PANORAMA BILLBOARD CAROUSEL & OVERLAPPING SEARCH CONSOLE */}
+      <section className="pt-20 sm:pt-24">
+        <NinetyNineAcresBillboardHero
+          onSearch={(query, category, city) => {
+            onNavigate(`search?q=${encodeURIComponent(query || '')}&category=${category || ''}&city=${city || ''}`);
+          }}
+          onNavigate={onNavigate}
+        />
+      </section>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-7">
-              {/* Trust Tag */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-600 font-bold text-xs mb-5">
-                <ShieldCheck className="w-4 h-4 text-orange-500" />
-                <span>{t('heroTrustBadge')}</span>
-              </div>
-
-              <h1 className="display-hero text-navy-900" aria-label="Checked before it is listed.">
-                {headlineLines.map((line, i) => (
-                  <span key={i} className="block overflow-hidden pb-[0.08em]" aria-hidden>
-                    <motion.span
-                      className="block"
-                      initial={reduce ? false : { y: '110%' }}
-                      animate={{ y: 0 }}
-                      transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.1 + i * 0.12 }}
-                    >
-                      {line}
-                    </motion.span>
-                  </span>
-                ))}
-              </h1>
-
-              <motion.p
-                initial={reduce ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.7, duration: 0.8 }}
-                className="mt-6 text-navy-800 text-lg max-w-xl leading-relaxed font-medium"
-              >
-                {t('heroSubtitle')}
-              </motion.p>
-
-              {/* Central Search Console */}
-              <motion.div
-                initial={reduce ? false : { opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.85, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-8 max-w-3xl"
-              >
-                <SearchBarExpandable
-                  onExecuteSearch={(query, cat, city) => {
-                    onNavigate(`search?q=${encodeURIComponent(query || '')}&category=${cat || ''}&city=${city || ''}`);
-                  }}
-                />
-              </motion.div>
-
-              {/* Real Estate Telemetry Stats */}
-              <motion.dl
-                initial={reduce ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.1, duration: 0.8 }}
-                className="mt-10 flex flex-wrap gap-x-10 gap-y-4"
-              >
-                {[
-                  { v: t('statListings'), l: t('statListingsLabel') },
-                  { v: String(cityCounts.length), l: t('statCities') },
-                  { v: `${avgTrust}/100`, l: t('statTrust') },
-                  { v: '60–100 ft', l: t('statRoad') }
-                ].map(stat => (
-                  <div key={stat.l}>
-                    <dt className="font-display text-2xl font-bold text-navy-900 num-mono">{stat.v}</dt>
-                    <dd className="text-xs text-navy-700 font-medium">{stat.l}</dd>
-                  </div>
-                ))}
-              </motion.dl>
+      {/* 1.2 REAL ESTATE TELEMETRY STRIP & TRUST VERIFICATION DEMO */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white/80 backdrop-blur-md p-6 sm:p-8 rounded-3xl border border-navy-900/10 shadow-trust">
+          <div className="lg:col-span-7">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-600 font-bold text-xs mb-3">
+              <ShieldCheck className="w-4 h-4 text-orange-500" />
+              <span>{t('heroTrustBadge')}</span>
             </div>
 
-            <div className="lg:col-span-5 hidden lg:block">
-              {heroListing && <VerificationDemo listing={heroListing} onOpen={onOpenListingDetail} />}
-            </div>
+            <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-navy-900 leading-tight">
+              {headlineLines.join(' ')}
+            </h2>
+
+            <p className="mt-2.5 text-navy-800 text-sm sm:text-base leading-relaxed font-medium">
+              {t('heroSubtitle')}
+            </p>
+
+            {/* Real Estate Telemetry Stats */}
+            <dl className="mt-6 flex flex-wrap gap-x-8 gap-y-3">
+              {[
+                { v: t('statListings'), l: t('statListingsLabel') },
+                { v: String(cityCounts.length), l: t('statCities') },
+                { v: `${avgTrust}/100`, l: t('statTrust') },
+                { v: '60–100 ft', l: t('statRoad') }
+              ].map(stat => (
+                <div key={stat.l}>
+                  <dt className="font-display text-xl sm:text-2xl font-bold text-navy-900 num-mono">{stat.v}</dt>
+                  <dd className="text-xs text-navy-700 font-medium">{stat.l}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div className="lg:col-span-5 hidden lg:block">
+            {heroListing && <VerificationDemo listing={heroListing} onOpen={onOpenListingDetail} />}
           </div>
         </div>
       </section>

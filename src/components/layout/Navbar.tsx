@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Search, Heart, PlusCircle, UserCheck, Menu, X, MessageSquare, Briefcase, Settings, CheckCircle2, UserPlus, KeyRound, Scale, HelpCircle, Globe } from 'lucide-react';
+import { ShieldCheck, Search, Heart, PlusCircle, UserCheck, Menu, X, MessageSquare, Briefcase, Settings, CheckCircle2, UserPlus, KeyRound, Scale, HelpCircle, Globe, MapPin } from 'lucide-react';
 import { store } from '../../mock/store';
 import { api } from '../../services/api';
 import type { UserRole, Listing } from '../../types';
@@ -37,6 +37,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [registerRole, setRegisterRole] = useState<UserRole>('USER');
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
+  const [selectedCity, setSelectedCity] = useState('All India');
   const favCount = store.getFavoritesList().length;
 
   const { language, setLanguage, t } = useLanguage();
@@ -191,11 +192,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const navLinks = [
+    { label: t('forBuyers'), route: 'search?category=all', href: '#search?category=all', category: 'all' },
+    { label: t('forTenants'), route: 'search?intent=rent', href: '#search?intent=rent', category: 'rent' },
     { label: t('navCommercial'), route: 'search?q=Commercial+Office', href: '#search?q=Commercial+Office', category: 'commercial' },
-    { label: t('navAgri'), route: 'search?q=Agricultural+Land', href: '#search?q=Agricultural+Land', category: 'agricultural' },
-    { label: t('navIndustrial'), route: 'search?q=Industrial+Land', href: '#search?q=Industrial+Land', category: 'industrial' },
     { label: t('navPlots'), route: 'search?q=Residential+Plot', href: '#search?q=Residential+Plot', category: 'plots' },
-    { label: t('navAll'), route: 'search', href: '#search', category: 'all' },
+    { label: t('insights'), route: 'search?q=RERA', href: '#search?q=RERA', category: 'insights', isNew: true },
   ];
 
   const isLinkActive = (link: typeof navLinks[0]) => {
@@ -225,29 +226,59 @@ export const Navbar: React.FC<NavbarProps> = ({
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Brand Logo */}
-          <a
-            href="#home"
-            onClick={(e) => handleLinkClick(e, 'home')}
-            className="flex items-center gap-2.5 group cursor-pointer text-left focus:outline-none"
-          >
-            <div className="w-10 h-10 rounded-2xl bg-navy-900 flex items-center justify-center text-orange-500 shadow-md group-hover:scale-105 transition-transform">
-              <ShieldCheck className="w-6 h-6 stroke-[2.2]" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5 leading-none">
-                <span className="font-display text-2xl font-bold text-navy-900 tracking-tight">
-                  TrustNest
-                </span>
-                <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 bg-orange-500 text-white rounded-md tracking-wider">
-                  {t('portalTag')}
+          {/* Brand Logo & 99acres Location Dropdown */}
+          <div className="flex items-center gap-2 sm:gap-3">
+            <a
+              href="#home"
+              onClick={(e) => handleLinkClick(e, 'home')}
+              className="flex items-center gap-2.5 group cursor-pointer text-left focus:outline-none"
+            >
+              <div className="w-10 h-10 rounded-2xl bg-navy-900 flex items-center justify-center text-orange-500 shadow-md group-hover:scale-105 transition-transform">
+                <ShieldCheck className="w-6 h-6 stroke-[2.2]" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5 leading-none">
+                  <span className="font-display text-2xl font-bold text-navy-900 tracking-tight">
+                    TrustNest
+                  </span>
+                  <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 bg-orange-500 text-white rounded-md tracking-wider">
+                    {t('portalTag')}
+                  </span>
+                </div>
+                <span className="text-[11px] font-bold text-emerald-700 block mt-1">
+                  {t('badgeStandard')}
                 </span>
               </div>
-              <span className="text-[11px] font-bold text-emerald-700 block mt-1">
-                {t('badgeStandard')}
-              </span>
+            </a>
+
+            {/* 99acres "All India ∨" Selector */}
+            <div className="hidden sm:flex items-center gap-1 text-xs font-bold text-navy-900 bg-white/90 border border-navy-900/15 px-2.5 py-1.5 rounded-xl shadow-xs">
+              <MapPin className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+              <select
+                value={selectedCity}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSelectedCity(val);
+                  if (val === 'All India') {
+                    onNavigate('search');
+                  } else {
+                    onNavigate(`search?city=${encodeURIComponent(val)}`);
+                  }
+                }}
+                className="bg-transparent font-bold focus:outline-none cursor-pointer pr-1 text-xs text-navy-950"
+                aria-label="Select City"
+              >
+                <option value="All India">{language === 'hi' ? 'पूरा भारत (All India)' : 'All India'}</option>
+                <option value="Delhi NCR">Delhi NCR</option>
+                <option value="Gurugram">Gurugram</option>
+                <option value="Greater Noida">Greater Noida</option>
+                <option value="Bengaluru">Bengaluru</option>
+                <option value="Mumbai">Mumbai MMR</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Pune">Pune</option>
+              </select>
             </div>
-          </a>
+          </div>
 
           {/* Desktop Search Trigger */}
           <button
@@ -281,7 +312,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                       transition={{ type: 'spring', stiffness: 380, damping: 32 }}
                     />
                   )}
-                  {link.label}
+                  <span>{link.label}</span>
+                  {(link as any).isNew && (
+                    <span className="ml-1 text-[9px] font-black uppercase px-1.5 py-0.2 rounded-full bg-red-600 text-white tracking-wider animate-pulse">
+                      NEW
+                    </span>
+                  )}
                 </a>
               );
             })}
@@ -386,15 +422,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="capitalize">{currentRole.toLowerCase().replace(/_/g, ' ')}</span>
             </button>
 
-            {/* Post Listing CTA */}
+            {/* Post Listing CTA (99acres FREE badge style) */}
             <a
               href="#post"
               onClick={(e) => handleLinkClick(e, 'post')}
-              className="flex items-center gap-2 px-4 py-2.5 bg-orange-500 text-white font-bold rounded-full text-sm shadow-orange-glow hover:bg-orange-600 transition-all transform hover:-translate-y-0.5 cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 bg-navy-900 hover:bg-navy-950 text-white font-bold rounded-xl text-xs sm:text-sm shadow-md transition-all cursor-pointer"
             >
-              <PlusCircle className="w-4 h-4 stroke-[2.5]" />
-              <span className="hidden sm:inline">Post Listing</span>
-              <span className="sm:hidden">Sell</span>
+              <PlusCircle className="w-3.5 h-3.5 text-orange-400 stroke-[2.5]" />
+              <span className="hidden sm:inline">{language === 'hi' ? 'प्रॉपर्टी पोस्ट करें' : 'Post property'}</span>
+              <span className="sm:hidden">{language === 'hi' ? 'पोस्ट' : 'Post'}</span>
+              <span className="px-1.5 py-0.2 bg-emerald-500 text-white text-[10px] rounded font-black tracking-wider">
+                FREE
+              </span>
             </a>
 
             {/* Mobile Menu Toggle */}
