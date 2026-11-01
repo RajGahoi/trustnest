@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, MapPin, SlidersHorizontal, ArrowRight, X, TrendingUp, Sparkles, Building2, Car, Smartphone, Laptop } from 'lucide-react';
+import { Search, MapPin, SlidersHorizontal, ArrowRight, X, TrendingUp, Sparkles, Building2, Layers } from 'lucide-react';
 import { store } from '../../mock/store';
 
 interface SearchBarExpandableProps {
@@ -22,6 +22,8 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
   const [query, setQuery] = useState(currentQuery);
   const [selectedCity, setSelectedCity] = useState(currentCity);
   const [selectedCategory, setSelectedCategory] = useState(currentCategory);
+  const [activeIntentTab, setActiveIntentTab] = useState<'ALL' | 'BUY' | 'COMMERCIAL' | 'PLOTS'>('ALL');
+  const [selectedPropType, setSelectedPropType] = useState<string>('ALL');
   const [isFocused, setIsFocused] = useState(isExpandedModal);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,27 +41,50 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
   }, [currentCity]);
 
   const popularSearches = [
-    '3 BHK Apartment Greater Noida',
-    'BMW 5 Series M Sport',
-    'iPhone 15 Pro Max Natural Titanium',
-    'MacBook Pro M3 Max BKC',
-    'Handcrafted Teak Dining Set',
-    'Fullstack AI Architect'
+    'Corporate Office Cyber City Gurugram',
+    '12 Bigha Fertile Land Jewar Airport',
+    'Industrial Plot 100ft Road Ecotech Greater Noida',
+    '5 Acres Organic Farm Land Sohna',
+    '300 Sq.Yd Corner Plot DLF Alameda',
+    '3 BHK Lakeview Apartment Whitefield'
   ];
 
-  // City list is derived from real listing data (store.getCitiesWithCounts), not hard-coded,
-  // so every city offered here is guaranteed to have live inventory behind it.
   const cityCounts = store.getCitiesWithCounts();
   const categories = store.getCategories();
 
+  const handleIntentTabChange = (tab: 'ALL' | 'BUY' | 'COMMERCIAL' | 'PLOTS') => {
+    setActiveIntentTab(tab);
+    if (tab === 'COMMERCIAL') {
+      setSelectedCategory('property');
+      setQuery('Commercial Office Space');
+    } else if (tab === 'PLOTS') {
+      setSelectedCategory('property');
+      setQuery('Land Plot');
+    } else if (tab === 'BUY') {
+      setSelectedCategory('property');
+      setQuery('');
+    } else {
+      setSelectedCategory('all');
+      setQuery('');
+    }
+  };
+
   const handleSearchSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    onExecuteSearch(query, selectedCategory === 'all' ? undefined : selectedCategory, selectedCity === 'All Cities' ? undefined : selectedCity);
+    let effectiveQuery = query;
+    if (selectedPropType !== 'ALL' && !effectiveQuery.includes(selectedPropType)) {
+      effectiveQuery = effectiveQuery ? `${effectiveQuery} ${selectedPropType}` : selectedPropType;
+    }
+
+    onExecuteSearch(
+      effectiveQuery, 
+      selectedCategory === 'all' ? undefined : selectedCategory, 
+      selectedCity === 'All Cities' ? undefined : selectedCity
+    );
     setIsFocused(false);
     if (onCloseModal) onCloseModal();
   };
 
-  // Keyboard navigation & Escape key close listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && (isFocused || isExpandedModal)) {
@@ -83,6 +108,31 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
 
   const content = (
     <div ref={containerRef} className="w-full relative z-30">
+      {/* MagicBricks / 99acres Segmented Intent Tabs */}
+      <div className="flex items-center gap-1 sm:gap-2 mb-2.5 p-1 bg-white/90 backdrop-blur-md rounded-2xl border border-navy-900/10 w-fit shadow-xs overflow-x-auto max-w-full">
+        {[
+          { id: 'ALL', label: 'All Marketplace', icon: '✨' },
+          { id: 'BUY', label: 'Buy Residential', icon: '🏡' },
+          { id: 'COMMERCIAL', label: 'Commercial & Offices', icon: '🏢' },
+          { id: 'PLOTS', label: 'Plots, Agri & Industrial Land', icon: '🌾' },
+        ].map(tab => (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => handleIntentTabChange(tab.id as any)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+              activeIntentTab === tab.id
+                ? 'bg-navy-900 text-cream-50 shadow-sm'
+                : 'text-navy-700 hover:text-navy-900 hover:bg-cream-100'
+            }`}
+          >
+            <span>{tab.icon}</span>
+            <span>{tab.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Main Search Bar Card */}
       <form
         onSubmit={handleSearchSubmit}
         className={`bg-white rounded-3xl border border-navy-900/15 shadow-trust transition-all duration-300 p-2 sm:p-3 flex flex-col md:flex-row items-center gap-2 ${
@@ -98,8 +148,16 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
             value={query}
             onChange={e => setQuery(e.target.value)}
             onFocus={() => setIsFocused(true)}
-            placeholder="Search verified properties, cars, mobiles, jobs..."
-            className="w-full text-navy-900 font-medium placeholder:text-navy-700/50 focus:outline-none text-base"
+            placeholder={
+              activeIntentTab === 'COMMERCIAL'
+                ? 'Search office space, IT park, business floor, BKC, CyberCity...'
+                : activeIntentTab === 'PLOTS'
+                ? 'Search agricultural land, industrial plot, 60+ ft wide road...'
+                : activeIntentTab === 'BUY'
+                ? 'Search flats, villas, 3 BHK, Greater Noida, Gurugram...'
+                : 'Search verified properties, offices, farm lands, cars...'
+            }
+            className="w-full text-navy-900 font-medium placeholder:text-navy-700/50 focus:outline-none text-sm sm:text-base"
             aria-label="Search input"
           />
           {query && (
@@ -107,6 +165,25 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
               <X className="w-4 h-4" />
             </button>
           )}
+        </div>
+
+        {/* Property Type Dropdown (MagicBricks Style) */}
+        <div className="flex items-center gap-2 border-t md:border-t-0 md:border-l border-navy-900/10 px-3 py-2 w-full md:w-auto">
+          <Layers className="w-4 h-4 text-orange-500 shrink-0" />
+          <select
+            value={selectedPropType}
+            onChange={e => setSelectedPropType(e.target.value)}
+            className="bg-transparent text-xs font-bold text-navy-900 focus:outline-none cursor-pointer pr-4"
+            aria-label="Select Property Type"
+          >
+            <option value="ALL">All Property Types</option>
+            <option value="Commercial Office Space">Commercial Office</option>
+            <option value="Agricultural Land">Agricultural Land</option>
+            <option value="Industrial Land">Industrial Land / Plot</option>
+            <option value="Residential Plot">Residential Plot</option>
+            <option value="Apartment">Apartment / Flat</option>
+            <option value="Villa">Luxury Villa</option>
+          </select>
         </div>
 
         {/* Location Dropdown */}
@@ -151,30 +228,54 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
         </button>
       </form>
 
+      {/* MagicBricks / 99acres Quick Filter Chips */}
+      <div className="flex items-center gap-2 mt-3 overflow-x-auto pb-1 text-xs no-scrollbar">
+        {[
+          { label: '🏢 Office Space', q: 'Commercial Office Space' },
+          { label: '🌾 Agricultural Land', q: 'Agricultural Land' },
+          { label: '🏭 Industrial Land & Plots', q: 'Industrial Land' },
+          { label: '🏡 Residential Plots', q: 'Residential Plot' },
+          { label: '🛣️ 60+ ft Wide Road', q: '60 ft' },
+          { label: '🔑 Ready to Move', q: 'Ready to Move' }
+        ].map((chip, idx) => (
+          <button
+            key={idx}
+            type="button"
+            onClick={() => {
+              setQuery(chip.q);
+              onExecuteSearch(chip.q, 'property', selectedCity === 'All Cities' ? undefined : selectedCity);
+            }}
+            className="px-3 py-1.5 bg-white/95 hover:bg-orange-500 hover:text-white text-navy-800 rounded-full font-bold border border-navy-900/10 shadow-xs whitespace-nowrap transition-all cursor-pointer flex items-center gap-1"
+          >
+            <span>{chip.label}</span>
+          </button>
+        ))}
+      </div>
+
       {/* Expanded Suggestions Panel */}
       {isFocused && (
         <div className="absolute top-full left-0 right-0 mt-3 bg-white rounded-3xl border border-navy-900/15 shadow-2xl p-6 z-50 animate-fadeIn space-y-6">
-          {/* Quick Categories */}
+          {/* Quick Real Estate Categories */}
           <div>
             <div className="flex items-center gap-2 text-xs font-bold text-navy-700 uppercase tracking-wider mb-3">
               <Sparkles className="w-3.5 h-3.5 text-orange-500" />
-              Quick Verified Categories
+              Quick Verified Real Estate & Land Explorer
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {[
-                { slug: 'property', name: 'Real Estate', icon: Building2 },
-                { slug: 'vehicles', name: 'Vehicles', icon: Car },
-                { slug: 'mobiles', name: 'Mobiles', icon: Smartphone },
-                { slug: 'electronics', name: 'Electronics', icon: Laptop },
+                { name: 'Commercial Offices', q: 'Commercial Office', icon: Building2 },
+                { name: 'Agricultural Land', q: 'Agricultural Land', icon: Sparkles },
+                { name: 'Industrial Plots', q: 'Industrial Land', icon: Layers },
+                { name: 'Residential Plots', q: 'Residential Plot', icon: Building2 },
               ].map(cat => {
                 const IconComp = cat.icon;
                 return (
                   <button
-                    key={cat.slug}
+                    key={cat.name}
                     type="button"
                     onClick={() => {
-                      setSelectedCategory(cat.slug);
-                      onExecuteSearch(query, cat.slug, selectedCity === 'All Cities' ? undefined : selectedCity);
+                      setQuery(cat.q);
+                      onExecuteSearch(cat.q, 'property', selectedCity === 'All Cities' ? undefined : selectedCity);
                       setIsFocused(false);
                     }}
                     className="p-3 rounded-2xl bg-cream-100 hover:bg-orange-500 hover:text-white text-navy-900 font-bold text-xs flex items-center gap-2 transition-all cursor-pointer border border-navy-900/5"
@@ -191,7 +292,7 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
           <div>
             <div className="flex items-center gap-2 text-xs font-bold text-navy-700 uppercase tracking-wider mb-3">
               <TrendingUp className="w-3.5 h-3.5 text-orange-500" />
-              Trending Verified Searches
+              Popular Verified Property Inquiries
             </div>
             <div className="flex flex-wrap gap-2">
               {popularSearches.map(term => (
@@ -200,7 +301,7 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
                   type="button"
                   onClick={() => {
                     setQuery(term);
-                    onExecuteSearch(term, selectedCategory === 'all' ? undefined : selectedCategory);
+                    onExecuteSearch(term, 'property');
                     setIsFocused(false);
                   }}
                   className="px-3.5 py-2 bg-cream-50 hover:bg-cream-200 border border-navy-900/10 rounded-full text-xs font-semibold text-navy-900 transition-colors"

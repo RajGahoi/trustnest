@@ -7,11 +7,13 @@ import { api } from '../../services/api';
 interface SellerCardProps {
   listing: Listing;
   onOpenChat?: () => void;
+  onOpenSubscriptionModal?: () => void;
 }
 
-export const SellerCard: React.FC<SellerCardProps> = ({ listing, onOpenChat }) => {
+export const SellerCard: React.FC<SellerCardProps> = ({ listing, onOpenChat, onOpenSubscriptionModal }) => {
   const [phoneRevealed, setPhoneRevealed] = useState(false);
   const [showLeadModal, setShowLeadModal] = useState(false);
+  const revealsLeft = store.getContactRevealsRemaining();
 
   // Form states
   const [buyerName, setBuyerName] = useState('');
@@ -19,20 +21,30 @@ export const SellerCard: React.FC<SellerCardProps> = ({ listing, onOpenChat }) =
   const [leadSuccess, setLeadSuccess] = useState(false);
 
   const handleRevealPhone = () => {
+    if (revealsLeft <= 0) {
+      if (onOpenSubscriptionModal) {
+        onOpenSubscriptionModal();
+      } else {
+        alert('You have used your free contact reveals quota. Please subscribe to view unlimited seller phone numbers.');
+      }
+      return;
+    }
+
+    store.decrementContactReveal();
     setPhoneRevealed(true);
     api.createLead({
       listingId: listing.id,
-      buyerName: 'Verified Guest',
-      buyerPhone: '+91 99999 88888',
-      buyerEmail: 'guest@trustnest.in',
+      buyerName: 'Verified Buyer',
+      buyerPhone: '+91 98765 43210',
+      buyerEmail: 'buyer@trustnest.in',
       message: 'Revealed seller contact phone',
       channel: 'CALL_INTENT'
     }).catch(() => {
       store.createLead(
         listing.id,
-        'Verified Guest',
-        '+91 99999 88888',
-        'guest@trustnest.in',
+        'Verified Buyer',
+        '+91 98765 43210',
+        'buyer@trustnest.in',
         'Revealed seller contact phone',
         'CALL_INTENT'
       );
@@ -112,19 +124,28 @@ export const SellerCard: React.FC<SellerCardProps> = ({ listing, onOpenChat }) =
           {phoneRevealed ? (
             <a
               href={`tel:${listing.sellerPhone}`}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-trust-green text-white font-bold rounded-2xl text-sm shadow-md hover:bg-emerald-600 transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-trust-green text-white font-bold rounded-2xl text-xs sm:text-sm shadow-md hover:bg-emerald-600 transition-colors"
             >
               <Phone className="w-4 h-4" />
               <span>{listing.sellerPhone}</span>
             </a>
-          ) : (
+          ) : revealsLeft > 0 ? (
             <button
               type="button"
               onClick={handleRevealPhone}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-navy-900 text-cream-50 font-bold rounded-2xl text-sm shadow-md hover:bg-navy-800 transition-colors cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 px-3 py-3 bg-navy-900 text-cream-50 font-bold rounded-2xl text-xs sm:text-sm shadow-md hover:bg-navy-800 transition-colors cursor-pointer group"
             >
-              <Lock className="w-4 h-4 text-orange-500" />
-              <span>Reveal Contact</span>
+              <Lock className="w-4 h-4 text-orange-500 group-hover:scale-110 transition-transform" />
+              <span>View Number ({revealsLeft} free)</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={onOpenSubscriptionModal}
+              className="w-full flex items-center justify-center gap-1.5 px-3 py-3 bg-orange-500 text-white font-bold rounded-2xl text-xs sm:text-sm shadow-orange-glow hover:bg-orange-600 transition-colors cursor-pointer"
+            >
+              <Lock className="w-4 h-4" />
+              <span>Subscribe to View</span>
             </button>
           )}
 

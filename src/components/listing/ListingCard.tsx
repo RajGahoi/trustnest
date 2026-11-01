@@ -214,6 +214,11 @@ export const ListingCard: React.FC<ListingCardProps> = ({
                 {pill}
               </span>
             ))}
+            {(listing.attributes.roadWidth || listing.propertyDetails?.roadWidth) && (
+              <span className="text-[10px] font-bold bg-orange-500/10 text-orange-600 px-2 py-0.5 rounded-md border border-orange-500/20">
+                🛣️ {listing.attributes.roadWidth || listing.propertyDetails?.roadWidth}
+              </span>
+            )}
             {listing.propertyDetails?.ownershipType && (
               <span className="text-[10px] font-bold bg-navy-900 text-white px-2 py-0.5 rounded-md">
                 {listing.propertyDetails.ownershipType}

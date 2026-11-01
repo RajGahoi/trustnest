@@ -24,20 +24,20 @@ import { sanitizeString, validatePrice } from '../domain/validation';
 import { getNearbyLandmarks } from '../domain/location/geo';
 
 const STORAGE_KEYS = {
-  LISTINGS: 'trustnest_listings_v2',
-  CATEGORIES: 'trustnest_categories_v2',
-  FAVORITES: 'trustnest_favorites_v2',
-  RECENTLY_VIEWED: 'trustnest_recent_viewed_v2',
-  COMPARISONS: 'trustnest_comparisons_v2',
-  SAVED_SEARCHES: 'trustnest_saved_searches_v2',
-  LEADS: 'trustnest_leads_v2',
-  AUDIT_LOGS: 'trustnest_audit_logs_v2',
-  NOTIFICATIONS: 'trustnest_notifications_v2',
-  SUBSCRIPTIONS: 'trustnest_subscriptions_v2',
-  SUPPORT_TICKETS: 'trustnest_support_tickets_v2',
-  ABUSE_REPORTS: 'trustnest_abuse_reports_v2',
-  REVEALS_LEFT: 'trustnest_reveals_left_v2',
-  ROLE: 'trustnest_current_role_v2',
+  LISTINGS: 'trustnest_listings_v3',
+  CATEGORIES: 'trustnest_categories_v3',
+  FAVORITES: 'trustnest_favorites_v3',
+  RECENTLY_VIEWED: 'trustnest_recent_viewed_v3',
+  COMPARISONS: 'trustnest_comparisons_v3',
+  SAVED_SEARCHES: 'trustnest_saved_searches_v3',
+  LEADS: 'trustnest_leads_v3',
+  AUDIT_LOGS: 'trustnest_audit_logs_v3',
+  NOTIFICATIONS: 'trustnest_notifications_v3',
+  SUBSCRIPTIONS: 'trustnest_subscriptions_v3',
+  SUPPORT_TICKETS: 'trustnest_support_tickets_v3',
+  ABUSE_REPORTS: 'trustnest_abuse_reports_v3',
+  REVEALS_LEFT: 'trustnest_reveals_left_v3',
+  ROLE: 'trustnest_current_role_v3',
 };
 
 const ALLOWED_TRANSITIONS: Record<ListingStatus, ListingStatus[]> = {
@@ -298,20 +298,12 @@ class LocalStore {
 
   // Enrich listings with complete Indian Real Estate specifics if missing
   private enrichListingDetails(listing: Listing): Listing {
-    const areaSqFt = listing.attributes.area || (listing.categorySlug === 'property' ? 1650 : 0);
-    const pricePerSqFt = areaSqFt > 0 ? Math.round(listing.price / areaSqFt) : 0;
-
-    const enriched: Listing = {
-      ...listing,
-      propertyDetails: listing.propertyDetails || {
-        areaSqFt,
-        displayArea: areaSqFt,
-        displayAreaUnit: 'sqft',
+    const attrs = listing.attributes || {}; const areaSqFt = attrs.areaSqFt || (attrs.areaUnit === "bigha" ? (attrs.area || 1) * 27225 : attrs.areaUnit === "acre" ? (attrs.area || 1) * 43560 : attrs.area || 1650); const displayArea = attrs.area || areaSqFt; const displayAreaUnit = (attrs.areaUnit as any) || "sqft"; const roadWidth = attrs.roadWidth || "60 ft Wide Sector Road"; const zoning = String(attrs.zoning || "").toLowerCase(); const landUse = zoning.includes("agri") ? "AGRICULTURAL" : zoning.includes("indust") ? "INDUSTRIAL" : zoning.includes("commerc") ? "COMMERCIAL" : "RESIDENTIAL"; const pricePerSqFt = areaSqFt > 0 ? Math.round(listing.price / areaSqFt) : 0; const enriched: Listing = { ...listing, propertyDetails: listing.propertyDetails || { areaSqFt, displayArea, displayAreaUnit, roadWidth,
         pricePerSqFt,
         reraId: listing.attributes.reraId || (listing.sellerType === 'BUILDER' ? 'UPRERAPRJ' + Math.floor(10000 + Math.random() * 90000) : undefined),
         reraApproved: listing.sellerType === 'BUILDER' || listing.trustScore.overallScore >= 85,
         ownershipType: (listing.attributes.ownership as any) || 'FREEHOLD',
-        landUse: 'RESIDENTIAL',
+        landUse: landUse as any,
         approvedAuthority: listing.location.city.includes('Noida') ? 'NOIDA Authority Approved Layout' : 'Municipal Corporation Approved',
         possessionStatus: 'READY_TO_MOVE',
         furnishing: listing.attributes.furnishing || 'Semi-Furnished',

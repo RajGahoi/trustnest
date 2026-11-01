@@ -1,5 +1,6 @@
 import type { Category, Listing, VendorOrganization, AuditLog, Conversation } from '../types';
 import { GENERATED_LISTINGS } from './generatedListings';
+import { INDIAN_VERIFIED_PROPERTIES } from './indianProperties';
 export { ALL_CITY_NAMES, CITY_HIERARCHY } from './locations';
 
 export const CATEGORIES: Category[] = [
@@ -110,6 +111,7 @@ export const CATEGORIES: Category[] = [
 ];
 
 export const INITIAL_LISTINGS: Listing[] = [
+  ...INDIAN_VERIFIED_PROPERTIES,
   {
     id: 'lst-101',
     slug: 'modern-3bhk-sky-villa-greater-noida',

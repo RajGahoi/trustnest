@@ -349,12 +349,48 @@ export const ListingDetailPage: React.FC<ListingDetailPageProps> = ({
                   <div className="text-base font-extrabold text-navy-900 mt-0.5">{Math.round(areaSqFt / 9)} Gaj</div>
                 </div>
                 <div className="p-3.5 bg-white rounded-2xl border border-navy-900/10">
-                  <div className="text-[11px] font-semibold text-gray-500">Configuration</div>
-                  <div className="text-base font-extrabold text-navy-900 mt-0.5">{listing.attributes.bhk || '3 BHK'}</div>
+                  <div className="text-[11px] font-semibold text-gray-500">Road Width</div>
+                  <div className="text-sm font-extrabold text-orange-600 mt-0.5">{listing.attributes.roadWidth || listing.propertyDetails?.roadWidth || '60 ft Wide Main Road'}</div>
                 </div>
                 <div className="p-3.5 bg-white rounded-2xl border border-navy-900/10">
-                  <div className="text-[11px] font-semibold text-gray-500">Possession</div>
-                  <div className="text-base font-extrabold text-navy-900 mt-0.5">Ready to Move</div>
+                  <div className="text-[11px] font-semibold text-gray-500">Facing / Orientation</div>
+                  <div className="text-sm font-extrabold text-navy-900 mt-0.5">{listing.attributes.facing || listing.propertyDetails?.facing || 'East Facing'}</div>
+                </div>
+                <div className="p-3.5 bg-white rounded-2xl border border-navy-900/10">
+                  <div className="text-[11px] font-semibold text-gray-500">Zoning / Land Use</div>
+                  <div className="text-sm font-extrabold text-navy-900 mt-0.5">{listing.attributes.zoning || listing.propertyDetails?.landUse || 'Freehold Title'}</div>
+                </div>
+                <div className="p-3.5 bg-white rounded-2xl border border-navy-900/10">
+                  <div className="text-[11px] font-semibold text-gray-500">Property Type</div>
+                  <div className="text-sm font-extrabold text-navy-900 mt-0.5">{listing.attributes.propertyType || listing.attributes.bhk || 'Commercial/Residential'}</div>
+                </div>
+                <div className="p-3.5 bg-white rounded-2xl border border-navy-900/10">
+                  <div className="text-[11px] font-semibold text-gray-500">Water / Utilities</div>
+                  <div className="text-sm font-extrabold text-trust-green mt-0.5">{listing.attributes.waterSource || 'Connected & Verified'}</div>
+                </div>
+                <div className="p-3.5 bg-white rounded-2xl border border-navy-900/10">
+                  <div className="text-[11px] font-semibold text-gray-500">Possession Status</div>
+                  <div className="text-sm font-extrabold text-navy-900 mt-0.5">Ready for Possession</div>
+                </div>
+              </div>
+
+              {/* Amenities & Infrastructure Highlights */}
+              <div className="pt-2">
+                <div className="text-xs font-bold text-navy-700 uppercase tracking-wider mb-2">Verified Amenities & Site Infrastructure:</div>
+                <div className="flex flex-wrap gap-2 text-xs">
+                  {[
+                    listing.attributes.roadWidth || 'Wide Access Road',
+                    listing.attributes.powerBackup || '24/7 Power Support',
+                    'Aadhaar / KYC Verified Seller',
+                    'Zero Title Encumbrances',
+                    'Demarcated Plot Boundary',
+                    'Heavy Vehicle Accessible'
+                  ].map((amenity, idx) => (
+                    <span key={idx} className="px-3 py-1.5 bg-white border border-navy-900/10 rounded-xl font-bold text-navy-900 flex items-center gap-1.5 shadow-xs">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-trust-green" />
+                      <span>{amenity}</span>
+                    </span>
+                  ))}
                 </div>
               </div>
 
@@ -485,6 +521,7 @@ export const ListingDetailPage: React.FC<ListingDetailPageProps> = ({
             onOpenChat={() => {
               window.location.hash = '#messages';
             }}
+            onOpenSubscriptionModal={() => setSubModalOpen(true)}
           />
 
           {/* Protected Direct Contact CTA */}

@@ -137,6 +137,7 @@ export interface IndianPropertyDetails {
   possessionStatus?: 'READY_TO_MOVE' | 'UNDER_CONSTRUCTION';
   furnishing?: 'UNFURNISHED' | 'SEMI_FURNISHED' | 'FULLY_FURNISHED';
   facing?: string;
+  roadWidth?: string;
   parking?: string;
   floor?: string;
   totalFloors?: number;
