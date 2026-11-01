@@ -13,6 +13,7 @@ import { NinetyNineAcresBillboardHero } from '../components/home/NinetyNineAcres
 import { LivePropertyDemoModal } from '../components/listing/LivePropertyDemoModal';
 import { RealApartmentWalkthroughViewer } from '../components/listing/RealApartmentWalkthroughViewer';
 import { PreferredAgentsCarousel } from '../components/home/PreferredAgentsCarousel';
+import { MagicHomesProjectsCarousel } from '../components/home/MagicHomesProjectsCarousel';
 import { HomeLoansBanner } from '../components/loan/HomeLoansBanner';
 import { AdviceAndToolsRail } from '../components/tools/AdviceAndToolsRail';
 import { store } from '../mock/store';
@@ -457,6 +458,14 @@ export const HomePage: React.FC<HomePageProps> = ({
         <PreferredAgentsCarousel
           onOpenSubscriptionModal={() => setSubscriptionModalOpen(true)}
           onNavigate={onNavigate}
+        />
+      </section>
+
+      {/* 1.92 155 NEW PROJECTS IN GHAZIABAD (MAGICHOMES CIRCULAR PROJECTS CAROUSEL) */}
+      <section className="-mt-6 sm:-mt-8">
+        <MagicHomesProjectsCarousel
+          onNavigate={onNavigate}
+          onExploreProject={(q) => onNavigate(`search?q=${encodeURIComponent(q)}`)}
         />
       </section>
 
