@@ -188,12 +188,18 @@ export function App() {
     if (currentRoute.startsWith('search')) {
       const urlParams = new URLSearchParams(currentRoute.includes('?') ? currentRoute.split('?')[1] : '');
       const catParam = urlParams.get('category') || 'all';
-      const qParam = urlParams.get('q') || '';
+      let qParam = urlParams.get('q') || '';
       const cityParam = urlParams.get('city') || 'All Cities';
+      const intentParam = urlParams.get('intent') || '';
+
+      // If intent is rent and query is empty, default to Rent
+      if (!qParam && intentParam === 'rent') {
+        qParam = 'Rent';
+      }
 
       return (
         <SearchPage
-          key={`${catParam}-${qParam}-${cityParam}`}
+          key={`${catParam}-${qParam}-${cityParam}-${intentParam}`}
           initialCategory={catParam}
           initialQuery={qParam}
           initialCity={cityParam}

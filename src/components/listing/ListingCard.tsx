@@ -511,7 +511,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
                 className={`w-full py-2 px-3 rounded-xl text-xs font-extrabold flex items-center justify-between transition-all cursor-pointer shadow-xs ${
                   revealsRemaining <= 0
                     ? 'bg-amber-500 hover:bg-amber-600 text-white'
-                    : 'bg-navy-900 hover:bg-orange-600 text-white'
+                    : 'bg-[#D92228] hover:bg-[#BF1E23] text-white shadow-red-600/20'
                 }`}
               >
                 <div className="flex items-center gap-1.5">

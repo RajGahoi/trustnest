@@ -310,7 +310,11 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
                   {/* Left Column: Developer Badge, Config & Starting Price */}
                   <div className="lg:col-span-4 text-center lg:text-left">
-                    <div className="p-4 sm:p-5 rounded-2xl bg-black/40 backdrop-blur-md border border-white/20 shadow-2xl max-w-sm mx-auto lg:mx-0">
+                    <div
+                      onClick={() => onNavigate(`search?q=${encodeURIComponent(slideItem.projectName)}`)}
+                      className="p-4 sm:p-5 rounded-2xl bg-black/40 hover:bg-black/55 backdrop-blur-md border border-white/20 hover:border-orange-500 shadow-2xl max-w-sm mx-auto lg:mx-0 transition-all cursor-pointer group/leftcard"
+                      title={`View ${slideItem.projectName} Listings`}
+                    >
                       {/* Developer Logo Badge (MagicBricks/99acres Red) */}
                       <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#D92228] text-white font-extrabold text-[11px] sm:text-xs tracking-wider uppercase shadow-xl mb-3">
                         <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
