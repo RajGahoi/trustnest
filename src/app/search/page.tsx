@@ -98,8 +98,16 @@ export const SearchPage: React.FC<SearchPageProps> = ({
       }
 
       // Category match
-      if (filters.categorySlug !== 'all' && listing.categorySlug !== filters.categorySlug) {
-        return false;
+      if (filters.categorySlug !== 'all') {
+        if (filters.categorySlug === 'pg') {
+          const isPgListing = listing.categorySlug === 'pg' || 
+            listing.attributes?.propertyCategory === 'PG_COLIVING' || 
+            (listing.title + ' ' + listing.description).toLowerCase().includes('pg') || 
+            (listing.title + ' ' + listing.description).toLowerCase().includes('co-living');
+          if (!isPgListing) return false;
+        } else if (listing.categorySlug !== filters.categorySlug) {
+          return false;
+        }
       }
 
       // Price range match

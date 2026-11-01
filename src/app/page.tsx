@@ -12,6 +12,7 @@ import { ProjectSpotlightCarousel } from '../components/home/ProjectSpotlightCar
 import { NinetyNineAcresBillboardHero } from '../components/home/NinetyNineAcresBillboardHero';
 import { LivePropertyDemoModal } from '../components/listing/LivePropertyDemoModal';
 import { PreferredAgentsCarousel } from '../components/home/PreferredAgentsCarousel';
+import { HomeLoansBanner } from '../components/loan/HomeLoansBanner';
 import { store } from '../mock/store';
 import { api } from '../services/api';
 import { useLanguage } from '../domain/i18n/LanguageContext';
@@ -31,7 +32,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   const [quickViewListing, setQuickViewListing] = useState<Listing | null>(null);
   const [liveDemoListing, setLiveDemoListing] = useState<Listing | null>(null);
   const [subscriptionModalOpen, setSubscriptionModalOpen] = useState(false);
-  const [activePropertyTab, setActivePropertyTab] = useState<'ALL' | 'COMMERCIAL' | 'AGRICULTURAL' | 'INDUSTRIAL' | 'PLOTS' | 'RESIDENTIAL'>('ALL');
+  const [activePropertyTab, setActivePropertyTab] = useState<'ALL' | 'COMMERCIAL' | 'AGRICULTURAL' | 'INDUSTRIAL' | 'PLOTS' | 'RESIDENTIAL' | 'PG'>('ALL');
   const [revealsRemaining, setRevealsRemaining] = useState(store.getContactRevealsRemaining());
   const [authSuccessMsg, setAuthSuccessMsg] = useState('');
 
@@ -83,6 +84,9 @@ export const HomePage: React.FC<HomePageProps> = ({
     }
     if (activePropertyTab === 'RESIDENTIAL') {
       return cat.includes('RESIDENTIAL') || type.includes('villa') || type.includes('apartment') || type.includes('flat') || type.includes('penthouse');
+    }
+    if (activePropertyTab === 'PG') {
+      return cat.includes('PG') || l.categorySlug === 'pg' || type.includes('pg') || type.includes('co-living') || l.title.toLowerCase().includes('pg');
     }
     return true;
   });
@@ -449,6 +453,11 @@ export const HomePage: React.FC<HomePageProps> = ({
         />
       </section>
 
+      {/* 1.95 MAGICBRICKS MAGICLOANS HOME LOAN COMPARISON BANNER & ELIGIBILITY CALCULATOR */}
+      <section className="-mt-6 sm:-mt-8">
+        <HomeLoansBanner />
+      </section>
+
       {/* 2. REAL ESTATE CATEGORY DISCOVERY RAILS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between mb-8">
@@ -556,6 +565,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             { id: 'INDUSTRIAL', label: `${t('tabPortfolioIndustrial')} (4)` },
             { id: 'PLOTS', label: `${t('tabPortfolioPlots')} (4)` },
             { id: 'RESIDENTIAL', label: `${t('tabPortfolioResidential')} (4)` },
+            { id: 'PG', label: `${t('tabPg')} (3)` },
           ].map(tab => (
             <button
               key={tab.id}

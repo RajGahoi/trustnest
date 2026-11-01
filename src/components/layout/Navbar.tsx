@@ -194,6 +194,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const navLinks = [
     { label: t('forBuyers'), route: 'search?category=all', href: '#search?category=all', category: 'all' },
     { label: t('forTenants'), route: 'search?intent=rent', href: '#search?intent=rent', category: 'rent' },
+    { label: t('tabPg') || 'PG / Co-Living', route: 'search?category=pg', href: '#search?category=pg', category: 'pg' },
     { label: t('navCommercial'), route: 'search?q=Commercial+Office', href: '#search?q=Commercial+Office', category: 'commercial' },
     { label: t('navPlots'), route: 'search?q=Residential+Plot', href: '#search?q=Residential+Plot', category: 'plots' },
     { label: t('insights'), route: 'search?q=RERA', href: '#search?q=RERA', category: 'insights', isNew: true },

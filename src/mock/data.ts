@@ -21,6 +21,21 @@ export const CATEGORIES: Category[] = [
     ]
   },
   {
+    id: 'cat-pg',
+    slug: 'pg',
+    name: 'PG & Co-Living',
+    icon: 'Home',
+    description: 'Verified student & working professional PGs, co-living spaces with food, AC & WiFi',
+    image: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1000&q=80',
+    attributes: [
+      { id: 'attr-room-type', key: 'roomType', label: 'Occupancy / Room Type', type: 'enum', required: true, filterable: true, options: ['Private Single Room', 'Twin Sharing', 'Triple Sharing', 'Four Sharing'] },
+      { id: 'attr-gender', key: 'gender', label: 'Tenant Preference', type: 'enum', required: true, filterable: true, options: ['Boys Only', 'Girls Only', 'Co-Ed / Unisex'] },
+      { id: 'attr-food', key: 'foodIncluded', label: 'Food / Meals Service', type: 'enum', required: true, filterable: true, options: ['3 Meals Included', 'Breakfast & Dinner', 'Self Cooking Allowed', 'No Food'] },
+      { id: 'attr-ac', key: 'acAvailable', label: 'Air Conditioning (AC)', type: 'enum', required: false, filterable: true, options: ['AC Rooms', 'Non-AC Rooms'] },
+      { id: 'attr-wifi', key: 'wifi', label: 'High-Speed WiFi', type: 'boolean', required: false, filterable: true }
+    ]
+  },
+  {
     id: 'cat-veh',
     slug: 'vehicles',
     name: 'Vehicles',

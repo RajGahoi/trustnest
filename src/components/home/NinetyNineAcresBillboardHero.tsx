@@ -102,7 +102,7 @@ const BILLBOARD_SLIDES: BillboardSlide[] = [
   }
 ];
 
-type SearchTab = 'BUY' | 'RENT' | 'NEW_LAUNCH' | 'COMMERCIAL' | 'PLOTS' | 'PROJECTS';
+type SearchTab = 'BUY' | 'RENT' | 'PG' | 'NEW_LAUNCH' | 'COMMERCIAL' | 'PLOTS' | 'PROJECTS';
 
 interface NinetyNineAcresBillboardHeroProps {
   onSearch: (query: string, category?: string, city?: string) => void;
@@ -181,6 +181,9 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
     } else if (activeTab === 'PLOTS') {
       categoryParam = 'plots';
       if (!effectiveQuery) effectiveQuery = 'Land Plot';
+    } else if (activeTab === 'PG') {
+      categoryParam = 'pg';
+      if (!effectiveQuery) effectiveQuery = 'PG Co-Living';
     } else if (activeTab === 'RENT') {
       if (!effectiveQuery) effectiveQuery = 'Rent Apartment';
     } else if (activeTab === 'NEW_LAUNCH') {
@@ -232,6 +235,17 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
         { value: 'Retail Shop', label: language === 'hi' ? 'रीटेल दुकान / शोरूम' : 'Retail Shop / Showroom' },
         { value: 'Warehouse', label: language === 'hi' ? 'गोदाम / वेयरहाउस' : 'Warehouse / Godown' },
         { value: 'Industrial Building', label: language === 'hi' ? 'औद्योगिक शेड' : 'Industrial Building' }
+      ];
+    }
+    if (activeTab === 'PG') {
+      return [
+        { value: 'ALL', label: language === 'hi' ? 'सभी पीजी व को-लिविंग' : 'All PG & Co-Living' },
+        { value: 'Boys PG', label: language === 'hi' ? 'बॉयज पीजी (Boys PG)' : 'Boys PG' },
+        { value: 'Girls PG', label: language === 'hi' ? 'गर्ल्स पीजी (Girls PG)' : 'Girls PG' },
+        { value: 'Coed PG', label: language === 'hi' ? 'को-एड पीजी (Co-ed PG)' : 'Coed PG' },
+        { value: 'Private Room', label: language === 'hi' ? 'प्राइवेट सिंगल रूम' : 'Private Single Room' },
+        { value: 'Twin Sharing', label: language === 'hi' ? 'ट्विन शेयरिंग (2 Sharing)' : 'Twin Sharing (2 Sharing)' },
+        { value: 'With Food', label: language === 'hi' ? 'भोजन सहित (With Food/Mess)' : 'With Food / Mess' }
       ];
     }
     if (activeTab === 'PLOTS') {
@@ -477,6 +491,22 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               }`}
             >
               {language === 'hi' ? 'किराया (Rent)' : 'Rent'}
+            </button>
+
+            {/* PG / Co-Living (MagicBricks Style) */}
+            <button
+              type="button"
+              onClick={() => { setActiveTab('PG'); setSelectedSubCategory('ALL'); }}
+              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] flex items-center gap-1 ${
+                activeTab === 'PG'
+                  ? 'border-[#0078DB] text-navy-950 font-extrabold'
+                  : 'border-transparent text-gray-600 hover:text-navy-900'
+              }`}
+            >
+              <span>{language === 'hi' ? 'पीजी व को-लिविंग' : 'PG / Co-Living'}</span>
+              <span className="text-[9px] font-black uppercase px-1.5 py-0.2 rounded bg-amber-500 text-white tracking-wider">
+                PG
+              </span>
             </button>
 
             {/* New Launch (with red dot) */}

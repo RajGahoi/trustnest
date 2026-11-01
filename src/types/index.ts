@@ -14,6 +14,7 @@ export type UserRole =
 
 export type CategorySlug = 
   | 'property' 
+  | 'pg'
   | 'vehicles' 
   | 'mobiles' 
   | 'electronics' 

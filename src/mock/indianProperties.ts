@@ -1302,5 +1302,234 @@ export const INDIAN_VERIFIED_PROPERTIES: Listing[] = [
     viewsCount: 6420,
     savesCount: 580,
     leadsCount: 92
+  },
+  // 17. PG & CO-LIVING: Zolo Stays Cyber Haven (Cyber City, Gurugram)
+  {
+    id: 'prop-pg-zolo-cybercity',
+    slug: 'zolo-stays-cyber-haven-premium-co-living-pg-cyber-city-gurugram',
+    title: 'Zolo Stays Cyber Haven - Premium Co-Living & PG near Cyber Hub',
+    description: 'Designer fully furnished co-living space and PG 5 minutes from Cyber City and DLF Cyber Hub. Includes 3 chef-curated meals daily, 200 Mbps high-speed WiFi, daily professional housekeeping, power backup, smart TV, laundry machines, and biometric security. Zero brokerage and flexible monthly lock-in.',
+    categorySlug: 'pg',
+    categoryName: 'PG & Co-Living',
+    price: 12500,
+    formattedPrice: '₹ 12,500/mo',
+    isFeatured: true,
+    location: {
+      address: 'Plot 48, DLF Phase 2, near Cyber City Metro',
+      locality: 'Cyber City, DLF Phase 2',
+      city: 'Gurugram',
+      state: 'Haryana',
+      pincode: '122002',
+      lat: 28.4908,
+      lng: 77.0903,
+      verifiedCoords: true
+    },
+    images: [
+      'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80'
+    ],
+    attributes: {
+      roomType: 'Twin Sharing',
+      gender: 'Co-Ed / Unisex',
+      foodIncluded: '3 Meals Included',
+      acAvailable: 'AC Rooms',
+      propertyType: 'PG / Co-Living',
+      propertyCategory: 'PG_COLIVING',
+      area: 280,
+      areaUnit: 'sqft',
+      roadWidth: '60 ft Sector Road',
+      furnishing: 'Fully Furnished',
+      parking: true,
+      postedBy: 'Verified Operator',
+      postedAgo: '1 day ago'
+    },
+    sellerId: 'usr-pg-zolo',
+    sellerName: 'Zolo Stays Prime Host',
+    sellerPhone: '+91 98112 34567',
+    sellerEmail: 'cyberhaven@trustnest.in',
+    sellerType: 'VERIFIED_AGENT',
+    sellerAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+    sellerRating: 4.92,
+    sellerVerified: true,
+    trustScore: {
+      overallScore: 96,
+      tier: 'PLATINUM',
+      badgeLabel: 'PLATINUM PG 96/100',
+      verifiedAt: '2026-10-28',
+      dimensions: [
+        { id: 'td-1', name: 'Identity', score: 20, maxScore: 20, status: 'PASSED', details: 'FSSAI License & Corporate KYC Verified', verifiedAt: '2026-10-28' },
+        { id: 'td-2', name: 'Documents', score: 20, maxScore: 20, status: 'PASSED', details: 'Biometric locks, 24/7 CCTV & Fire Safety NOC', verifiedAt: '2026-10-28' },
+        { id: 'td-3', name: 'Location', score: 19, maxScore: 20, status: 'PASSED', details: 'Prime Cyber City walking distance to Metro', verifiedAt: '2026-10-28' },
+        { id: 'td-4', name: 'Media', score: 19, maxScore: 20, status: 'PASSED', details: 'Interior bedrooms, kitchen & washrooms inspected', verifiedAt: '2026-10-28' },
+        { id: 'td-5', name: 'Risk', score: 18, maxScore: 20, status: 'PASSED', details: 'Digital lease agreement, zero brokerage', verifiedAt: '2026-10-28' }
+      ]
+    },
+    status: 'PUBLISHED',
+    version: 1,
+    isBoosted: true,
+    documents: [
+      { id: 'doc-pg-1', name: 'FSSAI Food Safety License', type: 'REGISTRATION', status: 'VERIFIED', uploadedAt: '2026-09-01' },
+      { id: 'doc-pg-2', name: 'Fire Department Safety NOC', type: 'BUSINESS_GST', status: 'VERIFIED', uploadedAt: '2026-09-01' }
+    ],
+    fraudSignals: [],
+    createdAt: '2026-09-01T10:00:00Z',
+    publishedAt: '2026-09-01T10:00:00Z',
+    expiresAt: '2027-09-01T10:00:00Z',
+    viewsCount: 3120,
+    savesCount: 340,
+    leadsCount: 78
+  },
+  // 18. PG & CO-LIVING: Stanza Living Kyoto House (Sector 62, Noida)
+  {
+    id: 'prop-pg-stanza-noida',
+    slug: 'stanza-living-kyoto-house-safe-girls-pg-sector-62-noida',
+    title: 'Stanza Living Kyoto House - Safe & Modern Girls PG (Sector 62, Noida)',
+    description: 'Premier student and working women hostel/PG located near Noida Electronic City Metro and institutional area Sector 62. Triple security perimeter with biometric entry, female security guards, 24/7 resident warden, wholesome 4-course North & South Indian meals, and dedicated high-speed study lounge.',
+    categorySlug: 'pg',
+    categoryName: 'PG & Co-Living',
+    price: 9500,
+    formattedPrice: '₹ 9,500/mo',
+    isFeatured: true,
+    location: {
+      address: 'B-Block, Institutional Area, Sector 62',
+      locality: 'Sector 62',
+      city: 'Noida',
+      state: 'Uttar Pradesh',
+      pincode: '201309',
+      lat: 28.6280,
+      lng: 77.3649,
+      verifiedCoords: true
+    },
+    images: [
+      'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1540518614846-7ede433c4550?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80'
+    ],
+    attributes: {
+      roomType: 'Twin Sharing',
+      gender: 'Girls Only',
+      foodIncluded: '3 Meals Included',
+      acAvailable: 'AC Rooms',
+      propertyType: 'PG / Co-Living',
+      propertyCategory: 'PG_COLIVING',
+      area: 250,
+      areaUnit: 'sqft',
+      roadWidth: '45 ft Wide Road',
+      furnishing: 'Fully Furnished',
+      parking: false,
+      postedBy: 'Verified Operator',
+      postedAgo: '3 days ago'
+    },
+    sellerId: 'usr-pg-stanza',
+    sellerName: 'Stanza Living Community Team',
+    sellerPhone: '+91 98118 77665',
+    sellerEmail: 'kyotohouse@trustnest.in',
+    sellerType: 'VERIFIED_AGENT',
+    sellerAvatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80',
+    sellerRating: 4.95,
+    sellerVerified: true,
+    trustScore: {
+      overallScore: 97,
+      tier: 'PLATINUM',
+      badgeLabel: 'PLATINUM GIRLS PG 97/100',
+      verifiedAt: '2026-10-25',
+      dimensions: [
+        { id: 'td-1', name: 'Identity', score: 20, maxScore: 20, status: 'PASSED', details: 'Operator verification + Police NOC done', verifiedAt: '2026-10-25' },
+        { id: 'td-2', name: 'Documents', score: 20, maxScore: 20, status: 'PASSED', details: '24/7 Female warden, SOS alarms & CCTV', verifiedAt: '2026-10-25' },
+        { id: 'td-3', name: 'Location', score: 19, maxScore: 20, status: 'PASSED', details: 'Sector 62 Institutional area walking to Metro', verifiedAt: '2026-10-25' },
+        { id: 'td-4', name: 'Media', score: 19, maxScore: 20, status: 'PASSED', details: 'Air conditioned rooms, orthopaedic mattresses', verifiedAt: '2026-10-25' },
+        { id: 'td-5', name: 'Risk', score: 19, maxScore: 20, status: 'PASSED', details: 'Verified female student & professional tenants', verifiedAt: '2026-10-25' }
+      ]
+    },
+    status: 'PUBLISHED',
+    version: 1,
+    isBoosted: false,
+    documents: [
+      { id: 'doc-pg-3', name: 'Police Verification Clearance', type: 'REGISTRATION', status: 'VERIFIED', uploadedAt: '2026-09-10' }
+    ],
+    fraudSignals: [],
+    createdAt: '2026-09-10T10:00:00Z',
+    publishedAt: '2026-09-10T10:00:00Z',
+    expiresAt: '2027-09-10T10:00:00Z',
+    viewsCount: 2890,
+    savesCount: 410,
+    leadsCount: 65
+  },
+  // 19. PG & CO-LIVING: Housr Co-Living Private Studio (Whitefield, Bengaluru)
+  {
+    id: 'prop-pg-housr-bengaluru',
+    slug: 'housr-co-living-private-studio-suites-whitefield-bengaluru',
+    title: 'Housr Co-Living Private Studio Suites with Balcony (Whitefield, Bengaluru)',
+    description: 'Boutique single private studio rooms in EPIP Zone, Whitefield. Tailor-made for IT professionals working at ITPL, Bagmane Tech Park, and Brigade Tech Gardens. Features workstation desk with ergonomic chair, private ensuite bath, 300 Mbps Wi-Fi, rooftop cafe lounge, and gaming zone.',
+    categorySlug: 'pg',
+    categoryName: 'PG & Co-Living',
+    price: 16500,
+    formattedPrice: '₹ 16,500/mo',
+    isFeatured: true,
+    location: {
+      address: 'Near ITPL Main Road, EPIP Zone, Whitefield',
+      locality: 'Whitefield',
+      city: 'Bengaluru',
+      state: 'Karnataka',
+      pincode: '560066',
+      lat: 12.9845,
+      lng: 77.7335,
+      verifiedCoords: true
+    },
+    images: [
+      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1540518614846-7ede433c4550?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1200&q=80'
+    ],
+    attributes: {
+      roomType: 'Private Single Room',
+      gender: 'Co-Ed / Unisex',
+      foodIncluded: 'Breakfast & Dinner',
+      acAvailable: 'AC Rooms',
+      propertyType: 'PG / Co-Living',
+      propertyCategory: 'PG_COLIVING',
+      area: 320,
+      areaUnit: 'sqft',
+      roadWidth: '80 ft Main Road',
+      furnishing: 'Fully Furnished',
+      parking: true,
+      postedBy: 'Verified Operator',
+      postedAgo: '4 days ago'
+    },
+    sellerId: 'usr-pg-housr',
+    sellerName: 'Housr Community Manager',
+    sellerPhone: '+91 98801 99887',
+    sellerEmail: 'whitefield@trustnest.in',
+    sellerType: 'VERIFIED_AGENT',
+    sellerAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+    sellerRating: 4.90,
+    sellerVerified: true,
+    trustScore: {
+      overallScore: 95,
+      tier: 'PLATINUM',
+      badgeLabel: 'PLATINUM STUDIO 95/100',
+      verifiedAt: '2026-10-26',
+      dimensions: [
+        { id: 'td-1', name: 'Identity', score: 20, maxScore: 20, status: 'PASSED', details: 'BBMP Commercial Trade License Verified', verifiedAt: '2026-10-26' },
+        { id: 'td-2', name: 'Documents', score: 19, maxScore: 20, status: 'PASSED', details: 'Smart card door access & 24/7 security guard', verifiedAt: '2026-10-26' },
+        { id: 'td-3', name: 'Location', score: 19, maxScore: 20, status: 'PASSED', details: 'EPIP Whitefield tech corridor', verifiedAt: '2026-10-26' },
+        { id: 'td-4', name: 'Media', score: 19, maxScore: 20, status: 'PASSED', details: 'Dual internet line with automatic failover', verifiedAt: '2026-10-26' },
+        { id: 'td-5', name: 'Risk', score: 18, maxScore: 20, status: 'PASSED', details: 'Weekend community events & networking', verifiedAt: '2026-10-26' }
+      ]
+    },
+    status: 'PUBLISHED',
+    version: 1,
+    isBoosted: true,
+    documents: [
+      { id: 'doc-pg-4', name: 'BBMP Trade License', type: 'REGISTRATION', status: 'VERIFIED', uploadedAt: '2026-08-15' }
+    ],
+    fraudSignals: [],
+    createdAt: '2026-08-15T10:00:00Z',
+    publishedAt: '2026-08-15T10:00:00Z',
+    expiresAt: '2027-08-15T10:00:00Z',
+    viewsCount: 4210,
+    savesCount: 520,
+    leadsCount: 110
   }
 ];
