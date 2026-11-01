@@ -1614,5 +1614,89 @@ export const INDIAN_VERIFIED_PROPERTIES: Listing[] = [
     viewsCount: 6741,
     savesCount: 512,
     leadsCount: 148
+  },
+  // 21. USER EXACT LISTING: 150 Sqyrd Plot in Panchsheel Park, Crossings Republik, Ghaziabad (₹ 1.70 Cr)
+  {
+    id: 'prop-plot-panchsheel-ghaziabad',
+    slug: '150-sqyrd-plot-for-sale-panchsheel-park-crossings-republik-ghaziabad',
+    title: '150 Sqyrd Plot For Sale in Panchsheel Park, Crossings Republik, Ghaziabad',
+    description: '150 Sqyrd prime freehold residential plot for sale in Panchsheel Park, Crossings Republik, Ghaziabad. Features 18 X 8.33 dimensions, boundary wall constructed, North-East facing, GDA approved layout in a secure gated colony. Overlooking 60 ft wide main road, located right near the Golf Course and Bikaner Vala Outlet. Zero brokerage direct owner sale with complete RERA legal & infrastructure status cleared.',
+    categorySlug: 'property',
+    categoryName: 'Real Estate',
+    price: 17000000,
+    formattedPrice: '₹ 1.70 Cr',
+    isFeatured: true,
+    location: {
+      address: 'Panchsheel Park, Delhi Ghaziabad Corridor, Crossings Republik',
+      locality: 'Crossings Republik',
+      city: 'Ghaziabad',
+      state: 'Uttar Pradesh',
+      pincode: '201016',
+      lat: 28.6258,
+      lng: 77.4320,
+      verifiedCoords: true
+    },
+    images: [
+      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'
+    ],
+    attributes: {
+      propertyType: 'Residential Plot',
+      propertyCategory: 'PLOTS_LAND',
+      project: 'Panchsheel Park',
+      area: 150,
+      areaUnit: 'sqyrd',
+      dimensions: '18 X 8.33',
+      facing: 'North - East',
+      status: 'Legal & Infra Status: Verified',
+      boundaryWall: 'Yes',
+      ownership: 'Freehold',
+      overlooking: 'Main Road',
+      transaction: 'Resale',
+      roadWidth: '60 ft Wide Main Road',
+      pricePerSqft: '₹ 12,593 / sqft',
+      emi: '₹ 1.05 L/mo',
+      highlights: 'Near Golf Course and Bikaner Vala Outlet',
+      postedBy: 'Owner: Ravi Prakash',
+      postedAgo: '1 day ago',
+      parking: true,
+      reraId: 'UPRERAPRJ118822'
+    },
+    sellerId: 'usr-ravi-prakash',
+    sellerName: 'Ravi Prakash',
+    sellerPhone: '+91 93100 45678',
+    sellerEmail: 'ravi.prakash@trustnest.in',
+    sellerType: 'OWNER',
+    sellerAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+    sellerRating: 4.96,
+    sellerVerified: true,
+    trustScore: {
+      overallScore: 98,
+      tier: 'PLATINUM',
+      badgeLabel: 'PLATINUM PLOT 98/100',
+      verifiedAt: '2026-11-01',
+      dimensions: [
+        { id: 'td-1', name: 'Identity', score: 20, maxScore: 20, status: 'PASSED', details: 'Aadhaar + Mobile OTP Verified', verifiedAt: '2026-11-01' },
+        { id: 'td-2', name: 'Documents', score: 20, maxScore: 20, status: 'PASSED', details: 'GDA Approval Letter + Freehold Registry Deed Verified', verifiedAt: '2026-11-01' },
+        { id: 'td-3', name: 'Location', score: 20, maxScore: 20, status: 'PASSED', details: 'Crossings Republik GIS satellite geocoded', verifiedAt: '2026-11-01' },
+        { id: 'td-4', name: 'Media', score: 19, maxScore: 20, status: 'PASSED', details: 'Plot on-site boundaries & road frontage inspected', verifiedAt: '2026-11-01' },
+        { id: 'td-5', name: 'Risk', score: 19, maxScore: 20, status: 'PASSED', details: 'Zero encumbrance, immediate possession', verifiedAt: '2026-11-01' }
+      ]
+    },
+    status: 'PUBLISHED',
+    version: 1,
+    isBoosted: true,
+    documents: [
+      { id: 'doc-panch-1', name: 'GDA Approval Letter', type: 'TITLE_DEED', status: 'VERIFIED', uploadedAt: '2026-10-15' },
+      { id: 'doc-panch-2', name: 'Sub-Registrar Freehold Deed', type: 'REGISTRATION', status: 'VERIFIED', uploadedAt: '2026-10-15' }
+    ],
+    fraudSignals: [],
+    createdAt: '2026-10-15T10:00:00Z',
+    publishedAt: '2026-10-15T10:00:00Z',
+    expiresAt: '2027-10-15T10:00:00Z',
+    viewsCount: 4890,
+    savesCount: 420,
+    leadsCount: 112
   }
 ];

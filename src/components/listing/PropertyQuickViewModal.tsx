@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, MapPin, CheckCircle, ShieldCheck, Phone, Check, ArrowRight, Layers, FileText, ExternalLink, Video } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, MapPin, CheckCircle, ShieldCheck, Phone, Check, ArrowRight, Layers, FileText, ExternalLink, Video, Download } from 'lucide-react';
 import type { Listing } from '../../types';
 import { TrustBadge } from '../trust/TrustBadge';
 import { formatINR } from '../../domain/india/currency';
 import { store } from '../../mock/store';
 import { useLanguage } from '../../domain/i18n/LanguageContext';
 import { LivePropertyDemoModal } from './LivePropertyDemoModal';
+import { DownloadBrochureModal } from '../brochure/DownloadBrochureModal';
 
 interface PropertyQuickViewModalProps {
   listing: Listing | null;
@@ -27,6 +28,7 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
   const [phoneRevealed, setPhoneRevealed] = useState(false);
   const [revealsRemaining, setRevealsRemaining] = useState(store.getContactRevealsRemaining());
   const [liveDemoModalOpen, setLiveDemoModalOpen] = useState(false);
+  const [brochureModalOpen, setBrochureModalOpen] = useState(false);
 
   useEffect(() => {
     setCurrentImgIndex(0);
@@ -322,6 +324,17 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
                 </button>
               )}
 
+              {/* Download Brochure (PDF) Button */}
+              <button
+                type="button"
+                onClick={() => setBrochureModalOpen(true)}
+                className="w-full sm:w-auto px-4 py-3 bg-white hover:bg-red-50 text-[#D92228] border-2 border-[#D92228] rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs active:scale-98"
+                title="Download Official PDF Factsheet & RERA Blueprint"
+              >
+                <Download className="w-4 h-4" />
+                <span>Download Brochure (PDF)</span>
+              </button>
+
               <p className="text-[10px] text-cream-400">
                 {revealsRemaining > 0
                   ? `${revealsRemaining} ${t('freeQuotaHint')}`
@@ -360,6 +373,13 @@ export const PropertyQuickViewModal: React.FC<PropertyQuickViewModalProps> = ({
         isOpen={liveDemoModalOpen}
         onClose={() => setLiveDemoModalOpen(false)}
         onOpenSubscriptionModal={onOpenSubscriptionModal}
+      />
+
+      {/* Official Property PDF Factsheet & Brochure Modal */}
+      <DownloadBrochureModal
+        listing={listing}
+        isOpen={brochureModalOpen}
+        onClose={() => setBrochureModalOpen(false)}
       />
     </div>
   );

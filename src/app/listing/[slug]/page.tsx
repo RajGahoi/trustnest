@@ -19,7 +19,9 @@ import {
   School,
   Activity,
   Train,
-  Briefcase
+  Briefcase,
+  Download,
+  FileText
 } from 'lucide-react';
 import type { Listing } from '../../../types';
 import { TrustBadge } from '../../../components/trust/TrustBadge';
@@ -32,6 +34,7 @@ import { AbuseReportModal } from '../../../components/listing/AbuseReportModal';
 import { ContactRevealModal } from '../../../components/listing/ContactRevealModal';
 import { SubscriptionModal } from '../../../components/monetization/SubscriptionModal';
 import { PropertyComparisonModal } from '../../../components/listing/PropertyComparisonModal';
+import { DownloadBrochureModal } from '../../../components/brochure/DownloadBrochureModal';
 import { store } from '../../../mock/store';
 import { formatINR } from '../../../domain/india/currency';
 import { validateReraNumber, LEGAL_DISCLAIMER_TEXT } from '../../../domain/india/rera';
@@ -53,6 +56,7 @@ export const ListingDetailPage: React.FC<ListingDetailPageProps> = ({
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [subModalOpen, setSubModalOpen] = useState(false);
+  const [brochureModalOpen, setBrochureModalOpen] = useState(false);
   const [comparisonModalOpen, setComparisonModalOpen] = useState(false);
   const [isCompared, setIsCompared] = useState(store.getComparisonListings().some(l => l.id === listing.id));
 
@@ -524,6 +528,30 @@ export const ListingDetailPage: React.FC<ListingDetailPageProps> = ({
             onOpenSubscriptionModal={() => setSubModalOpen(true)}
           />
 
+          {/* DOWNLOAD BROCHURE CARD (EXACT MAGICBRICKS SCREENSHOT MATCH) */}
+          <div
+            onClick={() => setBrochureModalOpen(true)}
+            className="p-5 bg-white rounded-3xl border border-gray-200/90 shadow-sm hover:shadow-md hover:border-[#D92228] transition-all cursor-pointer flex items-center justify-between group text-left"
+          >
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-2xl bg-red-50 border border-red-200/80 flex items-center justify-center text-[#D92228] group-hover:scale-105 transition-transform">
+                <FileText className="w-6 h-6 stroke-[2]" />
+              </div>
+              <div>
+                <h4 className="font-extrabold text-sm text-navy-950 group-hover:text-[#D92228] transition-colors">
+                  Download Brochure
+                </h4>
+                <p className="text-[11px] text-gray-500 mt-0.5">
+                  Official PDF factsheet & RERA blueprint
+                </p>
+              </div>
+            </div>
+
+            <span className="p-2 rounded-xl bg-gray-50 group-hover:bg-red-50 text-gray-500 group-hover:text-[#D92228] transition-colors">
+              <Download className="w-4 h-4" />
+            </span>
+          </div>
+
           {/* Protected Direct Contact CTA */}
           <div className="bg-white rounded-3xl p-6 border border-navy-900/10 shadow-trust space-y-3 text-navy-900">
             <h4 className="font-extrabold text-sm text-navy-900 flex items-center gap-2">
@@ -591,6 +619,12 @@ export const ListingDetailPage: React.FC<ListingDetailPageProps> = ({
         isOpen={subModalOpen}
         onClose={() => setSubModalOpen(false)}
         defaultAudience="BUYER"
+      />
+
+      <DownloadBrochureModal
+        listing={listing}
+        isOpen={brochureModalOpen}
+        onClose={() => setBrochureModalOpen(false)}
       />
 
       {comparisonModalOpen && (
