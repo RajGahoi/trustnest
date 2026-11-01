@@ -72,9 +72,10 @@ const BANK_PARTNERS: BankPartner[] = [
 
 interface HomeLoansBannerProps {
   onOpenLoanDetails?: () => void;
+  onNavigate?: (route: string) => void;
 }
 
-export const HomeLoansBanner: React.FC<HomeLoansBannerProps> = () => {
+export const HomeLoansBanner: React.FC<HomeLoansBannerProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
   const [calculatorModalOpen, setCalculatorModalOpen] = useState(false);
 
@@ -162,9 +163,14 @@ export const HomeLoansBanner: React.FC<HomeLoansBannerProps> = () => {
 
             <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-1 no-scrollbar">
               {BANK_PARTNERS.map(bank => (
-                <div
+                <a
                   key={bank.id}
-                  onClick={() => setCalculatorModalOpen(true)}
+                  href={`#loans?bank=${bank.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (onNavigate) onNavigate(`loans?bank=${bank.id}`);
+                    else setCalculatorModalOpen(true);
+                  }}
                   className="px-3.5 py-2 rounded-xl bg-white border border-gray-200 shadow-xs hover:shadow-md hover:border-[#D92228] transition-all cursor-pointer flex flex-col items-center justify-center min-w-[125px] sm:min-w-[140px] shrink-0 text-center"
                 >
                   <p className="font-black text-xs text-navy-950 line-clamp-1" style={{ color: bank.accentColor }}>
@@ -173,30 +179,38 @@ export const HomeLoansBanner: React.FC<HomeLoansBannerProps> = () => {
                   <p className="text-[10px] font-bold text-gray-600 mt-0.5">
                     {bank.rate}
                   </p>
-                </div>
+                </a>
               ))}
             </div>
           </div>
 
           {/* Action Row */}
           <div className="pt-2 flex flex-wrap items-center gap-4 sm:gap-6">
-            <button
-              type="button"
-              onClick={() => setCalculatorModalOpen(true)}
+            <a
+              href="#loans"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigate) onNavigate('loans');
+                else setCalculatorModalOpen(true);
+              }}
               className="text-xs sm:text-sm font-extrabold text-[#D92228] hover:text-red-700 flex items-center gap-1 cursor-pointer transition-colors"
             >
               <span>{t('exploreBankOffers')}</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </a>
 
             {/* Red Pill Button (Exact match: Check Your Eligibility) */}
-            <button
-              type="button"
-              onClick={() => setCalculatorModalOpen(true)}
-              className="px-6 py-2.5 sm:px-8 sm:py-3 rounded-full bg-[#D92228] hover:bg-[#B7181D] text-white font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all cursor-pointer active:scale-98"
+            <a
+              href="#loans?tab=eligibility"
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigate) onNavigate('loans?tab=eligibility');
+                else setCalculatorModalOpen(true);
+              }}
+              className="px-6 py-2.5 sm:px-8 sm:py-3 rounded-full bg-[#D92228] hover:bg-[#B7181D] text-white font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all cursor-pointer active:scale-98 inline-flex items-center justify-center"
             >
               {t('checkEligibility')}
-            </button>
+            </a>
           </div>
         </div>
 
@@ -217,7 +231,7 @@ export const HomeLoansBanner: React.FC<HomeLoansBannerProps> = () => {
       {/* INTERACTIVE HOME LOAN ELIGIBILITY & EMI CALCULATOR MODAL */}
       {/* ======================================================== */}
       {calculatorModalOpen && (
-        <div className="fixed inset-0 z-50 bg-navy-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 overflow-y-auto animate-fadeIn">
+        <div className="fixed inset-0 z-[100] bg-navy-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 overflow-y-auto animate-fadeIn">
           <div className="bg-white rounded-3xl max-w-4xl w-full p-5 sm:p-8 shadow-2xl border border-gray-200 text-left relative animate-scaleIn my-auto max-h-[92vh] overflow-y-auto">
             {/* Modal Header */}
             <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-6">
@@ -235,13 +249,26 @@ export const HomeLoansBanner: React.FC<HomeLoansBannerProps> = () => {
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setCalculatorModalOpen(false)}
-                className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center cursor-pointer transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCalculatorModalOpen(false);
+                    if (onNavigate) onNavigate('loans');
+                  }}
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-50 text-[#D92228] hover:bg-red-100 text-xs font-bold transition-colors cursor-pointer"
+                >
+                  <span>Open Full Comparison Page</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCalculatorModalOpen(false)}
+                  className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 flex items-center justify-center cursor-pointer transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Application Success Toast */}

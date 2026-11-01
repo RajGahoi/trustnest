@@ -158,45 +158,67 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <h4 className="font-bold text-xs text-[#1A202C] mb-1.5">Property Services</h4>
               <div className="flex flex-wrap items-center gap-2">
                 <a
-                  href="#home"
+                  href="#loans"
                   onClick={e => {
                     e.preventDefault();
-                    onNavigate('home');
+                    onNavigate('loans');
                   }}
-                  className="hover:text-[#D92228] transition-colors"
+                  className="hover:text-[#D92228] transition-colors cursor-pointer"
                 >
                   Home Loan
                 </a>
                 <span className="text-gray-300">|</span>
                 <a
-                  href="#home"
+                  href="#interiors"
                   onClick={e => {
                     e.preventDefault();
-                    onNavigate('home');
+                    onNavigate('interiors');
                   }}
-                  className="hover:text-[#D92228] transition-colors"
+                  className="hover:text-[#D92228] transition-colors cursor-pointer"
                 >
                   Home Interior
                 </a>
                 <span className="text-gray-300">|</span>
                 <a
-                  href="#home"
+                  href="#emi-calculator"
+                  onClick={e => {
+                    e.preventDefault();
+                    onNavigate('emi-calculator');
+                  }}
+                  className="hover:text-[#D92228] transition-colors cursor-pointer"
+                >
+                  EMI Calculator
+                </a>
+                <span className="text-gray-300">|</span>
+                <a
+                  href="#rates-trends"
+                  onClick={e => {
+                    e.preventDefault();
+                    onNavigate('rates-trends');
+                  }}
+                  className="hover:text-[#D92228] transition-colors cursor-pointer"
+                >
+                  Rates & Trends
+                </a>
+                <span className="text-gray-300">|</span>
+                <a
+                  href="#search?category=pg"
                   onClick={e => {
                     e.preventDefault();
                     onNavigate('search?category=pg');
                   }}
-                  className="hover:text-[#D92228] transition-colors"
+                  className="hover:text-[#D92228] transition-colors cursor-pointer"
                 >
                   PG / Co-Living
                 </a>
                 <span className="text-gray-300">|</span>
                 <a
-                  href="#search"
+                  href="#valuation"
                   onClick={e => {
                     e.preventDefault();
-                    onNavigate('search');
+                    onNavigate('valuation');
                   }}
-                  className="hover:text-[#D92228] transition-colors"
+                  className="hover:text-[#D92228] transition-colors cursor-pointer"
                 >
                   Property Valuation
                 </a>

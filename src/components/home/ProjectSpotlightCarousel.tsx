@@ -90,6 +90,7 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
 }) => {
   const { language } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const [revealedProjects, setRevealedProjects] = useState<Record<string, boolean>>({});
   const [revealsRemaining, setRevealsRemaining] = useState(store.getContactRevealsRemaining());
   const timerRef = useRef<any>(null);
@@ -103,8 +104,10 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
-  // Auto-scroll every 4.5 seconds smoothly
+  // Auto-scroll every 4.5 seconds
   useEffect(() => {
+    if (isPaused) return;
+
     timerRef.current = setInterval(() => {
       setCurrentIndex(prev => (prev + 1) % FEATURED_PROJECTS.length);
     }, 4500);
@@ -112,7 +115,7 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [currentIndex]);
+  }, [currentIndex, isPaused]);
 
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -166,6 +169,8 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
 
       {/* Main 99acres Featured Banner Card */}
       <div
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
         className="relative rounded-3xl overflow-hidden border border-gray-200 shadow-xl bg-slate-900 group select-none transition-all"
       >
         {/* Horizontal sliding track with smooth carousel transition */}
@@ -253,11 +258,10 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
                 key={p.id}
                 type="button"
                 onClick={() => setCurrentIndex(idx)}
-                className={`transition-all rounded-full cursor-pointer ${
-                  currentIndex === idx
+                className={`transition-all rounded-full cursor-pointer ${currentIndex === idx
                     ? 'w-7 h-2 bg-[#D92228] shadow-sm scale-105'
                     : 'w-2 h-2 bg-white/50 hover:bg-white'
-                }`}
+                  }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
             ))}
@@ -292,11 +296,10 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
               <button
                 type="button"
                 onClick={handleRevealPhone}
-                className={`w-full sm:w-auto px-7 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg ${
-                  revealsRemaining <= 0
+                className={`w-full sm:w-auto px-7 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-lg ${revealsRemaining <= 0
                     ? 'bg-amber-500 hover:bg-amber-600 text-gray-950 font-extrabold'
                     : 'bg-[#D92228] hover:bg-[#BF1E23] text-white shadow-red-600/30'
-                }`}
+                  }`}
               >
                 <Phone className="w-4 h-4 fill-white" />
                 <span>

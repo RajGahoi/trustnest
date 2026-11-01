@@ -6,6 +6,7 @@ import {
   Share2, 
   Heart, 
   ArrowLeft, 
+  ArrowRight,
   CheckCircle2, 
   Phone, 
   Sparkles, 
@@ -280,6 +281,23 @@ export const ListingDetailPage: React.FC<ListingDetailPageProps> = ({
                 {listing.pricePeriod && (
                   <span className="text-sm font-semibold text-navy-700 ml-1">{listing.pricePeriod}</span>
                 )}
+                
+                {/* MagicBricks Exact Match: EMI and Loan Eligibility Redirect */}
+                <div className="flex flex-wrap items-center gap-2 mt-2 text-xs font-semibold text-gray-700">
+                  <span>EMI - ~{formatINR(Math.round((listing.price * 0.80) * 0.00787))}/mo</span>
+                  <span className="text-gray-300">|</span>
+                  <a
+                    href="#loans?tab=eligibility"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.location.hash = '#loans?tab=eligibility';
+                    }}
+                    className="text-[#D92228] hover:underline font-extrabold flex items-center gap-1 cursor-pointer"
+                  >
+                    <span>Need Home Loan? Check Eligibility</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
               </div>
 
               {pricePerSqFt > 0 && (

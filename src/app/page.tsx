@@ -471,12 +471,12 @@ export const HomePage: React.FC<HomePageProps> = ({
 
       {/* 1.95 MAGICBRICKS MAGICLOANS HOME LOAN COMPARISON BANNER & ELIGIBILITY CALCULATOR */}
       <section className="-mt-6 sm:-mt-8">
-        <HomeLoansBanner />
+        <HomeLoansBanner onNavigate={onNavigate} />
       </section>
 
       {/* 1.98 MAGICBRICKS ADVICE & TOOLS RAIL (EMI, HOME LOANS, INTERIORS, RATES & TRENDS) */}
       <section className="-mt-6 sm:-mt-8">
-        <AdviceAndToolsRail />
+        <AdviceAndToolsRail onNavigate={onNavigate} />
       </section>
 
       {/* 2. REAL ESTATE CATEGORY DISCOVERY RAILS */}

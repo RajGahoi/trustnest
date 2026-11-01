@@ -115,6 +115,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
 }) => {
   const { language } = useLanguage();
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<any>(null);
 
   // Search state
@@ -134,8 +135,10 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
     'Search "Luxury Lakeview Villa in Whitefield Bengaluru"'
   ];
 
-  // Auto-scroll billboard slides smoothly every 4.5s
+  // Auto-scroll billboard slides every 4.5s
   useEffect(() => {
+    if (isPaused) return;
+
     timerRef.current = setInterval(() => {
       setCurrentSlideIndex(prev => (prev + 1) % BILLBOARD_SLIDES.length);
     }, 4500);
@@ -143,7 +146,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [currentSlideIndex]);
+  }, [currentSlideIndex, isPaused]);
 
   // Rotate placeholder text every 3s
   useEffect(() => {
@@ -276,6 +279,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
       {/* 1. PANORAMIC BILLBOARD HERO CAROUSEL (EXACT 99ACRES HERO) */}
       {/* ======================================================== */}
       <div
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
         className="relative w-full overflow-hidden bg-slate-900 text-white min-h-[380px] sm:min-h-[440px] md:min-h-[480px] lg:min-h-[520px] shadow-2xl"
       >
         {/* Horizontal sliding track with smooth carousel transition */}
@@ -467,11 +472,10 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               type="button"
               onClick={() => setCurrentSlideIndex(idx)}
               aria-label={`Slide ${idx + 1}`}
-              className={`transition-all rounded-full cursor-pointer ${
-                currentSlideIndex === idx
+              className={`transition-all rounded-full cursor-pointer ${currentSlideIndex === idx
                   ? 'w-9 h-2.5 bg-orange-500 shadow-lg scale-105'
                   : 'w-2.5 h-2.5 bg-white/40 hover:bg-white'
-              }`}
+                }`}
             />
           ))}
         </div>
@@ -488,11 +492,10 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
             <button
               type="button"
               onClick={() => { setActiveTab('BUY'); setSelectedSubCategory('ALL'); }}
-              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${
-                activeTab === 'BUY'
+              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${activeTab === 'BUY'
                   ? 'border-[#D92228] text-gray-950 font-black'
                   : 'border-transparent text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
             >
               {language === 'hi' ? 'खरीदें (Buy)' : 'Buy'}
             </button>
@@ -501,11 +504,10 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
             <button
               type="button"
               onClick={() => { setActiveTab('RENT'); setSelectedSubCategory('ALL'); }}
-              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${
-                activeTab === 'RENT'
+              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${activeTab === 'RENT'
                   ? 'border-[#D92228] text-gray-950 font-black'
                   : 'border-transparent text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
             >
               {language === 'hi' ? 'किराया (Rent)' : 'Rent'}
             </button>
@@ -514,11 +516,10 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
             <button
               type="button"
               onClick={() => { setActiveTab('PG'); setSelectedSubCategory('ALL'); }}
-              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] flex items-center gap-1 ${
-                activeTab === 'PG'
+              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] flex items-center gap-1 ${activeTab === 'PG'
                   ? 'border-[#D92228] text-gray-950 font-black'
                   : 'border-transparent text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
             >
               <span>{language === 'hi' ? 'पीजी व को-लिविंग' : 'PG / Co-Living'}</span>
               <span className="text-[9px] font-black uppercase px-1.5 py-0.2 rounded bg-amber-500 text-white tracking-wider">
@@ -530,11 +531,10 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
             <button
               type="button"
               onClick={() => { setActiveTab('NEW_LAUNCH'); setSelectedSubCategory('ALL'); }}
-              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] flex items-center gap-1.5 ${
-                activeTab === 'NEW_LAUNCH'
+              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] flex items-center gap-1.5 ${activeTab === 'NEW_LAUNCH'
                   ? 'border-[#D92228] text-gray-950 font-black'
                   : 'border-transparent text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
             >
               <span>{language === 'hi' ? 'नई लॉन्च' : 'New Launch'}</span>
               <span className="w-2 h-2 rounded-full bg-[#D92228] animate-pulse" />
@@ -544,11 +544,10 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
             <button
               type="button"
               onClick={() => { setActiveTab('COMMERCIAL'); setSelectedSubCategory('ALL'); }}
-              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${
-                activeTab === 'COMMERCIAL'
+              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${activeTab === 'COMMERCIAL'
                   ? 'border-[#D92228] text-gray-950 font-black'
                   : 'border-transparent text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
             >
               {language === 'hi' ? 'कमर्शियल' : 'Commercial'}
             </button>
@@ -557,11 +556,10 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
             <button
               type="button"
               onClick={() => { setActiveTab('PLOTS'); setSelectedSubCategory('ALL'); }}
-              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${
-                activeTab === 'PLOTS'
+              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${activeTab === 'PLOTS'
                   ? 'border-[#D92228] text-gray-950 font-black'
                   : 'border-transparent text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
             >
               {language === 'hi' ? 'प्लॉट व जमीन' : 'Plots/Land'}
             </button>
@@ -570,11 +568,10 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
             <button
               type="button"
               onClick={() => { setActiveTab('PROJECTS'); setSelectedSubCategory('ALL'); }}
-              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${
-                activeTab === 'PROJECTS'
+              className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${activeTab === 'PROJECTS'
                   ? 'border-[#D92228] text-gray-950 font-black'
                   : 'border-transparent text-gray-600 hover:text-gray-900'
-              }`}
+                }`}
             >
               {language === 'hi' ? 'प्रोजेक्ट्स' : 'Projects'}
             </button>

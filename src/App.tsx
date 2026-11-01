@@ -13,6 +13,11 @@ import { AdminPortalPage } from './app/admin/page';
 import { MessagesPage } from './app/messages/page';
 import { FavoritesPage } from './app/favorites/page';
 import { ProfilePage } from './app/profile/page';
+import { HomeLoansPage } from './app/loans/page';
+import { EmiCalculatorPage } from './app/emi-calculator/page';
+import { InteriorsPage } from './app/interiors/page';
+import { RatesAndTrendsPage } from './app/rates-trends/page';
+import { ValuationPage } from './app/valuation/page';
 import { SearchBarExpandable } from './components/search/SearchBarExpandable';
 import { Toast } from './components/ui/Toast';
 import type { ToastMessage } from './components/ui/Toast';
@@ -56,6 +61,36 @@ export function App() {
     }
 
     if (rawHash.startsWith('search')) {
+      setCurrentRoute(rawHash);
+      setActiveListing(null);
+      return;
+    }
+
+    if (rawHash.startsWith('loans') || rawHash.startsWith('home-loans')) {
+      setCurrentRoute(rawHash);
+      setActiveListing(null);
+      return;
+    }
+
+    if (rawHash.startsWith('emi-calculator') || rawHash.startsWith('emi')) {
+      setCurrentRoute(rawHash);
+      setActiveListing(null);
+      return;
+    }
+
+    if (rawHash.startsWith('interiors') || rawHash.startsWith('home-interiors')) {
+      setCurrentRoute(rawHash);
+      setActiveListing(null);
+      return;
+    }
+
+    if (rawHash.startsWith('rates-trends') || rawHash.startsWith('trends')) {
+      setCurrentRoute(rawHash);
+      setActiveListing(null);
+      return;
+    }
+
+    if (rawHash.startsWith('valuation') || rawHash.startsWith('property-valuation')) {
       setCurrentRoute(rawHash);
       setActiveListing(null);
       return;
@@ -204,6 +239,26 @@ export function App() {
 
     if (currentRoute === 'profile') {
       return <ProfilePage />;
+    }
+
+    if (currentRoute.startsWith('loans') || currentRoute.startsWith('home-loans')) {
+      return <HomeLoansPage onNavigate={handleNavigate} />;
+    }
+
+    if (currentRoute.startsWith('emi-calculator') || currentRoute.startsWith('emi')) {
+      return <EmiCalculatorPage onNavigate={handleNavigate} />;
+    }
+
+    if (currentRoute.startsWith('interiors') || currentRoute.startsWith('home-interiors')) {
+      return <InteriorsPage onNavigate={handleNavigate} />;
+    }
+
+    if (currentRoute.startsWith('rates-trends') || currentRoute.startsWith('trends')) {
+      return <RatesAndTrendsPage onNavigate={handleNavigate} />;
+    }
+
+    if (currentRoute.startsWith('valuation') || currentRoute.startsWith('property-valuation')) {
+      return <ValuationPage onNavigate={handleNavigate} />;
     }
 
     // 404 Not Found Screen

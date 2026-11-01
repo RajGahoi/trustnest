@@ -26,9 +26,15 @@ interface ToolItem {
   defaultDesc: string;
   badge?: string;
   modalType: 'emi' | 'loan' | 'interiors' | 'trends' | 'valuation';
+  route: string;
+  href: string;
 }
 
-export const AdviceAndToolsRail: React.FC = () => {
+interface AdviceAndToolsRailProps {
+  onNavigate?: (route: string) => void;
+}
+
+export const AdviceAndToolsRail: React.FC<AdviceAndToolsRailProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [activeModal, setActiveModal] = useState<string | null>(null);
@@ -90,7 +96,9 @@ export const AdviceAndToolsRail: React.FC = () => {
       descKey: 'emiCalculatorDesc',
       defaultTitle: 'EMI Calculator',
       defaultDesc: "Know how much you'll have to pay every month on your loan",
-      modalType: 'emi'
+      modalType: 'emi',
+      route: 'emi-calculator',
+      href: '#emi-calculator'
     },
     {
       id: 'tool-loans',
@@ -100,7 +108,9 @@ export const AdviceAndToolsRail: React.FC = () => {
       defaultTitle: 'Best Home Loan Offers',
       defaultDesc: 'Get the best bank offers curated just for your profile',
       badge: '40+ Banks',
-      modalType: 'loan'
+      modalType: 'loan',
+      route: 'loans',
+      href: '#loans'
     },
     {
       id: 'tool-interiors',
@@ -110,7 +120,9 @@ export const AdviceAndToolsRail: React.FC = () => {
       defaultTitle: 'Interiors Budget Estimator',
       defaultDesc: 'Know the cost of getting your full/partial home interiors done',
       badge: 'Instant Estimate',
-      modalType: 'interiors'
+      modalType: 'interiors',
+      route: 'interiors',
+      href: '#interiors'
     },
     {
       id: 'tool-trends',
@@ -120,7 +132,9 @@ export const AdviceAndToolsRail: React.FC = () => {
       defaultTitle: 'Rates & Trends',
       defaultDesc: 'Know all about Property Rates & Trends in your city',
       badge: 'Q4 2026 Live',
-      modalType: 'trends'
+      modalType: 'trends',
+      route: 'rates-trends',
+      href: '#rates-trends'
     },
     {
       id: 'tool-valuation',
@@ -129,7 +143,9 @@ export const AdviceAndToolsRail: React.FC = () => {
       descKey: 'propertyValuationDesc',
       defaultTitle: 'Property Valuation',
       defaultDesc: 'Know the right market value of any property before buying or selling',
-      modalType: 'valuation'
+      modalType: 'valuation',
+      route: 'valuation',
+      href: '#valuation'
     }
   ];
 
@@ -208,10 +224,18 @@ export const AdviceAndToolsRail: React.FC = () => {
         {TOOLS.map((tool) => {
           const Icon = tool.icon;
           return (
-            <div
+            <a
               key={tool.id}
-              onClick={() => setActiveModal(tool.modalType)}
-              className="min-w-[260px] sm:min-w-[280px] lg:min-w-[290px] max-w-[310px] bg-white rounded-2xl border border-gray-200/90 shadow-xs hover:shadow-lg hover:border-gray-300 transition-all duration-300 p-5 flex flex-col justify-between cursor-pointer group shrink-0"
+              href={tool.href}
+              onClick={(e) => {
+                e.preventDefault();
+                if (onNavigate) {
+                  onNavigate(tool.route);
+                } else {
+                  setActiveModal(tool.modalType);
+                }
+              }}
+              className="min-w-[260px] sm:min-w-[280px] lg:min-w-[290px] max-w-[310px] bg-white rounded-2xl border border-gray-200/90 shadow-xs hover:shadow-lg hover:border-[#D92228]/40 transition-all duration-300 p-5 flex flex-col justify-between cursor-pointer group shrink-0 text-left"
             >
               <div>
                 {/* Header Row with Icon and Badge */}
@@ -239,11 +263,11 @@ export const AdviceAndToolsRail: React.FC = () => {
 
               {/* Action Link (View now →) */}
               <div className="pt-5 mt-3 border-t border-gray-100">
-                <span className="inline-flex items-center gap-1 font-bold text-xs sm:text-sm text-red-600 group-hover:text-red-700 group-hover:translate-x-1 transition-all">
+                <span className="inline-flex items-center gap-1 font-bold text-xs sm:text-sm text-[#D92228] group-hover:text-red-700 group-hover:translate-x-1 transition-all">
                   <span>{t('viewNow') || 'View now →'}</span>
                 </span>
               </div>
-            </div>
+            </a>
           );
         })}
       </div>
@@ -252,7 +276,7 @@ export const AdviceAndToolsRail: React.FC = () => {
       {/* 1. EMI CALCULATOR MODAL */}
       {/* ======================================================== */}
       {activeModal === 'emi' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
           <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-gray-200 relative max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setActiveModal(null)}
@@ -384,7 +408,7 @@ export const AdviceAndToolsRail: React.FC = () => {
       {/* 2. BEST HOME LOAN OFFERS MODAL */}
       {/* ======================================================== */}
       {activeModal === 'loan' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
           <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-gray-200 relative max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setActiveModal(null)}
@@ -455,7 +479,7 @@ export const AdviceAndToolsRail: React.FC = () => {
       {/* 3. INTERIORS BUDGET ESTIMATOR MODAL */}
       {/* ======================================================== */}
       {activeModal === 'interiors' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
           <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-gray-200 relative max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => {
@@ -626,7 +650,7 @@ export const AdviceAndToolsRail: React.FC = () => {
       {/* 4. RATES & TRENDS MODAL */}
       {/* ======================================================== */}
       {activeModal === 'trends' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
           <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-gray-200 relative max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setActiveModal(null)}
@@ -752,7 +776,7 @@ export const AdviceAndToolsRail: React.FC = () => {
       {/* 5. PROPERTY VALUATION MODAL */}
       {/* ======================================================== */}
       {activeModal === 'valuation' && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
           <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-gray-200 relative max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setActiveModal(null)}
