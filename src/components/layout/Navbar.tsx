@@ -191,11 +191,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const navLinks = [
-    { label: 'Explore', route: 'search', href: '#search', category: 'all' },
-    { label: 'Real Estate', route: 'category-property', href: '#category/property', category: 'property' },
-    { label: 'Vehicles', route: 'category-vehicles', href: '#category/vehicles', category: 'vehicles' },
-    { label: 'Mobiles', route: 'category-mobiles', href: '#category/mobiles', category: 'mobiles' },
-    { label: 'Jobs', route: 'category-jobs', href: '#category/jobs', category: 'jobs' },
+    { label: 'Commercial Offices', route: 'search?q=Commercial+Office', href: '#search?q=Commercial+Office', category: 'commercial' },
+    { label: 'Agricultural Land', route: 'search?q=Agricultural+Land', href: '#search?q=Agricultural+Land', category: 'agricultural' },
+    { label: 'Industrial Plots', route: 'search?q=Industrial+Land', href: '#search?q=Industrial+Land', category: 'industrial' },
+    { label: 'Residential Plots', route: 'search?q=Residential+Plot', href: '#search?q=Residential+Plot', category: 'plots' },
+    { label: 'All Verified', route: 'search', href: '#search', category: 'all' },
   ];
 
   const isLinkActive = (link: typeof navLinks[0]) => {
@@ -235,12 +235,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               <ShieldCheck className="w-6 h-6 stroke-[2.2]" />
             </div>
             <div>
-              <span className="font-display text-2xl font-semibold text-navy-900 flex items-center gap-1 leading-none">
-                TrustNest
-                <span className="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block animate-pulse" />
-              </span>
-              <span className="text-xs text-navy-700 block mt-1">
-                Verified before promoted
+              <div className="flex items-center gap-1.5 leading-none">
+                <span className="font-display text-2xl font-bold text-navy-900 tracking-tight">
+                  TrustNest
+                </span>
+                <span className="text-[10px] font-extrabold uppercase px-1.5 py-0.5 bg-orange-500 text-white rounded-md tracking-wider">
+                  Real Estate
+                </span>
+              </div>
+              <span className="text-[11px] font-bold text-emerald-700 block mt-1">
+                ✓ 99acres & MagicBricks Standard
               </span>
             </div>
           </a>

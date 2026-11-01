@@ -24,6 +24,7 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
   const [selectedCategory, setSelectedCategory] = useState(currentCategory);
   const [activeIntentTab, setActiveIntentTab] = useState<'ALL' | 'BUY' | 'COMMERCIAL' | 'PLOTS'>('ALL');
   const [selectedPropType, setSelectedPropType] = useState<string>('ALL');
+  const [selectedRoadWidth, setSelectedRoadWidth] = useState<string>('ALL');
   const [isFocused, setIsFocused] = useState(isExpandedModal);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,7 +51,6 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
   ];
 
   const cityCounts = store.getCitiesWithCounts();
-  const categories = store.getCategories();
 
   const handleIntentTabChange = (tab: 'ALL' | 'BUY' | 'COMMERCIAL' | 'PLOTS') => {
     setActiveIntentTab(tab);
@@ -74,6 +74,9 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
     let effectiveQuery = query;
     if (selectedPropType !== 'ALL' && !effectiveQuery.includes(selectedPropType)) {
       effectiveQuery = effectiveQuery ? `${effectiveQuery} ${selectedPropType}` : selectedPropType;
+    }
+    if (selectedRoadWidth !== 'ALL' && !effectiveQuery.includes(selectedRoadWidth)) {
+      effectiveQuery = effectiveQuery ? `${effectiveQuery} ${selectedRoadWidth}` : selectedRoadWidth;
     }
 
     onExecuteSearch(
@@ -202,19 +205,20 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
           </select>
         </div>
 
-        {/* Category Selector */}
+        {/* Road Width Filter */}
         <div className="flex items-center gap-2 border-t md:border-t-0 md:border-l border-navy-900/10 px-3 py-2 w-full md:w-auto">
           <SlidersHorizontal className="w-4 h-4 text-orange-500 shrink-0" />
           <select
-            value={selectedCategory}
-            onChange={e => setSelectedCategory(e.target.value)}
-            className="bg-transparent text-xs font-bold text-navy-900 focus:outline-none cursor-pointer pr-4 uppercase tracking-wider"
-            aria-label="Select Category"
+            value={selectedRoadWidth}
+            onChange={e => setSelectedRoadWidth(e.target.value)}
+            className="bg-transparent text-xs font-bold text-navy-900 focus:outline-none cursor-pointer pr-4"
+            aria-label="Filter Road Width"
           >
-            <option value="all">All Categories</option>
-            {categories.map(cat => (
-              <option key={cat.slug} value={cat.slug}>{cat.name}</option>
-            ))}
+            <option value="ALL">Any Road Width</option>
+            <option value="40 ft">40+ ft Road</option>
+            <option value="60 ft">60+ ft Main Road</option>
+            <option value="80 ft">80+ ft Industrial Corridor</option>
+            <option value="100 ft">100+ ft Sector Road</option>
           </select>
         </div>
 
