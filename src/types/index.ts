@@ -1,10 +1,14 @@
 export type UserRole = 
   | 'GUEST' 
   | 'USER' 
+  | 'BUYER'
   | 'SELLER' 
+  | 'AGENT'
+  | 'BUILDER'
   | 'VENDOR_AGENT' 
   | 'VENDOR_ADMIN' 
   | 'MODERATOR' 
+  | 'SUPPORT'
   | 'ADMIN' 
   | 'SUPER_ADMIN';
 
@@ -51,6 +55,7 @@ export type ListingStatus =
   | 'PAUSED' 
   | 'EXPIRED' 
   | 'SOLD' 
+  | 'RENTED'
   | 'REJECTED' 
   | 'SUSPENDED' 
   | 'ARCHIVED';
@@ -80,27 +85,72 @@ export interface LocationData {
   city: string;
   state: string;
   locality: string;
+  subLocality?: string;
   pincode: string;
   lat: number;
   lng: number;
   verifiedCoords?: boolean;
+  privacyPrecision?: 'EXACT' | 'APPROXIMATE' | 'LOCALITY_ONLY';
 }
 
 export interface VerificationDocument {
   id: string;
   name: string;
-  type: 'TITLE_DEED' | 'AADHAAR_PAN' | 'TAX_RECEIPT' | 'REGISTRATION' | 'BUSINESS_GST';
-  status: 'VERIFIED' | 'PENDING' | 'REJECTED';
+  type: 'TITLE_DEED' | 'AADHAAR_PAN' | 'TAX_RECEIPT' | 'REGISTRATION' | 'BUSINESS_GST' | 'RERA_CERTIFICATE' | 'APPROVED_MAP';
+  status: 'VERIFIED' | 'PENDING' | 'REJECTED' | 'REQUIRES_INFO';
   uploadedAt: string;
   previewUrl?: string;
+  rejectionReason?: string;
+  verifiedBy?: string;
+  verifiedAt?: string;
 }
 
 export interface FraudSignal {
   id: string;
-  type: 'DUPLICATE_IMAGE' | 'MANIPULATION_DETECTED' | 'PRICE_ANOMALY' | 'EXIF_MISMATCH' | 'FREQUENCY_SPIKE';
+  type: 'DUPLICATE_IMAGE' | 'MANIPULATION_DETECTED' | 'PRICE_ANOMALY' | 'EXIF_MISMATCH' | 'FREQUENCY_SPIKE' | 'SCRAPING_SUSPECT';
   severity: 'LOW' | 'MEDIUM' | 'HIGH';
   description: string;
   detectedAt: string;
+}
+
+export interface NearbyLandmarks {
+  schools?: Array<{ name: string; distanceKm: number }>;
+  hospitals?: Array<{ name: string; distanceKm: number }>;
+  transit?: Array<{ name: string; distanceKm: number; type: 'METRO' | 'BUS' | 'AIRPORT' | 'HIGHWAY' }>;
+  businessHubs?: Array<{ name: string; distanceKm: number }>;
+}
+
+export type AreaUnit = 'sqft' | 'sqyd' | 'sqm' | 'acre' | 'hectare' | 'bigha';
+
+export interface IndianPropertyDetails {
+  areaSqFt: number;
+  displayArea: number;
+  displayAreaUnit: AreaUnit;
+  pricePerSqFt: number;
+  reraId?: string;
+  reraApproved?: boolean;
+  ownershipType: 'FREEHOLD' | 'LEASEHOLD' | 'POWER_OF_ATTORNEY' | 'COOPERATIVE';
+  landUse: 'RESIDENTIAL' | 'COMMERCIAL' | 'INDUSTRIAL' | 'AGRICULTURAL' | 'MIXED';
+  approvedAuthority?: string;
+  khataNo?: string;
+  khasraNo?: string;
+  possessionStatus?: 'READY_TO_MOVE' | 'UNDER_CONSTRUCTION';
+  furnishing?: 'UNFURNISHED' | 'SEMI_FURNISHED' | 'FULLY_FURNISHED';
+  facing?: string;
+  parking?: string;
+  floor?: string;
+  totalFloors?: number;
+  bhk?: string;
+  nearby?: NearbyLandmarks;
+}
+
+export interface GranularVerificationChecklist {
+  phoneVerified: boolean;
+  emailVerified: boolean;
+  identityChecked: boolean;
+  documentsReviewed: boolean;
+  reraVerified: boolean;
+  siteVisitDone: boolean;
 }
 
 export interface Listing {
@@ -131,12 +181,31 @@ export interface Listing {
   isBoosted: boolean;
   documents: VerificationDocument[];
   fraudSignals: FraudSignal[];
+  propertyDetails?: IndianPropertyDetails;
+  verificationChecks?: GranularVerificationChecklist;
   createdAt: string;
   publishedAt: string;
   expiresAt: string;
   viewsCount: number;
   savesCount: number;
   leadsCount: number;
+}
+
+export type LeadStatus = 
+  | 'NEW' 
+  | 'CONTACTED' 
+  | 'INTERESTED' 
+  | 'FOLLOW_UP' 
+  | 'NEGOTIATION' 
+  | 'CONVERTED' 
+  | 'NOT_INTERESTED' 
+  | 'CLOSED';
+
+export interface LeadNote {
+  id: string;
+  text: string;
+  author: string;
+  createdAt: string;
 }
 
 export interface Lead {
@@ -148,7 +217,10 @@ export interface Lead {
   buyerEmail: string;
   message: string;
   channel: 'CHAT' | 'CALL_INTENT' | 'WHATSAPP' | 'EMAIL';
-  status: 'NEW' | 'CONTACTED' | 'CLOSED';
+  status: LeadStatus;
+  notes?: LeadNote[];
+  followUpDate?: string;
+  isPhoneMasked?: boolean;
   createdAt: string;
 }
 
@@ -188,6 +260,21 @@ export interface VendorTeamMember {
   joinedAt: string;
 }
 
+export interface BuilderProject {
+  id: string;
+  name: string;
+  developerName: string;
+  location: string;
+  city: string;
+  reraId: string;
+  totalUnits: number;
+  availableUnits: number;
+  priceRange: string;
+  possessionDate: string;
+  image: string;
+  brochureUrl?: string;
+}
+
 export interface VendorOrganization {
   id: string;
   name: string;
@@ -195,6 +282,7 @@ export interface VendorOrganization {
   businessType: string;
   verificationStatus: 'VERIFIED' | 'PENDING' | 'UNVERIFIED';
   members: VendorTeamMember[];
+  projects?: BuilderProject[];
   subscriptionPlan: 'FREE' | 'PRO' | 'BUSINESS' | 'ENTERPRISE';
   activeListingsCount: number;
   monthlyLeadsCount: number;
@@ -208,4 +296,118 @@ export interface AuditLog {
   targetResource: string;
   timestamp: string;
   details: string;
+}
+
+export interface SavedSearch {
+  id: string;
+  userId: string;
+  name: string;
+  category: string;
+  city: string;
+  locality?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  bhk?: string;
+  minTrustScore?: number;
+  alertFrequency: 'INSTANT' | 'DAILY' | 'WEEKLY' | 'OFF';
+  createdAt: string;
+}
+
+export interface SupportTicketMessage {
+  id: string;
+  sender: string;
+  text: string;
+  timestamp: string;
+  isStaff: boolean;
+}
+
+export interface SupportTicket {
+  id: string;
+  userId: string;
+  userName: string;
+  userEmail: string;
+  category: 'LOGIN' | 'PAYMENT' | 'LISTING' | 'VERIFICATION' | 'FRAUD_REPORT' | 'SUBSCRIPTION' | 'GENERAL';
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+  status: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+  subject: string;
+  description: string;
+  messages: SupportTicketMessage[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type SubscriptionPlanId = 
+  | 'BUYER_FREE' 
+  | 'BUYER_WEEKLY' 
+  | 'BUYER_MONTHLY' 
+  | 'BUYER_PREMIUM' 
+  | 'SELLER_FREE' 
+  | 'SELLER_FEATURED' 
+  | 'SELLER_PREMIUM' 
+  | 'SELLER_BUILDER';
+
+export interface SubscriptionPlan {
+  id: SubscriptionPlanId;
+  name: string;
+  audience: 'BUYER' | 'SELLER';
+  priceINR: number;
+  durationDays: number;
+  features: string[];
+  contactRevealsLimit: number;
+  featuredListingsLimit: number;
+  instantAlerts: boolean;
+  prioritySupport: boolean;
+  popular?: boolean;
+}
+
+export interface UserSubscription {
+  id: string;
+  userId: string;
+  planId: SubscriptionPlanId;
+  planName: string;
+  pricePaid: number;
+  gstPaid: number;
+  invoiceNo: string;
+  startsAt: string;
+  expiresAt: string;
+  active: boolean;
+  revealsRemaining: number;
+}
+
+export interface TaxInvoice {
+  invoiceNo: string;
+  date: string;
+  customerName: string;
+  customerEmail: string;
+  customerGst?: string;
+  planName: string;
+  subtotal: number;
+  cgst: number; // 9%
+  sgst: number; // 9%
+  total: number;
+  hsnCode: string;
+  paymentMethod: string;
+  status: 'PAID';
+}
+
+export interface AbuseReport {
+  id: string;
+  listingId: string;
+  listingTitle: string;
+  reporterEmail: string;
+  reason: 'FAKE_PROPERTY' | 'PRICE_BAIT' | 'DUPLICATE' | 'UNREACHABLE' | 'COPYRIGHT_IMAGE' | 'OTHER';
+  description: string;
+  status: 'PENDING' | 'INVESTIGATING' | 'DISMISSED' | 'ACTION_TAKEN';
+  createdAt: string;
+}
+
+export interface NotificationItem {
+  id: string;
+  userId: string;
+  title: string;
+  message: string;
+  type: 'ENQUIRY' | 'VERIFICATION' | 'PRICE_ALERT' | 'SEARCH_MATCH' | 'SYSTEM';
+  linkRoute?: string;
+  isRead: boolean;
+  createdAt: string;
 }

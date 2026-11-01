@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Search, Heart, PlusCircle, UserCheck, Menu, X, MessageSquare, Briefcase, Settings, CheckCircle2, UserPlus, KeyRound } from 'lucide-react';
+import { ShieldCheck, Search, Heart, PlusCircle, UserCheck, Menu, X, MessageSquare, Briefcase, Settings, CheckCircle2, UserPlus, KeyRound, Scale, HelpCircle, Globe } from 'lucide-react';
 import { store } from '../../mock/store';
 import { api } from '../../services/api';
-import type { UserRole } from '../../types';
+import type { UserRole, Listing } from '../../types';
+import { useLanguage } from '../../domain/i18n/LanguageContext';
+import { NotificationCenter } from '../notifications/NotificationCenter';
+import { HelpCenterModal } from '../support/HelpCenterModal';
+import { SupportTicketModal } from '../support/SupportTicketModal';
+import { PropertyComparisonModal } from '../listing/PropertyComparisonModal';
 
 interface NavbarProps {
   onOpenSearch: () => void;
@@ -33,6 +38,20 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [authError, setAuthError] = useState('');
   const [authLoading, setAuthLoading] = useState(false);
   const favCount = store.getFavoritesList().length;
+
+  const { language, setLanguage } = useLanguage();
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [ticketOpen, setTicketOpen] = useState(false);
+  const [compareModalOpen, setCompareModalOpen] = useState(false);
+  const [compareListings, setCompareListings] = useState<Listing[]>(store.getComparisonListings());
+
+  useEffect(() => {
+    const handleStorage = () => {
+      setCompareListings(store.getComparisonListings());
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -265,7 +284,48 @@ export const Navbar: React.FC<NavbarProps> = ({
           </nav>
 
           {/* Right Action Cluster */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Language Toggle */}
+            <button
+              type="button"
+              onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
+              className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-cream-200 hover:bg-cream-300 text-navy-900 text-xs font-bold transition-colors cursor-pointer border border-navy-900/10"
+              title="Toggle Language / भाषा बदलें"
+            >
+              <Globe className="w-3.5 h-3.5 text-orange-500" />
+              <span>{language === 'en' ? 'हिन्दी' : 'EN'}</span>
+            </button>
+
+            {/* Notification Center */}
+            <NotificationCenter onNavigate={onNavigate} />
+
+            {/* Property Comparison Shortcut */}
+            {compareListings.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setCompareModalOpen(true)}
+                className="relative p-2.5 rounded-full hover:bg-cream-200 text-navy-900 transition-colors cursor-pointer"
+                aria-label="Compare Properties"
+                title="Compare Properties"
+              >
+                <Scale className="w-5 h-5 text-orange-500" />
+                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-navy-900 text-white text-[10px] font-bold flex items-center justify-center shadow">
+                  {compareListings.length}
+                </span>
+              </button>
+            )}
+
+            {/* Help & FAQs */}
+            <button
+              type="button"
+              onClick={() => setHelpOpen(true)}
+              className="hidden sm:flex p-2.5 rounded-full hover:bg-cream-200 text-navy-900 transition-colors cursor-pointer"
+              aria-label="Help & Knowledge Base"
+              title="Help & FAQs"
+            >
+              <HelpCircle className="w-5 h-5 text-navy-900" />
+            </button>
+
             {/* Messages Icon */}
             <a
               href="#messages"
@@ -683,6 +743,35 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </div>
         </div>
+      )}
+
+      {/* Help Center & Guidelines Modal */}
+      <HelpCenterModal
+        isOpen={helpOpen}
+        onClose={() => setHelpOpen(false)}
+        onOpenTicket={() => { setHelpOpen(false); setTicketOpen(true); }}
+      />
+
+      {/* Support Ticket Modal */}
+      <SupportTicketModal
+        isOpen={ticketOpen}
+        onClose={() => setTicketOpen(false)}
+      />
+
+      {/* Side-by-Side Property Comparison Modal */}
+      {compareModalOpen && (
+        <PropertyComparisonModal
+          listings={compareListings}
+          onClose={() => setCompareModalOpen(false)}
+          onRemoveListing={(id) => {
+            store.removeFromComparison(id);
+            setCompareListings(store.getComparisonListings());
+          }}
+          onOpenListingDetail={(listing) => {
+            setCompareModalOpen(false);
+            onNavigate(`listing/${listing.slug || listing.id}`);
+          }}
+        />
       )}
     </>
   );

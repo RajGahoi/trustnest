@@ -1,26 +1,62 @@
 import React, { useState } from 'react';
-import { Heart, MapPin, CheckCircle, ArrowUpRight, Share2 } from 'lucide-react';
+import { Heart, MapPin, CheckCircle, ArrowUpRight, Share2, Layers, Check } from 'lucide-react';
 import type { Listing } from '../../types';
 import { TrustBadge } from '../trust/TrustBadge';
 import { store } from '../../mock/store';
+import { formatINR } from '../../domain/india/currency';
 
 interface ListingCardProps {
   listing: Listing;
   onOpenListing: (listing: Listing) => void;
   onOpenTrustModal?: (listing: Listing) => void;
+  onToggleCompare?: (listing: Listing) => void;
+  isCompared?: boolean;
 }
 
 export const ListingCard: React.FC<ListingCardProps> = ({
   listing,
   onOpenListing,
-  onOpenTrustModal
+  onOpenTrustModal,
+  onToggleCompare,
+  isCompared = false
 }) => {
   const [isFav, setIsFav] = useState(store.isFavorite(listing.id));
+  const [shareToast, setShareToast] = useState(false);
 
   const handleFav = (e: React.MouseEvent) => {
     e.stopPropagation();
     const updated = store.toggleFavorite(listing.id);
     setIsFav(updated);
+  };
+
+  const handleShare = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (navigator.share) {
+      navigator.share({
+        title: listing.title,
+        text: `${listing.title} - Verified on TrustNest for ${listing.formattedPrice}`,
+        url: window.location.href.split('#')[0] + `#listing/${listing.id}`
+      }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(window.location.href.split('#')[0] + `#listing/${listing.id}`);
+      setShareToast(true);
+      setTimeout(() => setShareToast(false), 2000);
+    }
+  };
+
+  const handleCompareClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onToggleCompare) {
+      onToggleCompare(listing);
+    } else {
+      if (isCompared) {
+        store.removeFromComparison(listing.id);
+      } else {
+        store.addToComparison(listing.id);
+      }
+    }
   };
 
   const getAttrPills = () => {
@@ -41,9 +77,15 @@ export const ListingCard: React.FC<ListingCardProps> = ({
     return pills.slice(0, 3);
   };
 
+  const areaSqFt = listing.propertyDetails?.areaSqFt || listing.attributes.area;
+  const pricePerSqFt = areaSqFt && areaSqFt > 0 ? Math.round(listing.price / areaSqFt) : null;
+  const isRera = Boolean(listing.propertyDetails?.reraId || listing.propertyDetails?.reraApproved);
+
   return (
     <div
-      className="bg-white rounded-2xl border border-navy-900/10 overflow-hidden card-hover-lift flex flex-col justify-between group relative"
+      className={`bg-white rounded-2xl border overflow-hidden card-hover-lift flex flex-col justify-between group relative transition-all ${
+        isCompared ? 'border-orange-500 ring-2 ring-orange-500/30' : 'border-navy-900/10'
+      }`}
     >
       <a 
         href={`#listing/${listing.id}`} 
@@ -57,33 +99,48 @@ export const ListingCard: React.FC<ListingCardProps> = ({
 
       {/* Featured / Boost Badge */}
       {listing.isFeatured && (
-        <div className="absolute top-3 left-3 z-10 bg-navy-900 text-amber-soft text-xs font-semibold px-2.5 py-1 rounded-full shadow-md border border-orange-500/40">
+        <div className="absolute top-3 left-3 z-10 bg-navy-900 text-amber-soft text-[11px] font-extrabold px-2.5 py-1 rounded-full shadow-md border border-orange-500/40">
           Featured
         </div>
       )}
 
-      {/* Actions */}
-      <div className="absolute top-3 right-3 z-10 flex flex-col gap-2">
+      {/* Actions Cluster */}
+      <div className="absolute top-3 right-3 z-10 flex flex-col gap-1.5">
         <button
           type="button"
           onClick={handleFav}
-          className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-navy-900 hover:text-orange-500 hover:bg-white hover:scale-110 transition-all shadow-sm cursor-pointer"
+          className="w-8 h-8 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center text-navy-900 hover:text-orange-500 hover:scale-110 transition-all shadow-sm cursor-pointer"
           aria-label="Save Favorite"
         >
-          <Heart className={`w-4 h-4 ${isFav ? 'fill-orange-500 text-orange-500' : ''}`} />
+          <Heart className={`w-3.5 h-3.5 ${isFav ? 'fill-orange-500 text-orange-500' : ''}`} />
         </button>
+
         <button
           type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            navigator.clipboard.writeText(`${window.location.origin}/#listing/${listing.id}`);
-            alert('Link copied to clipboard!');
-          }}
-          className="w-9 h-9 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-navy-900 hover:text-orange-500 hover:bg-white hover:scale-110 transition-all shadow-sm cursor-pointer"
+          onClick={handleShare}
+          className="w-8 h-8 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center text-navy-900 hover:text-orange-500 hover:scale-110 transition-all shadow-sm cursor-pointer relative"
           aria-label="Share Listing"
         >
-          <Share2 className="w-4 h-4" />
+          <Share2 className="w-3.5 h-3.5" />
+          {shareToast && (
+            <span className="absolute -left-20 top-1 bg-navy-900 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
+              Copied!
+            </span>
+          )}
+        </button>
+
+        <button
+          type="button"
+          onClick={handleCompareClick}
+          className={`w-8 h-8 rounded-full backdrop-blur-md flex items-center justify-center transition-all shadow-sm cursor-pointer ${
+            isCompared
+              ? 'bg-orange-500 text-white ring-2 ring-white'
+              : 'bg-white/95 text-navy-900 hover:text-orange-500 hover:scale-110'
+          }`}
+          title={isCompared ? 'Remove from Comparison' : 'Compare Property'}
+          aria-label="Compare Property"
+        >
+          {isCompared ? <Check className="w-3.5 h-3.5" /> : <Layers className="w-3.5 h-3.5" />}
         </button>
       </div>
 
@@ -108,9 +165,16 @@ export const ListingCard: React.FC<ListingCardProps> = ({
           />
         </div>
 
-        {/* Category Tag */}
-        <div className="absolute bottom-3 right-3 z-10 text-[11px] font-semibold text-white/90 bg-navy-900/80 backdrop-blur-md px-2 py-0.5 rounded-md">
-          {listing.categoryName}
+        {/* Category & RERA Tags */}
+        <div className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5">
+          {isRera && (
+            <span className="text-[10px] font-extrabold text-white bg-trust-green px-2 py-0.5 rounded-md shadow">
+              RERA
+            </span>
+          )}
+          <span className="text-[11px] font-semibold text-white/90 bg-navy-900/80 backdrop-blur-md px-2 py-0.5 rounded-md">
+            {listing.categoryName}
+          </span>
         </div>
       </div>
 
@@ -122,8 +186,10 @@ export const ListingCard: React.FC<ListingCardProps> = ({
             <span className="font-display text-2xl font-semibold text-navy-900">
               {listing.formattedPrice}
             </span>
-            {listing.pricePeriod && (
-              <span className="text-xs text-navy-700 font-medium">{listing.pricePeriod}</span>
+            {pricePerSqFt && (
+              <span className="text-[11px] text-orange-600 font-bold">
+                {formatINR(pricePerSqFt)}/sq ft
+              </span>
             )}
           </div>
 
@@ -148,6 +214,11 @@ export const ListingCard: React.FC<ListingCardProps> = ({
                 {pill}
               </span>
             ))}
+            {listing.propertyDetails?.ownershipType && (
+              <span className="text-[10px] font-bold bg-navy-900 text-white px-2 py-0.5 rounded-md">
+                {listing.propertyDetails.ownershipType}
+              </span>
+            )}
           </div>
         </div>
 
