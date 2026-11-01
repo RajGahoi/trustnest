@@ -182,7 +182,8 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
             {FEATURED_PROJECTS.map((proj) => (
               <div
                 key={proj.id}
-                className="w-full h-full shrink-0 relative overflow-hidden"
+                onClick={() => onExploreProject && onExploreProject(proj.name)}
+                className="w-full h-full shrink-0 relative overflow-hidden cursor-pointer"
               >
                 {/* Cinematic Project Image (Bright Sunlit View) */}
                 <img

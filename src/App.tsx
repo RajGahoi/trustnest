@@ -18,6 +18,9 @@ import { EmiCalculatorPage } from './app/emi-calculator/page';
 import { InteriorsPage } from './app/interiors/page';
 import { RatesAndTrendsPage } from './app/rates-trends/page';
 import { ValuationPage } from './app/valuation/page';
+import { PrivacyPage } from './app/privacy/page';
+import { TermsPage } from './app/terms/page';
+import { SecurityPage } from './app/security/page';
 import { SearchBarExpandable } from './components/search/SearchBarExpandable';
 import { Toast } from './components/ui/Toast';
 import type { ToastMessage } from './components/ui/Toast';
@@ -259,6 +262,18 @@ export function App() {
 
     if (currentRoute.startsWith('valuation') || currentRoute.startsWith('property-valuation')) {
       return <ValuationPage onNavigate={handleNavigate} />;
+    }
+
+    if (currentRoute === 'privacy') {
+      return <PrivacyPage onNavigate={handleNavigate} />;
+    }
+
+    if (currentRoute === 'terms') {
+      return <TermsPage onNavigate={handleNavigate} />;
+    }
+
+    if (currentRoute === 'security') {
+      return <SecurityPage onNavigate={handleNavigate} />;
     }
 
     // 404 Not Found Screen

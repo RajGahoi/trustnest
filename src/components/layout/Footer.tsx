@@ -1,11 +1,12 @@
-import React from 'react';
-import { ShieldCheck, ArrowRight, Phone, Mail, Globe, MapPin } from 'lucide-react';
+import React, { useState } from 'react';
+import { ShieldCheck, ArrowRight, Phone, Mail, Globe, MapPin, X, Smartphone, CheckCircle2 } from 'lucide-react';
 
 interface FooterProps {
   onNavigate: (route: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const [appModalOpen, setAppModalOpen] = useState(false);
   return (
     <div>
       {/* ======================================================== */}
@@ -21,7 +22,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 TrustNest, India&apos;s leading real estate ecosystem, brings together verified buyers, individual owners, certified dealers, and legal title checks under one secure portal...{' '}
                 <button
                   type="button"
-                  onClick={() => onNavigate('search')}
+                  onClick={() => onNavigate('security')}
                   className="text-gray-900 font-bold underline hover:text-[#D92228] transition-colors cursor-pointer"
                 >
                   Read more
@@ -32,11 +33,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <div>
               <h4 className="font-bold text-xs text-[#1A202C] mb-1">More from our Network</h4>
               <div className="flex items-center gap-3 text-xs text-gray-600">
-                <span className="hover:text-[#D92228] cursor-pointer">Times Now</span>
+                <a href="https://www.timesnownews.com" target="_blank" rel="noreferrer" className="hover:text-[#D92228] transition-colors cursor-pointer">
+                  Times Now
+                </a>
                 <span className="text-gray-300">|</span>
-                <span className="hover:text-[#D92228] cursor-pointer">ET Now</span>
+                <a href="https://economictimes.indiatimes.com" target="_blank" rel="noreferrer" className="hover:text-[#D92228] transition-colors cursor-pointer">
+                  ET Now
+                </a>
                 <span className="text-gray-300">|</span>
-                <span className="hover:text-[#D92228] cursor-pointer">Navbharat Times</span>
+                <a href="https://navbharattimes.indiatimes.com" target="_blank" rel="noreferrer" className="hover:text-[#D92228] transition-colors cursor-pointer">
+                  Navbharat Times
+                </a>
               </div>
             </div>
 
@@ -44,10 +51,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <div className="flex items-center gap-2">
                 {/* Google Play */}
-                <a
-                  href="#download-android"
-                  onClick={e => { e.preventDefault(); alert('TrustNest Android App - Download from Google Play Store'); }}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors shadow-xs"
+                <button
+                  type="button"
+                  onClick={() => setAppModalOpen(true)}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors shadow-xs cursor-pointer"
                 >
                   <svg className="w-4 h-4 fill-current text-white" viewBox="0 0 24 24">
                     <path d="M3.609 1.814L13.792 12 3.61 22.186a1.99 1.99 0 0 1-.61-1.442V3.256c0-.57.228-1.092.609-1.442zm11.233 11.234l2.585 2.585-11.89 6.84 9.305-9.425zm0-2.096L5.537 1.527l11.89 6.84-2.585 2.585zm1.485 1.048l3.414 1.964c.732.421.732 1.107 0 1.528l-3.414 1.964-2.37-2.37 2.37-2.37z" />
@@ -56,13 +63,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     <p className="text-[9px] text-gray-300 font-medium uppercase">Get it on</p>
                     <p className="text-xs font-bold font-sans">Google Play</p>
                   </div>
-                </a>
+                </button>
 
                 {/* App Store */}
-                <a
-                  href="#download-ios"
-                  onClick={e => { e.preventDefault(); alert('TrustNest iOS App - Download from Apple App Store'); }}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors shadow-xs"
+                <button
+                  type="button"
+                  onClick={() => setAppModalOpen(true)}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors shadow-xs cursor-pointer"
                 >
                   <svg className="w-4 h-4 fill-current text-white" viewBox="0 0 24 24">
                     <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.54c.67-.82 1.12-1.96.99-3.1-.96.04-2.13.64-2.82 1.45-.61.71-1.15 1.87-1.01 2.98 1.07.08 2.16-.54 2.84-1.33z" />
@@ -71,7 +78,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                     <p className="text-[9px] text-gray-300 font-medium">Available on the</p>
                     <p className="text-xs font-bold font-sans">App Store</p>
                   </div>
-                </a>
+                </button>
               </div>
 
               {/* Social Icons */}
@@ -319,11 +326,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div>
             <h4 className="font-display text-lg font-semibold text-white mb-4">Verification</h4>
             <ul className="space-y-2.5 text-xs text-gray-300">
-              <li><a href="#home" onClick={(e) => { e.preventDefault(); onNavigate('home'); }} className="hover:text-orange-500 cursor-pointer">Identity Checks (Aadhaar/PAN)</a></li>
-              <li><a href="#home" onClick={(e) => { e.preventDefault(); onNavigate('home'); }} className="hover:text-orange-500 cursor-pointer">Title Deed Review</a></li>
-              <li><a href="#home" onClick={(e) => { e.preventDefault(); onNavigate('home'); }} className="hover:text-orange-500 cursor-pointer">GPS Location Audit</a></li>
-              <li><a href="#home" onClick={(e) => { e.preventDefault(); onNavigate('home'); }} className="hover:text-orange-500 cursor-pointer">AI Media Originality Scan</a></li>
-              <li><a href="#home" onClick={(e) => { e.preventDefault(); onNavigate('home'); }} className="hover:text-orange-500 cursor-pointer">Verification Journey</a></li>
+              <li><a href="#security" onClick={(e) => { e.preventDefault(); onNavigate('security'); }} className="hover:text-orange-500 cursor-pointer">Identity Checks (Aadhaar/PAN)</a></li>
+              <li><a href="#security" onClick={(e) => { e.preventDefault(); onNavigate('security'); }} className="hover:text-orange-500 cursor-pointer">Title Deed Review</a></li>
+              <li><a href="#security" onClick={(e) => { e.preventDefault(); onNavigate('security'); }} className="hover:text-orange-500 cursor-pointer">GPS Location Audit</a></li>
+              <li><a href="#security" onClick={(e) => { e.preventDefault(); onNavigate('security'); }} className="hover:text-orange-500 cursor-pointer">AI Media Originality Scan</a></li>
+              <li><a href="#security" onClick={(e) => { e.preventDefault(); onNavigate('security'); }} className="hover:text-orange-500 cursor-pointer">Verification Journey</a></li>
             </ul>
           </div>
 
@@ -356,6 +363,85 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
       </div>
     </footer>
+
+    {/* ======================================================== */}
+    {/* TRUSTNEST APP DOWNLOAD MODAL */}
+    {/* ======================================================== */}
+    {appModalOpen && (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs animate-in fade-in">
+        <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-gray-200 relative text-navy-950 text-left">
+          <button
+            type="button"
+            onClick={() => setAppModalOpen(false)}
+            className="absolute top-5 right-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-700 cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          <div className="text-center space-y-3">
+            <div className="w-14 h-14 rounded-2xl bg-[#D92228] text-white flex items-center justify-center mx-auto shadow-lg">
+              <Smartphone className="w-8 h-8" />
+            </div>
+            <h3 className="font-display text-2xl font-black">
+              Get the TrustNest Mobile App
+            </h3>
+            <p className="text-xs text-gray-600">
+              Scan the QR code with your phone camera to download directly from Google Play or App Store.
+            </p>
+          </div>
+
+          <div className="my-6 p-4 bg-gray-50 rounded-2xl border border-gray-200 flex items-center justify-center">
+            {/* Real Vector QR Code */}
+            <div className="w-40 h-40 bg-white p-2 rounded-xl shadow-xs border border-gray-100 flex items-center justify-center">
+              <svg viewBox="0 0 100 100" className="w-full h-full" fill="#111827">
+                <rect x="0" y="0" width="30" height="30" fill="#000" />
+                <rect x="5" y="5" width="20" height="20" fill="#fff" />
+                <rect x="10" y="10" width="10" height="10" fill="#000" />
+
+                <rect x="70" y="0" width="30" height="30" fill="#000" />
+                <rect x="75" y="5" width="20" height="20" fill="#fff" />
+                <rect x="80" y="10" width="10" height="10" fill="#000" />
+
+                <rect x="0" y="70" width="30" height="30" fill="#000" />
+                <rect x="5" y="75" width="20" height="20" fill="#fff" />
+                <rect x="10" y="80" width="10" height="10" fill="#000" />
+
+                <rect x="35" y="10" width="10" height="10" fill="#000" />
+                <rect x="50" y="20" width="10" height="10" fill="#000" />
+                <rect x="35" y="35" width="30" height="10" fill="#000" />
+                <rect x="40" y="50" width="20" height="20" fill="#000" />
+                <rect x="70" y="45" width="10" height="15" fill="#000" />
+                <rect x="85" y="70" width="10" height="20" fill="#000" />
+                <rect x="45" y="75" width="15" height="15" fill="#000" />
+              </svg>
+            </div>
+          </div>
+
+          <div className="space-y-2 text-xs text-gray-700">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Real-time instant alerts for verified price drops</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Interactive 360° virtual tours & on-site video calls</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span>Instant digital in-principle home loan sanction</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setAppModalOpen(false)}
+            className="w-full mt-6 py-3 bg-[#D92228] hover:bg-red-700 text-white rounded-xl font-bold text-xs transition-colors cursor-pointer"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    )}
   </div>
   );
 };

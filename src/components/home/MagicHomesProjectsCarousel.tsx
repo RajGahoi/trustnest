@@ -376,7 +376,42 @@ export const MagicHomesProjectsCarousel: React.FC<MagicHomesProjectsCarouselProp
                 <button
                   type="button"
                   onClick={() => {
-                    alert(`Downloading Official RERA Brochure for ${selectedProject.name}...`);
+                    const printWindow = window.open('', '_blank');
+                    if (printWindow) {
+                      printWindow.document.write(`
+                        <!DOCTYPE html>
+                        <html>
+                          <head>
+                            <title>Official Project Factsheet - ${selectedProject.name}</title>
+                            <style>
+                              body { font-family: sans-serif; padding: 24px; color: #1e293b; }
+                              .header { border-bottom: 3px solid #D92228; padding-bottom: 12px; margin-bottom: 20px; }
+                              .title { font-size: 24px; font-weight: bold; color: #0f172a; }
+                              .badge { background: #fee2e2; color: #b91c1c; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; }
+                              .specs { margin: 20px 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+                              .box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; }
+                            </style>
+                          </head>
+                          <body>
+                            <div class="header">
+                              <span class="badge">RERA VERIFIED PROJECT</span>
+                              <div class="title">${selectedProject.name}</div>
+                              <p>Developer: <strong>${selectedProject.developer}</strong> • Location: <strong>${selectedProject.locality}, ${selectedProject.city}</strong></p>
+                              <p>RERA Registration Number: <strong>${selectedProject.reraId}</strong></p>
+                            </div>
+                            <div class="specs">
+                              <div class="box"><strong>Pricing:</strong> ${selectedProject.price}</div>
+                              <div class="box"><strong>Configurations:</strong> ${selectedProject.configurations}</div>
+                              <div class="box"><strong>Possession Date:</strong> ${selectedProject.possession}</div>
+                            </div>
+                            <img src="${selectedProject.image}" style="max-width: 100%; border-radius: 12px; margin: 16px 0;" />
+                            <p>Certified by TrustNest Verification Standards. For legal verification and in-principle loan sanction, visit trustnest.in.</p>
+                            <script>window.onload = function() { window.print(); }</script>
+                          </body>
+                        </html>
+                      `);
+                      printWindow.document.close();
+                    }
                   }}
                   className="w-full py-3 bg-white hover:bg-gray-50 text-navy-900 border border-gray-300 rounded-xl font-bold text-xs shadow-xs transition-colors cursor-pointer flex items-center justify-center gap-2"
                 >

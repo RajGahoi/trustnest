@@ -348,7 +348,10 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
 
                   {/* Middle Column: Project Branding, Location & Architectural Render */}
                   <div className="lg:col-span-4 text-center flex flex-col items-center">
-                    <div className="p-4 sm:p-5 rounded-2xl bg-black/45 border border-white/20 backdrop-blur-md w-full max-w-sm shadow-2xl">
+                    <div
+                      onClick={() => onNavigate(`search?q=${encodeURIComponent(slideItem.projectName)}`)}
+                      className="p-4 sm:p-5 rounded-2xl bg-black/45 border border-white/20 hover:border-orange-500 backdrop-blur-md w-full max-w-sm shadow-2xl transition-all cursor-pointer group/card"
+                    >
                       <div className="flex items-center justify-center gap-2 mb-1.5">
                         <Sparkles className="w-4 h-4 text-[#F59E0B]" />
                         <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#F59E0B]">
@@ -358,7 +361,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
 
                       <h3
                         style={{ color: '#ffffff' }}
-                        className="font-display text-xl sm:text-2xl md:text-3xl font-black drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]"
+                        className="font-display text-xl sm:text-2xl md:text-3xl font-black drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] group-hover/card:text-amber-300 transition-colors"
                       >
                         {slideItem.projectName}
                       </h3>
@@ -375,6 +378,13 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
                         <p className="text-xs font-bold text-emerald-300 uppercase tracking-wide">
                           {slideItem.tagline}
                         </p>
+                      </div>
+
+                      <div className="mt-3 pt-1">
+                        <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#D92228] hover:bg-red-700 text-white font-extrabold text-xs shadow-md transition-all">
+                          <span>Explore Project & Price</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -414,7 +424,7 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
                             RERA Reg. No.: <span className="text-orange-400 font-mono">{slideItem.reraNumber}</span>
                           </p>
                           <p className="text-[10px] text-gray-300">
-                            Website: <span className="text-sky-300 underline">{slideItem.reraWebsite}</span>
+                            Website: <a href={`https://${slideItem.reraWebsite}`} target="_blank" rel="noreferrer" className="text-sky-300 underline hover:text-white transition-colors">{slideItem.reraWebsite}</a>
                           </p>
                           <p className="text-[10px] text-gray-300">
                             Launch Date: <span className="font-semibold text-white">{slideItem.launchDate}</span>
