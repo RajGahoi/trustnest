@@ -13,6 +13,7 @@ import { NinetyNineAcresBillboardHero } from '../components/home/NinetyNineAcres
 import { LivePropertyDemoModal } from '../components/listing/LivePropertyDemoModal';
 import { PreferredAgentsCarousel } from '../components/home/PreferredAgentsCarousel';
 import { HomeLoansBanner } from '../components/loan/HomeLoansBanner';
+import { AdviceAndToolsRail } from '../components/tools/AdviceAndToolsRail';
 import { store } from '../mock/store';
 import { api } from '../services/api';
 import { useLanguage } from '../domain/i18n/LanguageContext';
@@ -456,6 +457,11 @@ export const HomePage: React.FC<HomePageProps> = ({
       {/* 1.95 MAGICBRICKS MAGICLOANS HOME LOAN COMPARISON BANNER & ELIGIBILITY CALCULATOR */}
       <section className="-mt-6 sm:-mt-8">
         <HomeLoansBanner />
+      </section>
+
+      {/* 1.98 MAGICBRICKS ADVICE & TOOLS RAIL (EMI, HOME LOANS, INTERIORS, RATES & TRENDS) */}
+      <section className="-mt-6 sm:-mt-8">
+        <AdviceAndToolsRail />
       </section>
 
       {/* 2. REAL ESTATE CATEGORY DISCOVERY RAILS */}

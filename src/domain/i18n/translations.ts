@@ -128,6 +128,22 @@ export const TRANSLATIONS = {
     tabPortfolioPlots: '🏡 Residential Plots',
     tabPortfolioResidential: '🏙️ Luxury Residential',
 
+    // Advice & Tools
+    adviceAndTools: 'Advice & Tools',
+    viewNow: 'View now →',
+    emiCalculatorTitle: 'EMI Calculator',
+    emiCalculatorDesc: "Know how much you'll have to pay every month on your loan",
+    bestLoanOffersTitle: 'Best Home Loan Offers',
+    bestLoanOffersDesc: 'Get the best bank offers curated just for your profile',
+    interiorsEstimatorTitle: 'Interiors Budget Estimator',
+    interiorsEstimatorDesc: 'Know the cost of getting your full/partial home interiors done',
+    ratesAndTrendsTitle: 'Rates & Trends',
+    ratesAndTrendsDesc: 'Know all about Property Rates & Trends in your city',
+    propertyValuationTitle: 'Property Valuation',
+    propertyValuationDesc: 'Know the right market value of any property before buying or selling',
+    investmentInsightsTitle: 'Investment Insights',
+    investmentInsightsDesc: 'Compare rental yield & capital appreciation across 20+ top localities',
+
     // Listing Card
     featured: 'Featured',
     photosCount: 'Photos',
@@ -297,6 +313,22 @@ export const TRANSLATIONS = {
     tabPortfolioIndustrial: '🏭 औद्योगिक जमीन व प्लॉट',
     tabPortfolioPlots: '🏡 आवासीय प्लॉट',
     tabPortfolioResidential: '🏙️ लग्जरी आवासीय',
+
+    // Advice & Tools
+    adviceAndTools: 'सलाह व टूल्स (Advice & Tools)',
+    viewNow: 'अभी देखें →',
+    emiCalculatorTitle: 'ईएमआई कैलकुलेटर (EMI Calculator)',
+    emiCalculatorDesc: 'जानिए आपको हर महीने होम लोन पर कितनी ईएमआई देनी होगी',
+    bestLoanOffersTitle: 'सर्वश्रेष्ठ होम लोन ऑफर्स',
+    bestLoanOffersDesc: 'अपनी प्रोफाइल अनुसार 40+ बैंकों के बेहतरीन ब्याज दर ऑफर्स पाएं',
+    interiorsEstimatorTitle: 'इंटीरियर बजट एस्टीमेटर',
+    interiorsEstimatorDesc: 'अपने घर का पूरा या आंशिक इंटीरियर कराने का अनुमानित खर्च जानें',
+    ratesAndTrendsTitle: 'रेट व मार्केट ट्रेंड्स (Rates & Trends)',
+    ratesAndTrendsDesc: 'अपने शहर व इलाके में प्रॉपर्टी के प्रति वर्ग फुट रेट और सालाना वृद्धि जानें',
+    propertyValuationTitle: 'प्रॉपर्टी वैल्यूएशन (Property Valuation)',
+    propertyValuationDesc: 'खरीदने या बेचने से पहले किसी भी प्रॉपर्टी का सही बाज़ार मूल्य जानें',
+    investmentInsightsTitle: 'इन्वेस्टमेंट इनसाइट्स (Investment Insights)',
+    investmentInsightsDesc: '20+ मुख्य इलाकों में रेंटल यील्ड और प्रॉपर्टी मूल्यों की वृद्धि तुलना करें',
 
     // Listing Card
     featured: 'विशेष',
