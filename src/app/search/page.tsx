@@ -492,7 +492,7 @@ export const SearchPage: React.FC<SearchPageProps> = ({
                       className={`p-1.5 rounded-md transition-colors cursor-pointer ${
                         viewMode === 'list' ? 'bg-white text-[#D92228] shadow-xs' : 'text-gray-600'
                       }`}
-                      title="MagicBricks Detailed Horizontal Card View"
+                      title="Detailed Horizontal Card View"
                     >
                       <List className="w-4 h-4" />
                     </button>
@@ -529,7 +529,7 @@ export const SearchPage: React.FC<SearchPageProps> = ({
                   >
                     <ListingCard
                       listing={listing}
-                      layout={viewMode === 'list' ? 'magicbricks' : 'grid'}
+                      layout={viewMode === 'list' ? 'horizontal' : 'grid'}
                       onOpenListing={onOpenListingDetail}
                       onOpenTrustModal={setSelectedTrustListing}
                       onToggleCompare={handleToggleCompare}

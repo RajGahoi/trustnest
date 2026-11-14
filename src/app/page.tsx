@@ -282,7 +282,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/90 text-white font-extrabold text-[11px] uppercase tracking-wider mb-2 shadow-md">
                 <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-                <span>99acres 360° Live Inspection</span>
+                <span>TrustNest 360° Live Inspection</span>
               </div>
               <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-white">
                 {language === 'hi' ? 'लाइव अपार्टमेंट व हाउस डेमो (कमरे दर कमरे)' : 'Live Apartment & House Demos (Room by Room)'}

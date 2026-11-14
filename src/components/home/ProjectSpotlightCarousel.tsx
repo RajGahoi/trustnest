@@ -156,7 +156,7 @@ export const ProjectSpotlightCarousel: React.FC<ProjectSpotlightCarouselProps> =
           <span className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-ping" />
           <h3 className="text-xs sm:text-sm font-extrabold uppercase tracking-widest text-navy-900 flex items-center gap-1.5">
             <Sparkles className="w-4 h-4 text-orange-500" />
-            {language === 'hi' ? 'विशेष प्रोजेक्ट स्पॉटलाइट (99acres स्टाइल)' : 'Featured Project Spotlight (99acres Style)'}
+            {language === 'hi' ? 'विशेष प्रोजेक्ट स्पॉटलाइट' : 'Featured Project Spotlight'}
           </h3>
         </div>
 
