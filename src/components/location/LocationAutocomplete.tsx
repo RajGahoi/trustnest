@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MapPin, Search, Clock, X, ChevronRight } from 'lucide-react';
+import { MapPin, Search, Clock, X, ChevronRight, ChevronDown } from 'lucide-react';
 import { CITY_HIERARCHY } from '../../mock/locations';
 
 interface LocationAutocompleteProps {
@@ -7,13 +7,15 @@ interface LocationAutocompleteProps {
   selectedLocality?: string;
   onSelectLocation: (city: string, locality?: string) => void;
   className?: string;
+  variant?: 'pill' | 'inline';
 }
 
 export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   selectedCity,
   selectedLocality,
   onSelectLocation,
-  className = ''
+  className = '',
+  variant = 'pill'
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -84,19 +86,34 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
   return (
     <div ref={containerRef} className={`relative ${className}`}>
       {/* Trigger Button / Input Display */}
-      <button
-        type="button"
-        onClick={() => setIsOpen(prev => !prev)}
-        className="w-full flex items-center justify-between gap-2 px-4 py-2.5 bg-cream-50 hover:bg-cream-200 border border-navy-900/15 rounded-2xl text-xs font-bold text-navy-900 transition-all cursor-pointer shadow-sm"
-      >
-        <div className="flex items-center gap-2 truncate">
-          <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
-          <span className="truncate">
+      {variant === 'inline' ? (
+        <button
+          type="button"
+          onClick={() => setIsOpen(prev => !prev)}
+          className="flex items-center gap-1.5 bg-transparent text-xs font-bold text-navy-900 focus:outline-none cursor-pointer py-1 px-1 hover:text-orange-600 transition-colors"
+          aria-label="Select Location"
+        >
+          <MapPin className="w-4 h-4 text-orange-500 shrink-0" />
+          <span className="truncate max-w-[120px] sm:max-w-[160px]">
             {selectedLocality ? `${selectedLocality}, ${selectedCity}` : (selectedCity || 'All Cities')}
           </span>
-        </div>
-        <ChevronRight className={`w-3.5 h-3.5 text-navy-700 transition-transform ${isOpen ? 'rotate-90' : ''}`} />
-      </button>
+          <ChevronDown className={`w-3.5 h-3.5 text-navy-600 shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setIsOpen(prev => !prev)}
+          className="w-full flex items-center justify-between gap-2 px-4 py-2.5 bg-cream-50 hover:bg-cream-200 border border-navy-900/15 rounded-2xl text-xs font-bold text-navy-900 transition-all cursor-pointer shadow-sm"
+        >
+          <div className="flex items-center gap-2 truncate">
+            <MapPin className="w-4 h-4 text-orange-500 flex-shrink-0" />
+            <span className="truncate">
+              {selectedLocality ? `${selectedLocality}, ${selectedCity}` : (selectedCity || 'All Cities')}
+            </span>
+          </div>
+          <ChevronRight className={`w-3.5 h-3.5 text-navy-700 transition-transform ${isOpen ? 'rotate-90' : ''}`} />
+        </button>
+      )}
 
       {/* Popover Dropdown */}
       {isOpen && (

@@ -1,16 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, MapPin, SlidersHorizontal, ArrowRight, X, TrendingUp, Sparkles, Building2, Layers, Mic } from 'lucide-react';
-import { store } from '../../mock/store';
+import { Search, SlidersHorizontal, ArrowRight, X, TrendingUp, Sparkles, Building2, Layers, Mic } from 'lucide-react';
 import { useLanguage } from '../../domain/i18n/LanguageContext';
 import { VoiceSearchModal } from './VoiceSearchModal';
+import { LocationAutocomplete } from '../location/LocationAutocomplete';
 
 interface SearchBarExpandableProps {
-  onExecuteSearch: (query: string, category?: string, city?: string) => void;
+  onExecuteSearch: (query: string, category?: string, city?: string, locality?: string) => void;
   isExpandedModal?: boolean;
   onCloseModal?: () => void;
   currentQuery?: string;
   currentCategory?: string;
   currentCity?: string;
+  currentLocality?: string;
 }
 
 export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
@@ -19,11 +20,13 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
   onCloseModal,
   currentQuery = '',
   currentCategory = 'all',
-  currentCity = 'All Cities'
+  currentCity = 'All Cities',
+  currentLocality = ''
 }) => {
   const { t } = useLanguage();
   const [query, setQuery] = useState(currentQuery);
   const [selectedCity, setSelectedCity] = useState(currentCity);
+  const [selectedLocality, setSelectedLocality] = useState(currentLocality);
   const [selectedCategory, setSelectedCategory] = useState(currentCategory);
   const [activeIntentTab, setActiveIntentTab] = useState<'ALL' | 'BUY' | 'COMMERCIAL' | 'PLOTS'>('ALL');
   const [selectedPropType, setSelectedPropType] = useState<string>('ALL');
@@ -45,6 +48,10 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
     setSelectedCity(currentCity);
   }, [currentCity]);
 
+  useEffect(() => {
+    setSelectedLocality(currentLocality);
+  }, [currentLocality]);
+
   const popularSearches = [
     'Corporate Office Cyber City Gurugram',
     '12 Bigha Fertile Land Jewar Airport',
@@ -53,8 +60,6 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
     '300 Sq.Yd Corner Plot DLF Alameda',
     '3 BHK Lakeview Apartment Whitefield'
   ];
-
-  const cityCounts = store.getCitiesWithCounts();
 
   const handleIntentTabChange = (tab: 'ALL' | 'BUY' | 'COMMERCIAL' | 'PLOTS') => {
     setActiveIntentTab(tab);
@@ -86,7 +91,8 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
     onExecuteSearch(
       effectiveQuery, 
       selectedCategory === 'all' ? undefined : selectedCategory, 
-      selectedCity === 'All Cities' ? undefined : selectedCity
+      selectedCity === 'All Cities' ? undefined : selectedCity,
+      selectedLocality || undefined
     );
     setIsFocused(false);
     if (onCloseModal) onCloseModal();
@@ -205,19 +211,16 @@ export const SearchBarExpandable: React.FC<SearchBarExpandableProps> = ({
         </div>
 
         {/* Location Dropdown */}
-        <div className="flex items-center gap-2 border-t md:border-t-0 md:border-l border-navy-900/10 px-3 py-2 w-full md:w-auto">
-          <MapPin className="w-4 h-4 text-orange-500 shrink-0" />
-          <select
-            value={selectedCity}
-            onChange={e => setSelectedCity(e.target.value)}
-            className="bg-transparent text-xs font-bold text-navy-900 focus:outline-none cursor-pointer pr-4"
-            aria-label="Select Location City"
-          >
-            <option value="All Cities">{t('allCities')}</option>
-            {cityCounts.map(c => (
-              <option key={c.city} value={c.city}>{c.city} ({c.count})</option>
-            ))}
-          </select>
+        <div className="flex items-center gap-1 border-t md:border-t-0 md:border-l border-navy-900/10 px-2.5 py-1.5 w-full md:w-auto">
+          <LocationAutocomplete
+            variant="inline"
+            selectedCity={selectedCity}
+            selectedLocality={selectedLocality}
+            onSelectLocation={(city, locality) => {
+              setSelectedCity(city);
+              setSelectedLocality(locality || '');
+            }}
+          />
         </div>
 
         {/* Road Width Filter */}

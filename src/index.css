@@ -49,6 +49,14 @@ h1, h2, h3 {
 }
 
 /* Custom Design System Utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .hero-heading {
   font-size: clamp(2.75rem, 6.5vw, 6.5rem);
   line-height: 0.95;

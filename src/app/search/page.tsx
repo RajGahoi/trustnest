@@ -5,7 +5,6 @@ import type { FilterState } from '../../components/search/FilterPanel';
 import { ListingCard } from '../../components/listing/ListingCard';
 import { TrustScoreChart } from '../../components/trust/TrustScoreChart';
 import { MapExplorer } from '../../components/location/MapExplorer';
-import { LocationAutocomplete } from '../../components/location/LocationAutocomplete';
 import { PropertyComparisonModal } from '../../components/listing/PropertyComparisonModal';
 import { SavedSearchesModal } from '../../components/search/SavedSearchesModal';
 import { motion, useReducedMotion } from 'framer-motion';
@@ -220,39 +219,23 @@ export const SearchPage: React.FC<SearchPageProps> = ({
 
   return (
     <div className="pt-24 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-      {/* Top Location Bar & Search Input */}
+      {/* Top Search Console Card */}
       <div className="bg-cream-50 p-4 sm:p-5 rounded-3xl border border-navy-900/10 shadow-trust space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
-          <div className="md:col-span-4">
-            <LocationAutocomplete
-              selectedCity={filters.city}
-              selectedLocality={filters.locality}
-              onSelectLocation={(city, locality) => {
-                setFilters(prev => ({
-                  ...prev,
-                  city: city || 'All Cities',
-                  locality: locality || ''
-                }));
-              }}
-            />
-          </div>
-
-          <div className="md:col-span-8">
-            <SearchBarExpandable
-              currentQuery={query}
-              currentCategory={filters.categorySlug}
-              currentCity={filters.city}
-              onExecuteSearch={(q, cat, city) => {
-                if (q !== undefined) setQuery(q);
-                setFilters(prev => ({
-                  ...prev,
-                  categorySlug: cat || 'all',
-                  city: city || 'All Cities'
-                }));
-              }}
-            />
-          </div>
-        </div>
+        <SearchBarExpandable
+          currentQuery={query}
+          currentCategory={filters.categorySlug}
+          currentCity={filters.city}
+          currentLocality={filters.locality}
+          onExecuteSearch={(q, cat, city, locality) => {
+            if (q !== undefined) setQuery(q);
+            setFilters(prev => ({
+              ...prev,
+              categorySlug: cat || 'all',
+              city: city || 'All Cities',
+              locality: locality || ''
+            }));
+          }}
+        />
 
         {/* Quick Filters & Actions Ribbon */}
         <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-navy-900/10 text-xs">
