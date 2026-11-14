@@ -487,8 +487,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               onClick={() => setCurrentSlideIndex(idx)}
               aria-label={`Slide ${idx + 1}`}
               className={`transition-all rounded-full cursor-pointer ${currentSlideIndex === idx
-                  ? 'w-9 h-2.5 bg-orange-500 shadow-lg scale-105'
-                  : 'w-2.5 h-2.5 bg-white/40 hover:bg-white'
+                ? 'w-9 h-2.5 bg-orange-500 shadow-lg scale-105'
+                : 'w-2.5 h-2.5 bg-white/40 hover:bg-white'
                 }`}
             />
           ))}
@@ -507,8 +507,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               type="button"
               onClick={() => { setActiveTab('BUY'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${activeTab === 'BUY'
-                  ? 'border-[#D92228] text-gray-950 font-black'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                ? 'border-[#D92228] text-gray-950 font-black'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
             >
               {language === 'hi' ? 'खरीदें (Buy)' : 'Buy'}
@@ -519,8 +519,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               type="button"
               onClick={() => { setActiveTab('RENT'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${activeTab === 'RENT'
-                  ? 'border-[#D92228] text-gray-950 font-black'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                ? 'border-[#D92228] text-gray-950 font-black'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
             >
               {language === 'hi' ? 'किराया (Rent)' : 'Rent'}
@@ -531,8 +531,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               type="button"
               onClick={() => { setActiveTab('PG'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] flex items-center gap-1 ${activeTab === 'PG'
-                  ? 'border-[#D92228] text-gray-950 font-black'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                ? 'border-[#D92228] text-gray-950 font-black'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
             >
               <span>{language === 'hi' ? 'पीजी व को-लिविंग' : 'PG / Co-Living'}</span>
@@ -546,8 +546,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               type="button"
               onClick={() => { setActiveTab('NEW_LAUNCH'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] flex items-center gap-1.5 ${activeTab === 'NEW_LAUNCH'
-                  ? 'border-[#D92228] text-gray-950 font-black'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                ? 'border-[#D92228] text-gray-950 font-black'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
             >
               <span>{language === 'hi' ? 'नई लॉन्च' : 'New Launch'}</span>
@@ -559,8 +559,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               type="button"
               onClick={() => { setActiveTab('COMMERCIAL'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${activeTab === 'COMMERCIAL'
-                  ? 'border-[#D92228] text-gray-950 font-black'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                ? 'border-[#D92228] text-gray-950 font-black'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
             >
               {language === 'hi' ? 'कमर्शियल' : 'Commercial'}
@@ -571,8 +571,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               type="button"
               onClick={() => { setActiveTab('PLOTS'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${activeTab === 'PLOTS'
-                  ? 'border-[#D92228] text-gray-950 font-black'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                ? 'border-[#D92228] text-gray-950 font-black'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
             >
               {language === 'hi' ? 'प्लॉट व जमीन' : 'Plots/Land'}
@@ -583,8 +583,8 @@ export const NinetyNineAcresBillboardHero: React.FC<NinetyNineAcresBillboardHero
               type="button"
               onClick={() => { setActiveTab('PROJECTS'); setSelectedSubCategory('ALL'); }}
               className={`pb-2 whitespace-nowrap cursor-pointer transition-all border-b-[3px] ${activeTab === 'PROJECTS'
-                  ? 'border-[#D92228] text-gray-950 font-black'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                ? 'border-[#D92228] text-gray-950 font-black'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
                 }`}
             >
               {language === 'hi' ? 'प्रोजेक्ट्स' : 'Projects'}

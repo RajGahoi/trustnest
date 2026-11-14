@@ -57,7 +57,7 @@ export const ListingCard: React.FC<ListingCardProps> = ({
         title: listing.title,
         text: `${listing.title} - Verified on TrustNest for ${listing.formattedPrice}`,
         url: window.location.href.split('#')[0] + `#listing/${listing.id}`
-      }).catch(() => {});
+      }).catch(() => { });
     } else {
       navigator.clipboard.writeText(window.location.href.split('#')[0] + `#listing/${listing.id}`);
       setShareToast(true);
@@ -119,9 +119,8 @@ export const ListingCard: React.FC<ListingCardProps> = ({
   if (layout === 'horizontal' || layout === 'magicbricks') {
     return (
       <div
-        className={`bg-white rounded-2xl border ${
-          isCompared ? 'border-[#D92228] ring-2 ring-red-100' : 'border-gray-200'
-        } shadow-xs hover:shadow-lg transition-all duration-300 p-4 sm:p-5 flex flex-col md:flex-row gap-5 relative group text-left`}
+        className={`bg-white rounded-2xl border ${isCompared ? 'border-[#D92228] ring-2 ring-red-100' : 'border-gray-200'
+          } shadow-xs hover:shadow-lg transition-all duration-300 p-4 sm:p-5 flex flex-col md:flex-row gap-5 relative group text-left`}
       >
         {/* Left Side: Photo with Carousel & Badges */}
         <div className="w-full md:w-[280px] lg:w-[310px] shrink-0 relative aspect-[4/3] rounded-xl overflow-hidden bg-gray-100">
@@ -155,9 +154,8 @@ export const ListingCard: React.FC<ListingCardProps> = ({
                   e.stopPropagation();
                   setCurrentImageIdx(i);
                 }}
-                className={`w-1.5 h-1.5 rounded-full transition-all cursor-pointer ${
-                  i === currentImageIdx ? 'bg-white scale-125' : 'bg-white/60'
-                }`}
+                className={`w-1.5 h-1.5 rounded-full transition-all cursor-pointer ${i === currentImageIdx ? 'bg-white scale-125' : 'bg-white/60'
+                  }`}
               />
             ))}
           </div>
@@ -332,12 +330,11 @@ export const ListingCard: React.FC<ListingCardProps> = ({
 
   return (
     <div
-      className={`bg-white rounded-3xl border overflow-hidden card-hover-lift flex flex-col justify-between group relative transition-all shadow-xs hover:shadow-xl ${
-        isCompared ? 'border-orange-500 ring-2 ring-orange-500/30' : 'border-navy-900/10'
-      }`}
+      className={`bg-white rounded-3xl border overflow-hidden card-hover-lift flex flex-col justify-between group relative transition-all shadow-xs hover:shadow-xl ${isCompared ? 'border-orange-500 ring-2 ring-orange-500/30' : 'border-navy-900/10'
+        }`}
     >
-      <a 
-        href={`#listing/${listing.id}`} 
+      <a
+        href={`#listing/${listing.id}`}
         onClick={(e) => {
           e.preventDefault();
           onOpenListing(listing);
@@ -381,11 +378,10 @@ export const ListingCard: React.FC<ListingCardProps> = ({
         <button
           type="button"
           onClick={handleCompareClick}
-          className={`w-8 h-8 rounded-full backdrop-blur-md flex items-center justify-center transition-all shadow-sm cursor-pointer ${
-            isCompared
+          className={`w-8 h-8 rounded-full backdrop-blur-md flex items-center justify-center transition-all shadow-sm cursor-pointer ${isCompared
               ? 'bg-orange-500 text-white ring-2 ring-white'
               : 'bg-white/95 text-navy-900 hover:text-orange-500 hover:scale-110'
-          }`}
+            }`}
           title={isCompared ? 'Remove from Comparison' : 'Compare Property'}
           aria-label="Compare Property"
         >
@@ -508,11 +504,10 @@ export const ListingCard: React.FC<ListingCardProps> = ({
               <button
                 type="button"
                 onClick={handleRevealPhone}
-                className={`w-full py-2 px-3 rounded-xl text-xs font-extrabold flex items-center justify-between transition-all cursor-pointer shadow-xs ${
-                  revealsRemaining <= 0
+                className={`w-full py-2 px-3 rounded-xl text-xs font-extrabold flex items-center justify-between transition-all cursor-pointer shadow-xs ${revealsRemaining <= 0
                     ? 'bg-amber-500 hover:bg-amber-600 text-white'
                     : 'bg-[#D92228] hover:bg-[#BF1E23] text-white shadow-red-600/20'
-                }`}
+                  }`}
               >
                 <div className="flex items-center gap-1.5">
                   <Phone className="w-3.5 h-3.5 text-orange-400" />
