@@ -6,7 +6,7 @@ export const TRANSLATIONS = {
     appName: 'TrustNest',
     tagline: 'Verified Before Promoted',
     subTagline: 'India\'s High-Integrity Verified Real Estate Marketplace',
-    badgeStandard: '✓ 99acres & MagicBricks Standard',
+    badgeStandard: '✓ 100% RERA & Title Verified',
     portalTag: 'Real Estate',
 
     // Nav Links
@@ -36,7 +36,7 @@ export const TRANSLATIONS = {
     plansBadge: 'Plans',
 
     // Hero Section
-    heroTrustBadge: 'India\'s Verified Real Estate Marketplace • 99acres & MagicBricks Standard',
+    heroTrustBadge: 'India\'s Verified Real Estate Marketplace • Verified Before Promoted',
     heroLine1: 'Checked before',
     heroLine2: 'it is listed.',
     heroSubtitle: 'Commercial Offices, Agricultural Lands, Industrial Plots & Luxury Homes verified with 60–100 ft Wide Road Access, Clear Title & RERA Registration across India.',
@@ -192,7 +192,7 @@ export const TRANSLATIONS = {
     appName: 'ट्रस्टनेस्ट (TrustNest)',
     tagline: 'प्रचार से पहले पूर्ण सत्यापन',
     subTagline: 'भारत का उच्च-सत्यापित रियल एस्टेट मार्केटप्लेस',
-    badgeStandard: '✓ 99acres और MagicBricks मानक',
+    badgeStandard: '✓ 100% रेरा (RERA) व मालिकाना हक सत्यापित',
     portalTag: 'रियल एस्टेट',
 
     // Nav Links
@@ -222,7 +222,7 @@ export const TRANSLATIONS = {
     plansBadge: 'प्लान्स',
 
     // Hero Section
-    heroTrustBadge: 'भारत का सत्यापित रियल एस्टेट मार्केटप्लेस • 99acres और MagicBricks मानक',
+    heroTrustBadge: 'भारत का सत्यापित रियल एस्टेट मार्केटप्लेस • प्रचार से पहले पूर्ण सत्यापन',
     heroLine1: 'लिस्टिंग से पहले',
     heroLine2: 'पूर्ण सत्यापन।',
     heroSubtitle: 'भारत भर में 60-100 फीट चौड़ी सड़क, स्पष्ट मालिकाना हक और रेरा (RERA) पंजीकरण के साथ सत्यापित कमर्शियल ऑफिस, कृषि भूमि, औद्योगिक प्लॉट और लग्जरी मकान।',

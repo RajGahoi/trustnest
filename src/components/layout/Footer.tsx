@@ -17,7 +17,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Left Column: About & Apps & Social */}
           <div className="lg:col-span-5 space-y-4">
             <div>
-              <h3 className="font-bold text-sm text-[#1A202C] mb-1.5">About Magicbricks & TrustNest</h3>
+              <h3 className="font-bold text-sm text-[#1A202C] mb-1.5">About TrustNest Marketplace</h3>
               <p className="text-xs text-gray-600 leading-relaxed">
                 TrustNest, India&apos;s leading real estate ecosystem, brings together verified buyers, individual owners, certified dealers, and legal title checks under one secure portal...{' '}
                 <button

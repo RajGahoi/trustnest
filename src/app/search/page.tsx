@@ -429,7 +429,7 @@ export const SearchPage: React.FC<SearchPageProps> = ({
 
               <div className="pt-2 border-t border-[#F5E2A8]/70 space-y-2 text-xs">
                 <p className="font-bold text-gray-800 text-[11px] uppercase tracking-wider">
-                  Here&apos;s why Magicbricks & TrustNest:
+                  Here&apos;s why TrustNest:
                 </p>
                 <div className="flex items-start gap-2 text-gray-700">
                   <span className="text-teal-600 font-bold">✓</span>

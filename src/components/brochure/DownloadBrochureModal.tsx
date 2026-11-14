@@ -75,7 +75,7 @@ export const DownloadBrochureModal: React.FC<DownloadBrochureModalProps> = ({
               <span class="logo-badge">TrustNest</span>
               <div>
                 <p style="font-weight: 800; font-size: 13px;">Official Verified Real Estate Factsheet</p>
-                <p class="tagline">99acres & MagicBricks Verification Standard</p>
+                <p class="tagline">100% RERA & Title Verification Standard</p>
               </div>
             </div>
             <div style="text-align: right;">
@@ -180,7 +180,7 @@ export const DownloadBrochureModal: React.FC<DownloadBrochureModalProps> = ({
 ================================================================================
 TRUSTNEST OFFICIAL VERIFIED PROPERTY BROCHURE & BLUEPRINT FACTSHEET
 Ref ID: ${listing.id.toUpperCase()} | Generated: ${new Date().toLocaleDateString('en-IN')}
-Standards: 99acres & MagicBricks High-Integrity Marketplace
+Standards: TrustNest High-Integrity Verified Marketplace
 ================================================================================
 
 PROPERTY TITLE:

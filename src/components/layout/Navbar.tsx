@@ -248,9 +248,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                     {t('portalTag')}
                   </span>
                 </div>
-                <span className="text-[11px] font-bold text-emerald-700 block mt-1">
-                  {t('badgeStandard')}
-                </span>
               </div>
             </a>
 

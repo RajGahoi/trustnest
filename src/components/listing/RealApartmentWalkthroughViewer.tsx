@@ -304,7 +304,7 @@ export const RealApartmentWalkthroughViewer: React.FC = () => {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/10 border border-red-600/20 text-red-600 font-extrabold text-xs mb-2">
             <span className="w-2 h-2 rounded-full bg-red-600 animate-ping" />
-            <span>99acres & MagicBricks 360° Real Room Views</span>
+            <span>Verified 360° Real Room Walkthroughs</span>
           </div>
           <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-navy-950 tracking-tight">
             {language === 'hi' 
