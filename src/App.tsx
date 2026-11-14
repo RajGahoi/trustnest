@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { AmbientBackground, ScrollProgress } from './components/motion/Ambient';
 import { PageTransition } from './components/motion/PageTransition';
 import { Navbar } from './components/layout/Navbar';
@@ -7,20 +7,23 @@ import { Footer } from './components/layout/Footer';
 import { HomePage } from './app/page';
 import { SearchPage } from './app/search/page';
 import { ListingDetailPage } from './app/listing/[slug]/page';
-import { PostWizardPage } from './app/post/page';
-import { VendorDashboardPage } from './app/vendor/dashboard/page';
-import { AdminPortalPage } from './app/admin/page';
-import { MessagesPage } from './app/messages/page';
-import { FavoritesPage } from './app/favorites/page';
-import { ProfilePage } from './app/profile/page';
-import { HomeLoansPage } from './app/loans/page';
-import { EmiCalculatorPage } from './app/emi-calculator/page';
-import { InteriorsPage } from './app/interiors/page';
-import { RatesAndTrendsPage } from './app/rates-trends/page';
-import { ValuationPage } from './app/valuation/page';
-import { PrivacyPage } from './app/privacy/page';
-import { TermsPage } from './app/terms/page';
-import { SecurityPage } from './app/security/page';
+
+// Lazy-loaded secondary pages for optimized bundle size & fast FCP
+const PostWizardPage = lazy(() => import('./app/post/page').then(m => ({ default: m.PostWizardPage })));
+const VendorDashboardPage = lazy(() => import('./app/vendor/dashboard/page').then(m => ({ default: m.VendorDashboardPage })));
+const AdminPortalPage = lazy(() => import('./app/admin/page').then(m => ({ default: m.AdminPortalPage })));
+const MessagesPage = lazy(() => import('./app/messages/page').then(m => ({ default: m.MessagesPage })));
+const FavoritesPage = lazy(() => import('./app/favorites/page').then(m => ({ default: m.FavoritesPage })));
+const ProfilePage = lazy(() => import('./app/profile/page').then(m => ({ default: m.ProfilePage })));
+const HomeLoansPage = lazy(() => import('./app/loans/page').then(m => ({ default: m.HomeLoansPage })));
+const EmiCalculatorPage = lazy(() => import('./app/emi-calculator/page').then(m => ({ default: m.EmiCalculatorPage })));
+const InteriorsPage = lazy(() => import('./app/interiors/page').then(m => ({ default: m.InteriorsPage })));
+const RatesAndTrendsPage = lazy(() => import('./app/rates-trends/page').then(m => ({ default: m.RatesAndTrendsPage })));
+const ValuationPage = lazy(() => import('./app/valuation/page').then(m => ({ default: m.ValuationPage })));
+const PrivacyPage = lazy(() => import('./app/privacy/page').then(m => ({ default: m.PrivacyPage })));
+const TermsPage = lazy(() => import('./app/terms/page').then(m => ({ default: m.TermsPage })));
+const SecurityPage = lazy(() => import('./app/security/page').then(m => ({ default: m.SecurityPage })));
+
 import { SearchBarExpandable } from './components/search/SearchBarExpandable';
 import { Toast } from './components/ui/Toast';
 import type { ToastMessage } from './components/ui/Toast';
@@ -330,7 +333,14 @@ export function App() {
       {/* Main App Canvas */}
       <main className="flex-1 relative z-10">
         <PageTransition routeKey={currentRoute.split('?')[0]}>
-          {renderContent()}
+          <Suspense fallback={
+            <div className="min-h-[60vh] flex flex-col items-center justify-center gap-3">
+              <div className="w-9 h-9 border-3 border-orange-500 border-t-transparent rounded-full animate-spin" />
+              <p className="text-xs font-semibold text-navy-800">Verifying secure environment...</p>
+            </div>
+          }>
+            {renderContent()}
+          </Suspense>
         </PageTransition>
       </main>
 
