@@ -152,6 +152,7 @@ export const HomeLoansPage: React.FC<HomeLoansPageProps> = ({ onNavigate }) => {
   const [applicantIncome, setApplicantIncome] = useState('85000');
   const [applicantLoanAmount, setApplicantLoanAmount] = useState('4500000');
   const [appliedSuccess, setAppliedSuccess] = useState(false);
+  const [referenceId, setReferenceId] = useState('TN-LOAN-849201');
 
   // EMI Calculator State
   const [calcAmount, setCalcAmount] = useState(4500000); // 45 Lakhs
@@ -215,6 +216,7 @@ export const HomeLoansPage: React.FC<HomeLoansPageProps> = ({ onNavigate }) => {
 
   const handleSubmitApplication = (e: React.FormEvent) => {
     e.preventDefault();
+    setReferenceId(`TN-LOAN-${Math.floor(100000 + Math.random() * 900000)}`);
     setAppliedSuccess(true);
   };
 
@@ -787,7 +789,7 @@ export const HomeLoansPage: React.FC<HomeLoansPageProps> = ({ onNavigate }) => {
                   Application Submitted!
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                  Your application for <strong>{selectedBank?.name || 'Home Loan Offers'}</strong> has been registered. Reference ID: <strong className="font-mono text-navy-950">TN-LOAN-{Math.floor(100000 + Math.random() * 900000)}</strong>.
+                  Your application for <strong>{selectedBank?.name || 'Home Loan Offers'}</strong> has been registered. Reference ID: <strong className="font-mono text-navy-950">{referenceId}</strong>.
                 </p>
                 <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800 text-left space-y-1">
                   <p>✓ Dedicated senior loan officer assigned.</p>
