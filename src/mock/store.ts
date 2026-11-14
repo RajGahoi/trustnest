@@ -354,6 +354,25 @@ class LocalStore {
     try { safeStorage.setItem(STORAGE_KEYS.REVEALS_LEFT, String(this.revealsLeft)); } catch (e) {}
   }
 
+  // --- Live Backend Sync ---
+  public async syncWithBackend(): Promise<boolean> {
+    try {
+      if (typeof window === 'undefined') return false;
+      const res = await fetch('/api/v1/listings?limit=100');
+      if (!res.ok) return false;
+      const json = await res.json();
+      if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+        this.listings = json.data.map((l: Listing) => this.enrichListingDetails(l));
+        this.persistListings();
+        window.dispatchEvent(new Event('storage'));
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }
+
   // --- Auth & Roles ---
   public getCurrentRole(): UserRole {
     return this.currentRole;

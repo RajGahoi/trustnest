@@ -13,15 +13,45 @@ services:
       - JWT_SECRET=trustnest_super_secure_jwt_secret_key_2026_xyz!
       - JWT_EXPIRES_IN=7d
       - CORS_ORIGIN=http://localhost:5173,http://localhost:4000,http://localhost:3000
+      # Default: SQLite file-based persistence (zero-setup, fast local & edge)
       - DATABASE_PATH=data/trustnest.db
+      # For PostgreSQL deployment, uncomment the following line and trustnest-postgres service below:
+      # - DATABASE_URL=postgresql://trustnest:trustnest_secret@trustnest-postgres:5432/trustnest_db
       - UPLOAD_DIR=uploads
       - MAX_FILE_SIZE_MB=10
     volumes:
       - trustnest_db:/app/data
       - trustnest_uploads:/app/uploads
+    depends_on:
+      trustnest-postgres:
+        condition: service_started
+        required: false
+
+  # Optional PostgreSQL database container for multi-instance enterprise deployments
+  trustnest-postgres:
+    image: postgres:16-alpine
+    container_name: trustnest_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: trustnest
+      POSTGRES_PASSWORD: trustnest_secret
+      POSTGRES_DB: trustnest_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - trustnest_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U trustnest -d trustnest_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - postgres
 
 volumes:
   trustnest_db:
     driver: local
   trustnest_uploads:
+    driver: local
+  trustnest_pgdata:
     driver: local

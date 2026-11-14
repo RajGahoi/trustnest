@@ -25,3 +25,11 @@ export function closeDatabase(): void {
     dbInstance = null;
   }
 }
+
+export function getDatabaseInfo(): { client: 'sqlite' | 'postgres'; target: string; connected: boolean } {
+  return {
+    client: config.dbClient as 'sqlite' | 'postgres',
+    target: config.dbClient === 'postgres' ? 'PostgreSQL Pool' : config.databasePath,
+    connected: config.dbClient === 'sqlite' ? dbInstance !== null : true,
+  };
+}

@@ -11,6 +11,7 @@ import { messageRouter } from './routes/message.routes.js';
 import { adminRouter } from './routes/admin.routes.js';
 import { documentRouter } from './routes/document.routes.js';
 import { notFoundHandler, errorHandler } from './middlewares/error.js';
+import { getDatabaseInfo } from './db/connection.js';
 
 export const app = express();
 
@@ -49,6 +50,7 @@ app.get('/api/v1/health', (req, res) => {
     status: 'HEALTHY',
     service: 'TrustNest Production API',
     version: '2.0.0',
+    database: getDatabaseInfo(),
     timestamp: new Date().toISOString(),
     uptimeSeconds: Math.floor(process.uptime())
   });

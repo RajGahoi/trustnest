@@ -117,6 +117,7 @@ export function App() {
 
   useEffect(() => {
     syncRouteFromHash();
+    store.syncWithBackend();
     window.addEventListener('hashchange', syncRouteFromHash);
     window.addEventListener('popstate', syncRouteFromHash);
     return () => {
