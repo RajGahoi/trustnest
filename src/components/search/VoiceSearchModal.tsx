@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Mic,
   MicOff,
@@ -30,80 +31,52 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
   const [speechLang, setSpeechLang] = useState<'en-IN' | 'hi-IN'>(language === 'hi' ? 'hi-IN' : 'en-IN');
   const [isListening, setIsListening] = useState(false);
   const [permissionState, setPermissionState] = useState<'prompt' | 'granted' | 'denied'>('prompt');
-  const [audioLevel, setAudioLevel] = useState(0); // 0 to 100
-  const [freqBars, setFreqBars] = useState<number[]>([15, 20, 15, 25, 18, 22, 16]);
+  const [freqBars, setFreqBars] = useState<number[]>([18, 28, 16, 34, 22, 30, 18]);
   const [transcript, setTranscript] = useState('');
   const [interimText, setInterimText] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [isSpeechSupported, setIsSpeechSupported] = useState(true);
 
-  // Audio Context & Media Stream refs
+  // References
   const recognitionRef = useRef<any>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const mediaStreamRef = useRef<MediaStream | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
-  const animationFrameRef = useRef<number | null>(null);
+  const animIntervalRef = useRef<any>(null);
   const autoSearchTimerRef = useRef<any>(null);
   const queryInputRef = useRef<HTMLInputElement>(null);
 
   const popularVoiceQueries = speechLang === 'hi-IN' ? [
-    '3 बीएचके फ्लैट इंदिरापुरम गाजियाबाद',
+    '3 बीएचके फ्लैट मुंबई',
     'साइबर सिटी ऑफिस स्पेस गुरुग्राम',
     '150 वर्ग गज प्लॉट पंचशील पार्क',
     'व्हाइटफील्ड विला बेंगलुरु',
-    'जेवर एयरपोर्ट के पास प्लॉट्स',
+    'जेवर एयरपोर्ट के पास कृषि भूमि',
     'नोएडा सेक्टर 150 रेडी टू मूव'
   ] : [
-    '3 BHK Flat in Indirapuram Ghaziabad',
+    '3 BHK for sale in Mumbai',
     'Commercial Office Cyber City Gurugram',
     '150 Sqyd Plot Panchsheel Park',
     'Luxury Villa Whitefield Bengaluru',
-    'Plots near Jewar Airport',
+    'Agricultural Land near Jewar Airport',
     'Ready to Move Noida Sector 150'
   ];
 
-  // Stop all active audio streams and recognition
+  // Stop recognition and animation safely
   const stopListening = useCallback(() => {
-    // 1. Stop Speech Recognition
     if (recognitionRef.current) {
       try {
         recognitionRef.current.onresult = null;
         recognitionRef.current.onerror = null;
         recognitionRef.current.onend = null;
-        recognitionRef.current.stop();
+        recognitionRef.current.abort();
       } catch {
         // ignore
       }
       recognitionRef.current = null;
     }
 
-    // 2. Cancel Audio Waveform Animation
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-      animationFrameRef.current = null;
-    }
-
-    // 3. Stop MediaStream hardware tracks
-    if (mediaStreamRef.current) {
-      mediaStreamRef.current.getTracks().forEach(track => {
-        try {
-          track.stop();
-        } catch {
-          // ignore
-        }
-      });
-      mediaStreamRef.current = null;
-    }
-
-    // 4. Close Audio Context
-    if (audioContextRef.current) {
-      try {
-        audioContextRef.current.close();
-      } catch {
-        // ignore
-      }
-      audioContextRef.current = null;
+    if (animIntervalRef.current) {
+      clearInterval(animIntervalRef.current);
+      animIntervalRef.current = null;
     }
 
     if (autoSearchTimerRef.current) {
@@ -112,8 +85,7 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
     }
 
     setIsListening(false);
-    setAudioLevel(0);
-    setFreqBars([12, 16, 12, 20, 14, 18, 12]);
+    setFreqBars([14, 18, 14, 22, 16, 20, 14]);
   }, []);
 
   // Execute search and notify parent
@@ -127,16 +99,35 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
     setTimeout(() => {
       onTranscriptComplete(cleanQuery);
       onClose();
-    }, 500);
+    }, 450);
   }, [onTranscriptComplete, onClose, stopListening]);
 
-  // Start listening with audio context meter & speech recognition
-  const startListening = useCallback(async () => {
+  // Start animated frequency equalizer bars
+  const startEqualizerAnimation = useCallback(() => {
+    if (animIntervalRef.current) {
+      clearInterval(animIntervalRef.current);
+    }
+
+    animIntervalRef.current = setInterval(() => {
+      // Dynamic organic wave heights when listening
+      setFreqBars([
+        Math.floor(12 + Math.random() * 28),
+        Math.floor(16 + Math.random() * 42),
+        Math.floor(10 + Math.random() * 32),
+        Math.floor(22 + Math.random() * 52),
+        Math.floor(14 + Math.random() * 38),
+        Math.floor(18 + Math.random() * 45),
+        Math.floor(12 + Math.random() * 26)
+      ]);
+    }, 90);
+  }, []);
+
+  // Start listening with Speech Recognition
+  const startListening = useCallback(() => {
     setErrorMessage(null);
     setInterimText('');
     setIsSearching(false);
 
-    // Check Web Speech API availability
     const SpeechRecognition =
       (window as any).SpeechRecognition ||
       (window as any).webkitSpeechRecognition ||
@@ -149,176 +140,116 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
           ? 'आपके वर्तमान ब्राउज़र में डायरेक्ट स्पीच रिकॉग्निशन इंजन उपलब्ध नहीं है। नीचे दिया गया कोई सुझाव चुनें या टाइप करें।'
           : 'Speech recognition engine is not supported in this browser. You can click any popular voice query below or type directly.'
       );
-    } else {
-      setIsSpeechSupported(true);
+      setIsListening(false);
+      return;
     }
 
-    // Attempt to access user microphone via getUserMedia for live audio visualization
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaStreamRef.current = stream;
-        setPermissionState('granted');
+    setIsSpeechSupported(true);
 
-        const AudioContextClass =
-          window.AudioContext || (window as any).webkitAudioContext;
-        if (AudioContextClass) {
-          const audioCtx = new AudioContextClass();
-          audioContextRef.current = audioCtx;
-          const analyser = audioCtx.createAnalyser();
-          analyser.fftSize = 64;
-          analyserRef.current = analyser;
-
-          const source = audioCtx.createMediaStreamSource(stream);
-          source.connect(analyser);
-
-          const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-          const updateMeter = () => {
-            if (!analyserRef.current) return;
-            analyserRef.current.getByteFrequencyData(dataArray);
-
-            // Calculate overall volume level
-            let sum = 0;
-            for (let i = 0; i < dataArray.length; i++) {
-              sum += dataArray[i];
-            }
-            const average = sum / dataArray.length;
-            const normalizedLevel = Math.min(100, Math.round((average / 128) * 100));
-            setAudioLevel(normalizedLevel);
-
-            // Compute 7 responsive frequency bars
-            const step = Math.max(1, Math.floor(dataArray.length / 7));
-            const newBars = [0, 1, 2, 3, 4, 5, 6].map(idx => {
-              const val = dataArray[idx * step] || 0;
-              return Math.max(12, Math.round((val / 255) * 85));
-            });
-            setFreqBars(newBars);
-
-            animationFrameRef.current = requestAnimationFrame(updateMeter);
-          };
-
-          updateMeter();
-        }
-      } catch (err: any) {
-        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-          setPermissionState('denied');
-          setErrorMessage(
-            language === 'hi'
-              ? 'माइक्रोफ़ोन अनुमति अस्वीकृत है। कृपया अपने ब्राउज़र के एड्रेस बार में लॉक (🔒) आइकन पर क्लिक करके माइक्रोफ़ोन को अनुमति दें।'
-              : 'Microphone permission was denied. Please click the lock (🔒) icon in your browser address bar to allow microphone access.'
-          );
-        } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-          setErrorMessage(
-            language === 'hi'
-              ? 'कोई माइक्रोफ़ोन नहीं मिला। कृपया माइक्रोफ़ोन कनेक्ट करें।'
-              : 'No microphone was detected on your device. Please connect an audio input device.'
-          );
-        } else {
-          // Non-fatal error, let speech recognition try
-          console.warn('Microphone stream error:', err);
+    try {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.abort();
+        } catch {
+          // ignore
         }
       }
-    }
 
-    // Now start Web Speech Recognition if available
-    if (SpeechRecognition) {
-      try {
-        if (recognitionRef.current) {
-          try {
-            recognitionRef.current.abort();
-          } catch {
-            // ignore
-          }
-        }
+      const recognition = new SpeechRecognition();
+      // Continuous false ensures Chrome finishes utterance on pause
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.lang = speechLang;
+      recognition.maxAlternatives = 1;
 
-        const recognition = new SpeechRecognition();
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        recognition.lang = speechLang;
-        recognition.maxAlternatives = 1;
-
-        recognition.onstart = () => {
-          setIsListening(true);
-          setErrorMessage(null);
-        };
-
-        recognition.onresult = (event: any) => {
-          let currentInterim = '';
-          let finalTranscript = '';
-
-          for (let i = event.resultIndex; i < event.results.length; ++i) {
-            const res = event.results[i];
-            if (res.isFinal) {
-              finalTranscript += res[0].transcript;
-            } else {
-              currentInterim += res[0].transcript;
-            }
-          }
-
-          if (currentInterim) {
-            setInterimText(currentInterim);
-          }
-
-          if (finalTranscript) {
-            setTranscript(finalTranscript.trim());
-            setInterimText('');
-
-            // Automatically trigger search after 1.4s of silence
-            if (autoSearchTimerRef.current) {
-              clearTimeout(autoSearchTimerRef.current);
-            }
-            autoSearchTimerRef.current = setTimeout(() => {
-              handleFinalSearch(finalTranscript.trim());
-            }, 1400);
-          }
-        };
-
-        recognition.onerror = (event: any) => {
-          console.warn('SpeechRecognition error:', event.error);
-          if (event.error === 'not-allowed') {
-            setPermissionState('denied');
-            setIsListening(false);
-            setErrorMessage(
-              language === 'hi'
-                ? 'माइक्रोफ़ोन की अनुमति अस्वीकृत है। ब्राउज़र एड्रेस बार में माइक्रोफ़ोन चालू करें।'
-                : 'Microphone permission was blocked. Please enable microphone permissions in your browser URL bar.'
-            );
-          } else if (event.error === 'no-speech') {
-            // Non-critical, keep listening or gently inform
-            setErrorMessage(
-              language === 'hi'
-                ? 'कोई आवाज़ सुनाई नहीं दी। कृपया थोड़ा तेज़ बोलें या सुझाव चुनें।'
-                : 'No speech detected yet. Please speak clearly into your mic or choose a suggestion.'
-            );
-          } else if (event.error === 'network') {
-            setIsListening(false);
-            setErrorMessage(
-              language === 'hi'
-                ? 'नेटवर्क स्पीच सेवा अस्थायी रूप से अनुपलब्ध है। नीचे दिए गए लोकप्रिय सुझावों पर टैप करें।'
-                : 'Speech service network timeout. You can pick any voice query below or type directly.'
-            );
-          } else if (event.error !== 'aborted') {
-            setErrorMessage(`Speech recognition notice: ${event.error}`);
-          }
-        };
-
-        recognition.onend = () => {
-          // If stopped naturally without query, mark listening false
-          setIsListening(false);
-        };
-
-        recognitionRef.current = recognition;
-        recognition.start();
+      recognition.onstart = () => {
         setIsListening(true);
-      } catch (err: any) {
-        console.warn('SpeechRecognition start failed:', err);
+        setPermissionState('granted');
+        setErrorMessage(null);
+        startEqualizerAnimation();
+      };
+
+      recognition.onresult = (event: any) => {
+        let currentInterim = '';
+        let finalTranscript = '';
+
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          const res = event.results[i];
+          if (res.isFinal) {
+            finalTranscript += res[0].transcript;
+          } else {
+            currentInterim += res[0].transcript;
+          }
+        }
+
+        if (currentInterim) {
+          setInterimText(currentInterim);
+          // Boost frequency bars on voice detection
+          setFreqBars([35, 55, 40, 70, 48, 62, 38]);
+        }
+
+        if (finalTranscript) {
+          const cleaned = finalTranscript.trim();
+          setTranscript(cleaned);
+          setInterimText('');
+
+          // Automatically trigger search after 600ms
+          if (autoSearchTimerRef.current) {
+            clearTimeout(autoSearchTimerRef.current);
+          }
+          autoSearchTimerRef.current = setTimeout(() => {
+            handleFinalSearch(cleaned);
+          }, 600);
+        }
+      };
+
+      recognition.onerror = (event: any) => {
+        console.warn('SpeechRecognition error:', event.error);
+        if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+          setPermissionState('denied');
+          setIsListening(false);
+          setErrorMessage(
+            language === 'hi'
+              ? 'माइक्रोफ़ोन की अनुमति अस्वीकृत है। कृपया अपने ब्राउज़र के एड्रेस बार में लॉक (🔒) आइकन पर क्लिक करके माइक्रोफ़ोन चालू करें।'
+              : 'Microphone permission was denied. Please click the lock (🔒) icon in your browser URL bar to allow microphone access.'
+          );
+        } else if (event.error === 'no-speech') {
+          // Keep waiting or prompt user
+          setErrorMessage(
+            language === 'hi'
+              ? 'कोई आवाज़ सुनाई नहीं दी। कृपया थोड़ा तेज़ बोलें या नीचे दिए गए सुझाव पर टैप करें।'
+              : 'No speech was detected. Please speak clearly or choose a popular query below.'
+          );
+        } else if (event.error === 'network') {
+          setIsListening(false);
+          setErrorMessage(
+            language === 'hi'
+              ? 'नेटवर्क स्पीच सेवा अस्थायी रूप से अनुपलब्ध है। नीचे दिए गए लोकप्रिय सुझावों पर टैप करें।'
+              : 'Speech service network timeout. You can pick any voice query below or type directly.'
+          );
+        } else if (event.error !== 'aborted') {
+          setErrorMessage(`Speech recognition notice: ${event.error}`);
+        }
+      };
+
+      recognition.onend = () => {
         setIsListening(false);
-      }
-    } else {
+        if (animIntervalRef.current) {
+          clearInterval(animIntervalRef.current);
+          animIntervalRef.current = null;
+        }
+        setFreqBars([14, 18, 14, 22, 16, 20, 14]);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+      setIsListening(true);
+      startEqualizerAnimation();
+    } catch (err: any) {
+      console.warn('SpeechRecognition start failed:', err);
       setIsListening(false);
     }
-  }, [handleFinalSearch, language, speechLang]);
+  }, [handleFinalSearch, language, speechLang, startEqualizerAnimation]);
 
   // Manage open/close lifecycle
   useEffect(() => {
@@ -331,16 +262,26 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
       return;
     }
 
-    // Auto-start listening on open
+    // Auto-start listening on modal open
     startListening();
+
+    // Close on Escape key
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       stopListening();
+      window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, speechLang, startListening, stopListening]);
+  }, [isOpen, speechLang, startListening, stopListening, onClose]);
 
   const handleSelectQuery = (q: string) => {
     setTranscript(q);
+    setInterimText('');
     handleFinalSearch(q);
   };
 
@@ -355,20 +296,30 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
   if (!isOpen) return null;
 
   const currentDisplayQuery = transcript || interimText;
-  const isAudioDetecting = audioLevel > 12;
+  const isAudioDetecting = Boolean(interimText) || isListening;
 
-  return (
-    <div className="fixed inset-0 z-50 bg-navy-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn">
+  // React Portal to document.body ensures escape from any parent CSS transforms/motion.div
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[9999] bg-navy-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-fadeIn overflow-y-auto"
+      onClick={e => {
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+      role="presentation"
+    >
       <div
-        className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-navy-900/10 text-center relative overflow-hidden animate-scaleIn select-none"
+        className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-navy-900/10 text-center relative overflow-hidden animate-scaleIn select-none my-auto"
         role="dialog"
         aria-modal="true"
         aria-label="Voice Search"
+        onClick={e => e.stopPropagation()}
       >
         {/* Top Header: Language Switcher, Audio Status & Close Button */}
         <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-100">
           {/* Language Switcher */}
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => {
@@ -411,9 +362,7 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
           {isSearching
             ? (language === 'hi' ? 'प्रॉपर्टी खोजी जा रही है...' : 'Searching Properties...')
             : isListening
-            ? isAudioDetecting
-              ? (language === 'hi' ? 'हम सुन रहे हैं... बोलते रहें' : 'Hearing Your Voice... Keep Talking')
-              : (language === 'hi' ? 'बोलिए, हम सुन रहे हैं...' : 'Listening... Speak Now')
+            ? (language === 'hi' ? 'बोलिए, हम सुन रहे हैं...' : 'Listening... Speak Now')
             : (language === 'hi' ? 'वॉइस सर्च' : 'Voice Search')}
         </h3>
 
@@ -423,25 +372,13 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
             : 'Speak property type, locality, city, or road width'}
         </p>
 
-        {/* Animated Pulse Ring & Real-Time Dynamic Frequency Waveform */}
+        {/* Animated Microphone Button & Equalizer */}
         <div className="my-6 flex flex-col items-center justify-center relative">
           {/* Outer Ripple Rings when Listening */}
           {isListening && (
             <>
-              <span
-                className="absolute rounded-full bg-[#D92228]/15 transition-all duration-150 animate-ping"
-                style={{
-                  width: `${Math.max(120, 110 + audioLevel * 1.2)}px`,
-                  height: `${Math.max(120, 110 + audioLevel * 1.2)}px`
-                }}
-              />
-              <span
-                className="absolute rounded-full bg-[#D92228]/25 transition-all duration-150"
-                style={{
-                  width: `${Math.max(95, 90 + audioLevel * 0.8)}px`,
-                  height: `${Math.max(95, 90 + audioLevel * 0.8)}px`
-                }}
-              />
+              <span className="absolute w-28 h-28 rounded-full bg-[#D92228]/15 animate-ping pointer-events-none" />
+              <span className="absolute w-24 h-24 rounded-full bg-[#D92228]/25 animate-pulse pointer-events-none" />
             </>
           )}
 
@@ -459,9 +396,7 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
               isSearching
                 ? 'bg-emerald-600 text-white scale-105 shadow-emerald-500/40'
                 : isListening
-                ? isAudioDetecting
-                  ? 'bg-[#D92228] text-white scale-110 shadow-red-600/50 ring-4 ring-red-300'
-                  : 'bg-[#D92228] text-white hover:bg-[#BF1E23] scale-105 shadow-red-600/30'
+                ? 'bg-[#D92228] text-white hover:bg-[#BF1E23] scale-110 shadow-red-600/50 ring-4 ring-red-200'
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border-2 border-gray-300'
             }`}
             aria-label={isListening ? 'Stop Listening' : 'Start Listening'}
@@ -476,20 +411,20 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
             )}
           </button>
 
-          {/* Real Live Frequency Equalizer Bars (Driven by Web Audio Analyser) */}
-          <div className="flex items-center justify-center gap-1.5 mt-5 h-9">
+          {/* Dynamic Frequency Equalizer Bars */}
+          <div className="flex items-center justify-center gap-1.5 mt-5 h-10">
             {freqBars.map((height, i) => (
               <span
                 key={i}
                 className={`w-1.5 rounded-full transition-all duration-75 ${
                   isListening
                     ? isAudioDetecting
-                      ? 'bg-emerald-600'
-                      : 'bg-[#D92228]'
+                      ? 'bg-[#D92228]'
+                      : 'bg-orange-500'
                     : 'bg-gray-300'
                 }`}
                 style={{
-                  height: `${isListening ? Math.max(8, height * 0.35) : 8}px`
+                  height: `${isListening ? Math.max(8, height * 0.45) : 8}px`
                 }}
               />
             ))}
@@ -497,9 +432,7 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
 
           <p className="text-[11px] font-semibold text-gray-500 mt-1">
             {isListening
-              ? isAudioDetecting
-                ? (language === 'hi' ? 'आवाज़ पहचानी गई' : 'Live Audio Detected')
-                : (language === 'hi' ? 'माइक पर टैप करके बंद करें' : 'Tap microphone to pause')
+              ? (language === 'hi' ? 'माइक पर टैप करके बंद करें' : 'Tap microphone to pause')
               : (language === 'hi' ? 'बोलने के लिए माइक दबाएँ' : 'Click microphone above to start speaking')}
           </p>
         </div>
@@ -519,7 +452,7 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
                 }}
                 placeholder={
                   isListening
-                    ? (language === 'hi' ? 'जैसे बोलें: "3 बीएचके ग्रेटर नोएडा"...' : 'Listening... e.g. "3 BHK in Greater Noida"')
+                    ? (language === 'hi' ? 'जैसे बोलें: "3 बीएचके फ्लैट मुंबई"...' : 'Listening... e.g. "3 BHK in Mumbai"')
                     : (language === 'hi' ? 'यहाँ बोलें या टाइप करें...' : 'Speak or type property search query...')
                 }
                 className="w-full bg-transparent text-sm sm:text-base font-bold text-gray-950 placeholder-gray-400 focus:outline-none"
@@ -533,7 +466,7 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
                   setTranscript('');
                   setInterimText('');
                 }}
-                className="p-1 text-gray-400 hover:text-gray-700 rounded-full"
+                className="p-1 text-gray-400 hover:text-gray-700 rounded-full cursor-pointer"
                 title="Clear"
               >
                 <X className="w-4 h-4" />
@@ -598,7 +531,7 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
 
           <button
             type="button"
-            onClick={() => handleFinalSearch(currentDisplayQuery || (popularVoiceQueries[0]))}
+            onClick={() => handleFinalSearch(currentDisplayQuery || popularVoiceQueries[0])}
             disabled={!currentDisplayQuery && !isSpeechSupported}
             className="flex-1 py-2.5 bg-[#D92228] hover:bg-[#BF1E23] disabled:opacity-50 disabled:cursor-not-allowed text-white font-extrabold rounded-xl text-sm transition-all shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
           >
@@ -612,6 +545,7 @@ export const VoiceSearchModal: React.FC<VoiceSearchModalProps> = ({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
